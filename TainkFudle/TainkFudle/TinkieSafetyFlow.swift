@@ -1,6 +1,6 @@
 import UIKit
 
-enum TinkieSafetyStore {
+enum TinkieBassTrailre {
     private static let reportKey = "tinkie_safety_report_records"
     private static let blockKey = "tinkie_safety_block_records"
 
@@ -17,18 +17,92 @@ enum TinkieSafetyStore {
         UserDefaults.standard.set(Array(records), forKey: blockKey)
     }
 
+    static func personKey(for name: String) -> String {
+        "person:\(name)"
+    }
+
+    static func activityKey(for event: TinkieLyricFlow) -> String {
+        "activity:\(event.title):\(event.dateText)"
+    }
+
+    static func pulseKey(for item: TinkieReelClip) -> String {
+        "clip:\(item.performer):\(item.coverName)"
+    }
+
+    static func roomKey(event: TinkieLyricFlow, group: TinkieMelodyQuest) -> String {
+        "room:\(event.title):\(group.name)"
+    }
+
+    static func hasBlocked(targetKey: String, targetKind: String) -> Bool {
+        stringArray(for: blockKey).contains("\(targetKind)|\(targetKey)")
+    }
+
+    static func hasBlockedPerson(_ name: String) -> Bool {
+        hasBlocked(targetKey: personKey(for: name), targetKind: "person")
+            || hasBlocked(targetKey: "performer:\(name)", targetKind: "profile")
+            || blockedPersonNames().contains(name)
+    }
+
+    static func allowsEvent(_ event: TinkieLyricFlow) -> Bool {
+        !hasBlocked(targetKey: activityKey(for: event), targetKind: "activity")
+            && !hasBlocked(targetKey: "eventDetail:\(event.title):\(event.dateText)", targetKind: "activity")
+            && !hasBlockedPerson(event.hostName)
+    }
+
+    static func allowsClip(_ item: TinkieReelClip) -> Bool {
+        !hasBlocked(targetKey: pulseKey(for: item), targetKind: "clip")
+            && !hasBlocked(targetKey: "popular:\(item.performer):\(item.coverName)", targetKind: "clip")
+            && !hasBlocked(targetKey: "clipDetail:\(item.performer):\(item.coverName)", targetKind: "clip")
+            && !hasBlockedPerson(item.performer)
+    }
+
+    static func hasBlockedRoom(event: TinkieLyricFlow, group: TinkieMelodyQuest) -> Bool {
+        hasBlocked(targetKey: roomKey(event: event, group: group), targetKind: "room")
+    }
+
+    static func blockedNames() -> [String] {
+        Array(Set(blockedPersonNames())).sorted()
+    }
+
+    static func unblockName(_ name: String) {
+        let kept = stringArray(for: blockKey).filter { record in
+            guard let parsed = parse(record: record) else { return true }
+            guard parsed.kind == "person" || parsed.kind == "profile" else { return true }
+            return parsed.name != name
+        }
+        UserDefaults.standard.set(kept, forKey: blockKey)
+    }
+
+    private static func blockedPersonNames() -> [String] {
+        let names = stringArray(for: blockKey).compactMap { record -> String? in
+            guard let parsed = parse(record: record) else { return nil }
+            guard parsed.kind == "person" || parsed.kind == "profile" else { return nil }
+            return parsed.name
+        }
+        return names.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    private static func parse(record: String) -> (kind: String, name: String)? {
+        let parts = record.split(separator: "|", omittingEmptySubsequences: false)
+        guard parts.count == 2 else { return nil }
+        let rawKey = String(parts[1])
+        let keyParts = rawKey.split(separator: ":", omittingEmptySubsequences: false)
+        let name = keyParts.count > 1 ? String(keyParts[1]) : rawKey
+        return (String(parts[0]), name)
+    }
+
     private static func stringArray(for key: String) -> [String] {
         UserDefaults.standard.stringArray(forKey: key) ?? []
     }
 }
 
 extension UIViewController {
-    func tinkiePresentSafetyOptions(targetTitle: String, targetKey: String, targetKind: String) {
+    func tinkiePresentSafetyOptions(targetTitle: String, targetKey: String, targetKind: String, onBlock: (() -> Void)? = nil) {
         guard TinkieProfileStore.isSignedIn else {
-            let welcome = TinkieAuthWelcomeViewController()
+            let welcome = TinkieDrumEchoer()
             welcome.onComplete = { [weak self] in
                 self?.dismiss(animated: true) {
-                    self?.tinkiePresentSafetyOptions(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind)
+                    self?.tinkiePresentSafetyOptions(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind, onBlock: onBlock)
                 }
             }
             let navigation = UINavigationController(rootViewController: welcome)
@@ -39,23 +113,29 @@ extension UIViewController {
 
         let options = TinkieSafetyOptionViewController(targetTitle: targetTitle)
         options.onReport = { [weak self] in
-            let controller = TinkieSafetyReportViewController(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind)
+            let controller = TinkieGrooveArenaController(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind)
             let navigation = UINavigationController(rootViewController: controller)
             navigation.modalPresentationStyle = .fullScreen
             self?.present(navigation, animated: true)
         }
         options.onBlock = { [weak self] in
-            TinkieSafetyStore.blockTarget(targetKey: targetKey, targetKind: targetKind)
-            self?.tinkieShowSafetyNotice(title: "Blocked", detail: "This \(targetKind) is hidden from your local Tinkie experience.")
+            TinkieBassTrailre.blockTarget(targetKey: targetKey, targetKind: targetKind)
+            self?.tinkieShowSafetyNotice(
+                title: "Blocked",
+                detail: "This \(targetKind) is hidden from your local Tinkie experience.",
+                onDone: onBlock
+            )
         }
         options.modalPresentationStyle = .overFullScreen
         options.modalTransitionStyle = .crossDissolve
         present(options, animated: true)
     }
 
-    func tinkieShowSafetyNotice(title: String, detail: String) {
+    func tinkieShowSafetyNotice(title: String, detail: String, onDone: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: detail, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            onDone?()
+        })
         present(alert, animated: true)
     }
 }
@@ -92,11 +172,11 @@ final class TinkieSafetyOptionViewController: UIViewController {
         panelStack.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(panelStack)
 
-        let report = TinkieSafetySheetButton(title: "Report", style: .light)
+        let report = TinkieDrumSparkton(title: "Report", style: .light)
         report.addTarget(self, action: #selector(reportTapped), for: .touchUpInside)
-        let block = TinkieSafetySheetButton(title: "Block", style: .light)
+        let block = TinkieDrumSparkton(title: "Block", style: .light)
         block.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
-        let cancel = TinkieSafetySheetButton(title: "Cancel", style: .dark)
+        let cancel = TinkieDrumSparkton(title: "Cancel", style: .dark)
         cancel.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
 
         [report, block, cancel].forEach { panelStack.addArrangedSubview($0) }
@@ -130,7 +210,7 @@ final class TinkieSafetyOptionViewController: UIViewController {
     }
 }
 
-final class TinkieSafetyReportViewController: UIViewController, UITextViewDelegate {
+final class TinkieGrooveArenaController: UIViewController, UITextViewDelegate {
     private let targetTitle: String
     private let targetKey: String
     private let targetKind: String
@@ -306,7 +386,7 @@ final class TinkieSafetyReportViewController: UIViewController, UITextViewDelega
     @objc private func confirmTapped() {
         guard let selectedReason else { return }
         let note = noteView.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        TinkieSafetyStore.saveReport(targetKey: targetKey, targetKind: targetKind, reason: selectedReason, note: note)
+        TinkieBassTrailre.saveReport(targetKey: targetKey, targetKind: targetKind, reason: selectedReason, note: note)
         let alert = UIAlertController(
             title: "Report Submitted",
             message: "Thanks for helping Tinkie keep song guessing spaces safe and respectful.",
@@ -347,7 +427,7 @@ final class TinkieSafetyReportViewController: UIViewController, UITextViewDelega
     }
 }
 
-final class TinkieSafetySheetButton: UIButton {
+final class TinkieDrumSparkton: UIButton {
     enum Style {
         case light
         case dark

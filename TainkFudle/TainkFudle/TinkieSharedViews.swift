@@ -161,7 +161,7 @@ final class TinkieCapsuleButton: UIButton {
     }
 }
 
-final class TinkieAssetImageButton: UIButton {
+final class TinkieALyricRevea: UIButton {
     private let assetImageView = UIImageView()
     private let assetSize: CGSize
 

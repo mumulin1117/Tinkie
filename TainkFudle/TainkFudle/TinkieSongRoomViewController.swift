@@ -1,9 +1,9 @@
 import UIKit
 
 final class TinkieSongRoomViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
-    private let event: TinkieSongEvent
-    private let group: TinkieEventGroup
-    private var roomLines: [TinkieRoomLine]
+    private let event: TinkieLyricFlow
+    private let group: TinkieMelodyQuest
+    private var roomLines: [tinkieMelodyArc]
 
     private let backgroundImageView = UIImageView()
     private let shadeView = UIView()
@@ -17,7 +17,7 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
     private var inputBottomConstraint: NSLayoutConstraint?
     private var exitOverlay: TinkieRoomExitOverlay?
 
-    init(event: TinkieSongEvent, group: TinkieEventGroup) {
+    init(event: TinkieLyricFlow, group: TinkieMelodyQuest) {
         self.event = event
         self.group = group
         self.roomLines = group.roomLines
@@ -46,12 +46,12 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
         NotificationCenter.default.removeObserver(self)
     }
 
-    private var owner: TinkieRoomMember {
-        group.roomMembers.first(where: { $0.isOwner }) ?? group.roomMembers.first ?? TinkieRoomMember(name: event.hostName, avatarName: event.avatarNames.first ?? "tinkie_avatar_neon_voice", isOwner: true, isMuted: false)
+    private var owner: TinkieMelodyCue {
+        group.roomMembers.first(where: { $0.isOwner }) ?? group.roomMembers.first ?? TinkieMelodyCue(name: event.hostName, avatarName: event.avatarNames.first ?? "tinkie_avatar_neon_voice", isOwner: true, isMuted: false)
     }
 
-    private var sideMembers: [TinkieRoomMember] {
-        Array(group.roomMembers.filter { !$0.isOwner }.prefix(8))
+    private var sideMembers: [TinkieMelodyCue] {
+        Array(group.roomMembers.filter { !$0.isOwner && !TinkieBassTrailre.hasBlockedPerson($0.name) }.prefix(8))
     }
 
     private func buildLayout() {
@@ -230,6 +230,8 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
         let container = UIView()
 
         let ownerView = TinkieRoomOwnerView(member: owner)
+        ownerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openOwnerProfile)))
+        ownerView.isUserInteractionEnabled = true
         ownerView.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(ownerView)
 
@@ -320,7 +322,7 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
         let text = inputField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !text.isEmpty else { return }
         let name = TinkieProfileStore.currentSnapshot().nickname
-        roomLines.append(TinkieRoomLine(speaker: name, text: text))
+        roomLines.append(tinkieMelodyArc(speaker: name, text: text))
         inputField.text = nil
         reloadLines()
         view.layoutIfNeeded()
@@ -336,13 +338,56 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
     @objc private func openMore() {
         tinkiePresentSafetyOptions(
             targetTitle: "\(event.title) \(group.name)",
-            targetKey: "room:\(event.title):\(group.name)",
-            targetKind: "room"
+            targetKey: TinkieBassTrailre.roomKey(event: event, group: group),
+            targetKind: "room",
+            onBlock: { [weak self] in
+                self?.dismiss(animated: true)
+            }
+        )
+    }
+
+    @objc private func openOwnerProfile() {
+        openProfile(for: owner)
+    }
+
+    private func openProfile(for member: TinkieMelodyCue) {
+        guard TinkieProfileStore.isSignedIn else {
+            openWelcome()
+            return
+        }
+        let item = profilePulse(for: member)
+        let key = [item.performer, item.coverName, item.clipFileName].joined(separator: "::")
+        let page = TinkiePerformerProfileViewController(
+            clip: item,
+            bonded: TinkieRhythmBondStore.hasBond(for: key)
+        )
+        let navigation = UINavigationController(rootViewController: page)
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true)
+    }
+
+    private func profilePulse(for member: TinkieMelodyCue) -> TinkieReelClip {
+        if let seeded = TinkieDemoLibrary.pulseClips(for: member.name).first {
+            return seeded
+        }
+        let snapshot = TinkieProfileStore.currentSnapshot()
+        let matchedPath = member.avatarPath ?? (snapshot.isSignedIn && snapshot.nickname == member.name ? snapshot.heroImagePath : nil)
+        let fallbackFile = TinkieDemoLibrary.clips.first?.clipFileName ?? "tinkie_song_room_clip_country_hint.mp4"
+        return TinkieReelClip(
+            performer: member.name,
+            moment: "in this room",
+            caption: "\(member.name) joined \(group.name) for a quick song guessing round.",
+            coverName: event.coverName,
+            coverPath: event.coverPath,
+            clipFileName: fallbackFile,
+            avatarName: member.avatarName,
+            avatarPath: matchedPath,
+            echoCount: "room"
         )
     }
 
     private func openWelcome() {
-        let welcome = TinkieAuthWelcomeViewController()
+        let welcome = TinkieDrumEchoer()
         welcome.onComplete = { [weak self] in
             self?.dismiss(animated: true)
         }
@@ -424,6 +469,10 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        openProfile(for: sideMembers[indexPath.item])
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = floor((collectionView.bounds.width - 10) / 2)
         return CGSize(width: width, height: 70)
@@ -431,7 +480,7 @@ final class TinkieSongRoomViewController: UIViewController, UICollectionViewData
 }
 
 private final class TinkieRoomOwnerView: UIView {
-    init(member: TinkieRoomMember) {
+    init(member: TinkieMelodyCue) {
         super.init(frame: .zero)
         buildLayout(member: member)
     }
@@ -440,8 +489,18 @@ private final class TinkieRoomOwnerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func buildLayout(member: TinkieRoomMember) {
-        let avatar = TinkieAvatarView(imageName: member.avatarName, size: 96)
+    private func buildLayout(member: TinkieMelodyCue) {
+        let avatar = UIImageView()
+        if let avatarPath = member.avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
+            avatar.image = localArt
+        } else {
+            avatar.image = UIImage(named: member.avatarName)
+        }
+        avatar.contentMode = .scaleAspectFill
+        avatar.layer.cornerRadius = 48
+        avatar.layer.borderWidth = 1
+        avatar.layer.borderColor = UIColor.white.withAlphaComponent(0.72).cgColor
+        avatar.layer.masksToBounds = true
         avatar.translatesAutoresizingMaskIntoConstraints = false
         addSubview(avatar)
 
@@ -482,6 +541,8 @@ private final class TinkieRoomOwnerView: UIView {
 
             avatar.centerXAnchor.constraint(equalTo: ring.centerXAnchor),
             avatar.centerYAnchor.constraint(equalTo: ring.centerYAnchor),
+            avatar.widthAnchor.constraint(equalToConstant: 96),
+            avatar.heightAnchor.constraint(equalToConstant: 96),
 
             badge.centerXAnchor.constraint(equalTo: avatar.centerXAnchor),
             badge.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: -12),
@@ -516,8 +577,12 @@ private final class TinkieSongRoomMemberCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(member: TinkieRoomMember) {
-        avatar.image = UIImage(named: member.avatarName)
+    func configure(member: TinkieMelodyCue) {
+        if let avatarPath = member.avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
+            avatar.image = localArt
+        } else {
+            avatar.image = UIImage(named: member.avatarName)
+        }
         nameLabel.text = member.name
         micIcon.image = UIImage(systemName: member.isMuted ? "mic.slash.fill" : "mic.fill")
         avatar.backgroundColor = UIColor.white.withAlphaComponent(0.12)
@@ -564,7 +629,7 @@ private final class TinkieSongRoomMemberCell: UICollectionViewCell {
 }
 
 private final class TinkieRoomLineBubble: UIView {
-    init(line: TinkieRoomLine) {
+    init(line: tinkieMelodyArc) {
         super.init(frame: .zero)
         backgroundColor = UIColor.white.withAlphaComponent(0.12)
         layer.cornerRadius = 10

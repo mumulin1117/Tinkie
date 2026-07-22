@@ -323,7 +323,8 @@ final class TinkieSongPulsePostViewController: UIViewController, UIImagePickerCo
                 coverPath: chosenCoverPath,
                 clipPath: chosenClipPath,
                 performer: profile.nickname,
-                avatarName: profile.heroImageName
+                avatarName: profile.heroImageName,
+                avatarPath: profile.heroImagePath
             )
         )
         let alert = UIAlertController(title: "Posted", message: "Your Tinkie song clip is now saved locally.", preferredStyle: .alert)
