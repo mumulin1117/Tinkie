@@ -32,177 +32,130 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
 
     private func putPulseForgeStageTogether() {
         view.backgroundColor = .white
-
-        let backdrop = TinkiePulseForgeBackdropView()
-        backdrop.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(backdrop)
-
-        pulseScrollStage.alwaysBounceVertical = true
-        pulseScrollStage.keyboardDismissMode = .interactive
-        pulseScrollStage.showsVerticalScrollIndicator = false
-        pulseScrollStage.translatesAutoresizingMaskIntoConstraints = false
+        let backdrop = TinkiePulseForgeBackdropView(); backdrop.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(backdrop)
+        pulseScrollStage.alwaysBounceVertical = true; pulseScrollStage.keyboardDismissMode = .interactive; pulseScrollStage.showsVerticalScrollIndicator = false; pulseScrollStage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pulseScrollStage)
-
-        pulseContentStage.translatesAutoresizingMaskIntoConstraints = false
-        pulseScrollStage.addSubview(pulseContentStage)
-
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(leavePulseForge), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(backButton)
-
-        let titleLabel = UILabel()
-        titleLabel.text = "Post Clip"
-        titleLabel.textColor = .black
-        titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(titleLabel)
-
-        pulseDropStage.backgroundColor = .white
-        pulseDropStage.layer.cornerRadius = 8
-        pulseDropStage.layer.masksToBounds = true
-        pulseDropStage.addTarget(self, action: #selector(choosePulseSparkSource), for: .touchUpInside)
-        pulseDropStage.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(pulseDropStage)
-
-        pulseCoverFrameView.contentMode = .scaleAspectFill
-        pulseCoverFrameView.translatesAutoresizingMaskIntoConstraints = false
-        pulseDropStage.addSubview(pulseCoverFrameView)
-
-        pulseAddCueView.tintColor = UIColor(red: 0.70, green: 0.66, blue: 0.90, alpha: 0.32)
-        pulseAddCueView.contentMode = .scaleAspectFit
-        pulseAddCueView.translatesAutoresizingMaskIntoConstraints = false
-        pulseDropStage.addSubview(pulseAddCueView)
-
-        pulseClearDraftButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        pulseClearDraftButton.tintColor = .white
-        pulseClearDraftButton.backgroundColor = .black
-        pulseClearDraftButton.layer.cornerRadius = 14
-        pulseClearDraftButton.addTarget(self, action: #selector(clearPulseDraft), for: .touchUpInside)
-        pulseClearDraftButton.translatesAutoresizingMaskIntoConstraints = false
-        pulseDropStage.addSubview(pulseClearDraftButton)
-
-        pulsePreviewBeatButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        pulsePreviewBeatButton.tintColor = .white
-        pulsePreviewBeatButton.layer.cornerRadius = 27
-        pulsePreviewBeatButton.layer.borderWidth = 2.5
-        pulsePreviewBeatButton.layer.borderColor = UIColor.white.cgColor
-        pulsePreviewBeatButton.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        pulsePreviewBeatButton.addTarget(self, action: #selector(tapPulsePreview), for: .touchUpInside)
-        pulsePreviewBeatButton.translatesAutoresizingMaskIntoConstraints = false
+        pulseContentStage.translatesAutoresizingMaskIntoConstraints = false; pulseScrollStage.addSubview(pulseContentStage)
+        let pulseBackBeatButton = UIButton(type: .system); pulseBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); pulseBackBeatButton.tintColor = .black; pulseBackBeatButton.addTarget(self, action: #selector(leavePulseForge), for: .touchUpInside)
+        pulseBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(pulseBackBeatButton)
+        let pulseForgeTitleLabel = UILabel(); pulseForgeTitleLabel.text = TinkieVerseCipherTrail.singBack("PKoYsbtp FCYlLiGpY"); pulseForgeTitleLabel.textColor = .black; pulseForgeTitleLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
+        pulseForgeTitleLabel.textAlignment = .center; pulseForgeTitleLabel.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(pulseForgeTitleLabel)
+        pulseDropStage.backgroundColor = .white; pulseDropStage.layer.cornerRadius = 8; pulseDropStage.layer.masksToBounds = true; pulseDropStage.addTarget(self, action: #selector(choosePulseSparkSource), for: .touchUpInside)
+        pulseDropStage.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(pulseDropStage)
+        pulseCoverFrameView.contentMode = .scaleAspectFill; pulseCoverFrameView.translatesAutoresizingMaskIntoConstraints = false; pulseDropStage.addSubview(pulseCoverFrameView)
+        pulseAddCueView.tintColor = UIColor(red: 0.70, green: 0.66, blue: 0.90, alpha: 0.32); pulseAddCueView.contentMode = .scaleAspectFit; pulseAddCueView.translatesAutoresizingMaskIntoConstraints = false; pulseDropStage.addSubview(pulseAddCueView)
+        pulseClearDraftButton.setImage(UIImage(systemName: "xmark"), for: .normal); pulseClearDraftButton.tintColor = .white; pulseClearDraftButton.backgroundColor = .black; pulseClearDraftButton.layer.cornerRadius = 14
+        pulseClearDraftButton.addTarget(self, action: #selector(clearPulseDraft), for: .touchUpInside); pulseClearDraftButton.translatesAutoresizingMaskIntoConstraints = false; pulseDropStage.addSubview(pulseClearDraftButton)
+        pulsePreviewBeatButton.setImage(UIImage(systemName: "play.fill"), for: .normal); pulsePreviewBeatButton.tintColor = .white; pulsePreviewBeatButton.layer.cornerRadius = 27; pulsePreviewBeatButton.layer.borderWidth = 2.5
+        pulsePreviewBeatButton.layer.borderColor = UIColor.white.cgColor; pulsePreviewBeatButton.backgroundColor = UIColor.white.withAlphaComponent(0.10); pulsePreviewBeatButton.addTarget(self, action: #selector(tapPulsePreview), for: .touchUpInside); pulsePreviewBeatButton.translatesAutoresizingMaskIntoConstraints = false
         pulseDropStage.addSubview(pulsePreviewBeatButton)
-
-        let captionLabel = UILabel()
-        captionLabel.text = "Content"
-        captionLabel.textColor = .black
-        captionLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        captionLabel.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(captionLabel)
-
-        pulseCaptionLyricPad.backgroundColor = .white
-        pulseCaptionLyricPad.layer.cornerRadius = 8
-        pulseCaptionLyricPad.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        pulseCaptionLyricPad.textColor = .black
-        pulseCaptionLyricPad.textContainerInset = UIEdgeInsets(top: 14, left: 18, bottom: 14, right: 18)
-        pulseCaptionLyricPad.delegate = self
-        pulseCaptionLyricPad.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(pulseCaptionLyricPad)
-
-        pulseCaptionCueLabel.text = "Say Something"
-        pulseCaptionCueLabel.textColor = UIColor.black.withAlphaComponent(0.20)
-        pulseCaptionCueLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        pulseCaptionCueLabel.translatesAutoresizingMaskIntoConstraints = false
+        let captionLabel = UILabel(); captionLabel.text = TinkieVerseCipherTrail.singBack("CNodnvtFeNnWtc"); captionLabel.textColor = .black; captionLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(captionLabel)
+        pulseCaptionLyricPad.backgroundColor = .white; pulseCaptionLyricPad.layer.cornerRadius = 8; pulseCaptionLyricPad.font = UIFont.systemFont(ofSize: 12, weight: .regular); pulseCaptionLyricPad.textColor = .black
+        pulseCaptionLyricPad.textContainerInset = UIEdgeInsets(top: 14, left: 18, bottom: 14, right: 18); pulseCaptionLyricPad.delegate = self; pulseCaptionLyricPad.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(pulseCaptionLyricPad)
+        pulseCaptionCueLabel.text = TinkieVerseCipherTrail.singBack("SJajyB BSNobmUeptmhLiLnIgD"); pulseCaptionCueLabel.textColor = UIColor.black.withAlphaComponent(0.20); pulseCaptionCueLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium); pulseCaptionCueLabel.translatesAutoresizingMaskIntoConstraints = false
         pulseCaptionLyricPad.addSubview(pulseCaptionCueLabel)
+        pulseSealButton.setTitle(TinkieVerseCipherTrail.singBack("CnoTnFfjiermmy"), for: .normal); pulseSealButton.addTarget(self, action: #selector(sealPulseForge), for: .touchUpInside); pulseSealButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(pulseSealButton)
+        pinPulseForgeStageBeat1(backdrop: backdrop, pulseBackBeatButton: pulseBackBeatButton); pinPulseForgeStageBeat2(pulseBackBeatButton: pulseBackBeatButton, pulseForgeTitleLabel: pulseForgeTitleLabel); pinPulseForgeStageBeat3(captionLabel: captionLabel); pinPulseForgeStageBeat4()
+    }
 
-        pulseSealButton.setTitle("Confirm", for: .normal)
-        pulseSealButton.addTarget(self, action: #selector(sealPulseForge), for: .touchUpInside)
-        pulseSealButton.translatesAutoresizingMaskIntoConstraints = false
-        pulseContentStage.addSubview(pulseSealButton)
-
+    private func pinPulseForgeStageBeat1(backdrop: TinkiePulseForgeBackdropView, pulseBackBeatButton: UIButton) {
         NSLayoutConstraint.activate([
             backdrop.topAnchor.constraint(equalTo: view.topAnchor),
             backdrop.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backdrop.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backdrop.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             pulseScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             pulseScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pulseScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             pulseScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             pulseContentStage.topAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.topAnchor),
             pulseContentStage.leadingAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.leadingAnchor),
             pulseContentStage.trailingAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.trailingAnchor),
             pulseContentStage.bottomAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.bottomAnchor),
             pulseContentStage.widthAnchor.constraint(equalTo: pulseScrollStage.frameLayoutGuide.widthAnchor),
             pulseContentStage.heightAnchor.constraint(greaterThanOrEqualTo: pulseScrollStage.frameLayoutGuide.heightAnchor),
+            
+            pulseBackBeatButton.topAnchor.constraint(equalTo: pulseContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
+            pulseBackBeatButton.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 22),
+            pulseBackBeatButton.widthAnchor.constraint(equalToConstant: 40),
+            pulseBackBeatButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
 
-            backButton.topAnchor.constraint(equalTo: pulseContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
-            backButton.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 22),
-            backButton.widthAnchor.constraint(equalToConstant: 40),
-            backButton.heightAnchor.constraint(equalToConstant: 40),
-
-            titleLabel.centerXAnchor.constraint(equalTo: pulseContentStage.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-
-            pulseDropStage.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+    private func pinPulseForgeStageBeat2(pulseBackBeatButton: UIButton, pulseForgeTitleLabel: UILabel) {
+        NSLayoutConstraint.activate([
+            
+            pulseForgeTitleLabel.centerXAnchor.constraint(equalTo: pulseContentStage.centerXAnchor),
+            pulseForgeTitleLabel.centerYAnchor.constraint(equalTo: pulseBackBeatButton.centerYAnchor),
+            
+            pulseDropStage.topAnchor.constraint(equalTo: pulseBackBeatButton.bottomAnchor, constant: 16),
             pulseDropStage.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 30),
             pulseDropStage.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor, constant: -30),
             pulseDropStage.heightAnchor.constraint(equalTo: pulseDropStage.widthAnchor, multiplier: 1.24),
-
+            
             pulseCoverFrameView.topAnchor.constraint(equalTo: pulseDropStage.topAnchor),
             pulseCoverFrameView.leadingAnchor.constraint(equalTo: pulseDropStage.leadingAnchor),
             pulseCoverFrameView.trailingAnchor.constraint(equalTo: pulseDropStage.trailingAnchor),
             pulseCoverFrameView.bottomAnchor.constraint(equalTo: pulseDropStage.bottomAnchor),
-
+            
             pulseAddCueView.centerXAnchor.constraint(equalTo: pulseDropStage.centerXAnchor),
             pulseAddCueView.centerYAnchor.constraint(equalTo: pulseDropStage.centerYAnchor),
             pulseAddCueView.widthAnchor.constraint(equalToConstant: 58),
             pulseAddCueView.heightAnchor.constraint(equalToConstant: 58),
-
+            
             pulseClearDraftButton.topAnchor.constraint(equalTo: pulseDropStage.topAnchor, constant: 12),
             pulseClearDraftButton.trailingAnchor.constraint(equalTo: pulseDropStage.trailingAnchor, constant: -12),
             pulseClearDraftButton.widthAnchor.constraint(equalToConstant: 28),
-            pulseClearDraftButton.heightAnchor.constraint(equalToConstant: 28),
+            pulseClearDraftButton.heightAnchor.constraint(equalToConstant: 28)
+        ])
+    }
 
+    private func pinPulseForgeStageBeat3(captionLabel: UILabel) {
+        NSLayoutConstraint.activate([
+            
             pulsePreviewBeatButton.centerXAnchor.constraint(equalTo: pulseDropStage.centerXAnchor),
             pulsePreviewBeatButton.centerYAnchor.constraint(equalTo: pulseDropStage.centerYAnchor),
             pulsePreviewBeatButton.widthAnchor.constraint(equalToConstant: 54),
             pulsePreviewBeatButton.heightAnchor.constraint(equalToConstant: 54),
-
+            
             captionLabel.topAnchor.constraint(equalTo: pulseDropStage.bottomAnchor, constant: 16),
             captionLabel.leadingAnchor.constraint(equalTo: pulseDropStage.leadingAnchor),
             captionLabel.trailingAnchor.constraint(equalTo: pulseDropStage.trailingAnchor),
-
+            
             pulseCaptionLyricPad.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 10),
             pulseCaptionLyricPad.leadingAnchor.constraint(equalTo: pulseDropStage.leadingAnchor),
             pulseCaptionLyricPad.trailingAnchor.constraint(equalTo: pulseDropStage.trailingAnchor),
             pulseCaptionLyricPad.heightAnchor.constraint(equalToConstant: 108),
-
+            
             pulseCaptionCueLabel.topAnchor.constraint(equalTo: pulseCaptionLyricPad.topAnchor, constant: 16),
             pulseCaptionCueLabel.leadingAnchor.constraint(equalTo: pulseCaptionLyricPad.leadingAnchor, constant: 22),
             pulseCaptionCueLabel.trailingAnchor.constraint(equalTo: pulseCaptionLyricPad.trailingAnchor, constant: -22),
-
+            
             pulseSealButton.topAnchor.constraint(equalTo: pulseCaptionLyricPad.bottomAnchor, constant: 30),
             pulseSealButton.leadingAnchor.constraint(equalTo: pulseDropStage.leadingAnchor),
             pulseSealButton.trailingAnchor.constraint(equalTo: pulseDropStage.trailingAnchor),
-            pulseSealButton.heightAnchor.constraint(equalToConstant: 44),
+            pulseSealButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
+    private func pinPulseForgeStageBeat4() {
+        NSLayoutConstraint.activate([
             pulseSealButton.bottomAnchor.constraint(lessThanOrEqualTo: pulseContentStage.safeAreaLayoutGuide.bottomAnchor, constant: -22)
         ])
     }
 
     @objc private func choosePulseSparkSource() {
-        let sheet = UIAlertController(title: "Post Clip", message: "Choose a short Tinkie song moment.", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Choose from Library", style: .default) { [weak self] _ in
+        let sheet = UIAlertController(title: TinkieVerseCipherTrail.singBack("PmomsFtM bCmlvitpm"), message: TinkieVerseCipherTrail.singBack("CHhPoTogsTeq aak gsihionrdtB eTGiVnSkZireN WsXownsgg pmjoWmseHnAtq.L"), preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CthroaoRsceJ SfgrKoLmq fLJiUbArsabrtym"), style: .default) { [weak self] _ in
             self?.presentPulseSparkLibrary()
         })
-        sheet.addAction(UIAlertAction(title: "Use Tinkie Sample", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("UMsfeP UTgivndkaiWeo ySfaFmspvlReI"), style: .default) { [weak self] _ in
             self?.useSamplePulse()
         })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
         sheet.popoverPresentationController?.sourceView = pulseDropStage
         sheet.popoverPresentationController?.sourceRect = pulseDropStage.bounds
         present(sheet, animated: true)
@@ -234,7 +187,7 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
 
     private func carryPulseSparkIntoForge(from sourceURL: URL) {
         guard let storedURL = stashPulseSparkFile(from: sourceURL) else {
-            showPulseForgeHint("Unable to import this clip.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("UXnTaZbFlues itBoT FiLmupboirxtL dtWhqifsA HcHlNiJpI.i"))
             return
         }
         pulseDraftPath = storedURL.path
@@ -303,17 +256,17 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
     }
 
     @objc private func tapPulsePreview() {
-        showPulseForgeHint("Preview is ready. Your selected clip will appear at the top of Reels after confirmation.")
+        showPulseForgeHint(TinkieVerseCipherTrail.singBack("PjrIeYvAiOegwJ LiBsc wrHeFaxdmyf.r QYHovuFrP qszeHlOeScxtxekdq NcNlKiMpJ nwciJlUlj TaZpMpsesaXrC raqte ItwhQeO Ztkovpo XoUfO qRAeFevlgsp gadfrtMeCrV rcroMnNfdinrcmwaQtTiToane.T"))
     }
 
     @objc private func sealPulseForge() {
         let captionText = pulseCaptionLyricPad.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let pulseDraftPath else {
-            showPulseForgeHint("Please choose a clip first.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PslNeEapsKem qcqhzosoCsseL MaB NcNlKiMpJ nfWiJrSsBtN.q"))
             return
         }
         guard !captionText.isEmpty else {
-            showPulseForgeHint("Please add content.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PjlTeOagsJeh uatdcdU qcqoCnYtmecngtY.v"))
             return
         }
         let profile = TinkieSingerStageScorebook.currentSingerStage()
@@ -322,12 +275,12 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
                 caption: captionText,
                 coverPath: pulseCoverDraftPath,
                 clipPath: pulseDraftPath,
-                performer: profile.nickname,
-                avatarName: profile.heroImageName,
-                avatarPath: profile.heroImagePath
+                performer: profile.singerAlias,
+                avatarName: profile.portraitAssetName,
+                avatarPath: profile.portraitLocalPath
             )
         )
-        tinkieShowTuneNotice(title: "Posted", detail: "Your Tinkie song clip is now saved locally.", onPrimary: { [weak self] in
+        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("PEoJsttzefdm"), detail: TinkieVerseCipherTrail.singBack("YcoZukrn YTkimngkviYed tsboTnFgK NcNlWiPpT dilsF LneogwA SsZaxvneade QlpovcCablnlPyA.B"), onPrimary: { [weak self] in
             self?.onPulseReady?()
             self?.dismiss(animated: true)
         })
@@ -353,7 +306,7 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func showPulseForgeHint(_ text: String) {
-        tinkieShowTuneNotice(title: "Tinkie", detail: text)
+        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: text)
     }
 
     private func listenForPulseKeyboardRise() {
@@ -399,7 +352,7 @@ final class TinkiePulseForgeConfirmButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
     override var isEnabled: Bool {
@@ -434,6 +387,6 @@ final class TinkiePulseForgeBackdropView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 }

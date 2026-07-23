@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  TainkFudle
-//
-//  Created by mumu on 2026/7/15.
-//
 
 import UIKit
 

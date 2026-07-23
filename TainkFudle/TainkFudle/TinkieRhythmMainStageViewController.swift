@@ -4,17 +4,17 @@ final class TinkieRhythmMainStageViewController: UIViewController {
     private let mainRhythmStageBox = UIView()
     private let rhythmTabBar = UIView()
     private let discoverRhythmTab = TinkieRhythmTabButton(
-        title: "Discover",
+        title: TinkieVerseCipherTrail.singBack("DFiAsbcMoxvfeuri"),
         idleAssetName: "tinkie_tab_discover_active",
         activeAssetName: "tinkie_tab_discover_idle"
     )
     private let reelRhythmTab = TinkieRhythmTabButton(
-        title: "Reels",
+        title: TinkieVerseCipherTrail.singBack("RMeWeflisn"),
         idleAssetName: "tinkie_tab_reels_idle",
         activeAssetName: "tinkie_tab_reels_active"
     )
     private let singerRhythmTab = TinkieRhythmTabButton(
-        title: "Me",
+        title: TinkieVerseCipherTrail.singBack("MYef"),
         idleAssetName: "tinkie_tab_me_idle",
         activeAssetName: "tinkie_tab_me_active"
     )
@@ -26,8 +26,8 @@ final class TinkieRhythmMainStageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1)
-        discoverController.onQuestPicked = { [weak self] songQuest in
-            self?.openSongQuestDetail(songQuest)
+        discoverController.onChallengeCuePicked = { [weak self] challengeCue in
+            self?.openMelodyChallengeDetail(challengeCue)
         }
         putRhythmTabsTogether()
         switchRhythmStage(to: discoverController, activeRhythmTab: discoverRhythmTab)
@@ -107,8 +107,8 @@ final class TinkieRhythmMainStageViewController: UIViewController {
         }
     }
 
-    private func openSongQuestDetail(_ songQuest: TinkieSongQuestTune) {
-        let questDetail = TinkieSongQuestDetailViewController(event: songQuest)
+    private func openMelodyChallengeDetail(_ challengeCue: TinkieMelodyChallengeCue) {
+        let questDetail = TinkieSongQuestDetailViewController(event: challengeCue)
         let navigation = UINavigationController(rootViewController: questDetail)
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)

@@ -29,40 +29,14 @@ final class TinkieRhythmSettingsViewController: UIViewController {
 
     private func putRhythmSettingsScreenTogether() {
         view.backgroundColor = UIColor(red: 0.96, green: 0.98, blue: 0.98, alpha: 1)
-
-        let glow = TinkieTopGlowView()
-        glow.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(glow)
-
-        settingsScrollStage.translatesAutoresizingMaskIntoConstraints = false
-        settingsScrollStage.alwaysBounceVertical = true
-        settingsScrollStage.showsVerticalScrollIndicator = false
-        view.addSubview(settingsScrollStage)
-
-        settingsContentStage.translatesAutoresizingMaskIntoConstraints = false
-        settingsScrollStage.addSubview(settingsContentStage)
-
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.contentHorizontalAlignment = .leading
-        backButton.addTarget(self, action: #selector(closeRhythmSettingsTapped), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsContentStage.addSubview(backButton)
-
-        let titleLabel = UILabel()
-        titleLabel.text = "Setting"
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = .black
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        settingsContentStage.addSubview(titleLabel)
-
-        settingsOptionStack.axis = .vertical
-        settingsOptionStack.spacing = 0
-        settingsOptionStack.translatesAutoresizingMaskIntoConstraints = false
-        settingsContentStage.addSubview(settingsOptionStack)
-
+        let glow = TinkieTopGlowView(); glow.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(glow)
+        settingsScrollStage.translatesAutoresizingMaskIntoConstraints = false; settingsScrollStage.alwaysBounceVertical = true; settingsScrollStage.showsVerticalScrollIndicator = false; view.addSubview(settingsScrollStage)
+        settingsContentStage.translatesAutoresizingMaskIntoConstraints = false; settingsScrollStage.addSubview(settingsContentStage)
+        let settingsBackBeatButton = UIButton(type: .system); settingsBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); settingsBackBeatButton.tintColor = .black; settingsBackBeatButton.contentHorizontalAlignment = .leading
+        settingsBackBeatButton.addTarget(self, action: #selector(closeRhythmSettingsTapped), for: .touchUpInside); settingsBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; settingsContentStage.addSubview(settingsBackBeatButton)
+        let settingsTitleTuneLabel = UILabel(); settingsTitleTuneLabel.text = TinkieVerseCipherTrail.singBack("SceBtCtuiunmgr"); settingsTitleTuneLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold); settingsTitleTuneLabel.textColor = .black
+        settingsTitleTuneLabel.textAlignment = .center; settingsTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; settingsContentStage.addSubview(settingsTitleTuneLabel)
+        settingsOptionStack.axis = .vertical; settingsOptionStack.spacing = 0; settingsOptionStack.translatesAutoresizingMaskIntoConstraints = false; settingsContentStage.addSubview(settingsOptionStack)
         let settingsTuneRows: [TinkieRhythmSettingsVerseOption] = [
             TinkieRhythmSettingsVerseOption(tuneTitle: "User Agreement", tuneSymbolName: "text.badge.checkmark", playSettingTune: { [weak self] in self?.openTermsSongPaper() }),
             TinkieRhythmSettingsVerseOption(tuneTitle: "Privacy", tuneSymbolName: "doc.text.magnifyingglass", playSettingTune: { [weak self] in self?.openPrivacySongPaper() }),
@@ -70,168 +44,127 @@ final class TinkieRhythmSettingsViewController: UIViewController {
             TinkieRhythmSettingsVerseOption(tuneTitle: "Delete Account", tuneSymbolName: "person.crop.circle.badge.xmark", playSettingTune: { [weak self] in self?.showRhythmDeleteAccountCard() })
         ]
         settingsTuneRows.forEach { settingsOptionStack.addArrangedSubview(TinkieRhythmSettingsVerseRow(tuneOption: $0)) }
+        let signOutButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Log out", tuneSymbolName: "rectangle.portrait.and.arrow.right"); signOutButton.addTarget(self, action: #selector(showRhythmSignOutSheet), for: .touchUpInside); signOutButton.translatesAutoresizingMaskIntoConstraints = false; settingsContentStage.addSubview(signOutButton)
+        pinRhythmSettingsScreenBeat1(glow: glow, settingsBackBeatButton: settingsBackBeatButton)
+        pinRhythmSettingsScreenBeat2(settingsBackBeatButton: settingsBackBeatButton, settingsTitleTuneLabel: settingsTitleTuneLabel, signOutButton: signOutButton)
+        putRhythmExitChoicesTogether()
+    }
 
-        let signOutButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Log out", tuneSymbolName: "rectangle.portrait.and.arrow.right")
-        signOutButton.addTarget(self, action: #selector(showRhythmSignOutSheet), for: .touchUpInside)
-        signOutButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsContentStage.addSubview(signOutButton)
-
+    private func pinRhythmSettingsScreenBeat1(glow: TinkieTopGlowView, settingsBackBeatButton: UIButton) {
         NSLayoutConstraint.activate([
             glow.topAnchor.constraint(equalTo: view.topAnchor),
             glow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             glow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             glow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.58),
-
+            
             settingsScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             settingsScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             settingsScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             settingsScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             settingsContentStage.topAnchor.constraint(equalTo: settingsScrollStage.contentLayoutGuide.topAnchor),
             settingsContentStage.leadingAnchor.constraint(equalTo: settingsScrollStage.contentLayoutGuide.leadingAnchor),
             settingsContentStage.trailingAnchor.constraint(equalTo: settingsScrollStage.contentLayoutGuide.trailingAnchor),
             settingsContentStage.bottomAnchor.constraint(equalTo: settingsScrollStage.contentLayoutGuide.bottomAnchor),
             settingsContentStage.widthAnchor.constraint(equalTo: settingsScrollStage.frameLayoutGuide.widthAnchor),
             settingsContentStage.heightAnchor.constraint(greaterThanOrEqualTo: settingsScrollStage.frameLayoutGuide.heightAnchor),
+            
+            settingsBackBeatButton.topAnchor.constraint(equalTo: settingsContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
+            settingsBackBeatButton.leadingAnchor.constraint(equalTo: settingsContentStage.leadingAnchor, constant: 24),
+            settingsBackBeatButton.widthAnchor.constraint(equalToConstant: 48),
+            settingsBackBeatButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
 
-            backButton.topAnchor.constraint(equalTo: settingsContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
-            backButton.leadingAnchor.constraint(equalTo: settingsContentStage.leadingAnchor, constant: 24),
-            backButton.widthAnchor.constraint(equalToConstant: 48),
-            backButton.heightAnchor.constraint(equalToConstant: 44),
-
-            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: settingsContentStage.centerXAnchor),
-
-            settingsOptionStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 28),
+    private func pinRhythmSettingsScreenBeat2(settingsBackBeatButton: UIButton, settingsTitleTuneLabel: UILabel, signOutButton: TinkieRhythmSettingsBeatButton) {
+        NSLayoutConstraint.activate([
+            
+            settingsTitleTuneLabel.centerYAnchor.constraint(equalTo: settingsBackBeatButton.centerYAnchor),
+            settingsTitleTuneLabel.centerXAnchor.constraint(equalTo: settingsContentStage.centerXAnchor),
+            
+            settingsOptionStack.topAnchor.constraint(equalTo: settingsTitleTuneLabel.bottomAnchor, constant: 28),
             settingsOptionStack.leadingAnchor.constraint(equalTo: settingsContentStage.leadingAnchor, constant: 24),
             settingsOptionStack.trailingAnchor.constraint(equalTo: settingsContentStage.trailingAnchor, constant: -24),
-
+            
             signOutButton.leadingAnchor.constraint(equalTo: settingsContentStage.leadingAnchor, constant: 26),
             signOutButton.trailingAnchor.constraint(equalTo: settingsContentStage.trailingAnchor, constant: -26),
             signOutButton.heightAnchor.constraint(equalToConstant: 44),
             signOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100),
             signOutButton.topAnchor.constraint(greaterThanOrEqualTo: settingsOptionStack.bottomAnchor, constant: 44)
         ])
-
-        putRhythmExitChoicesTogether()
     }
 
     private func putRhythmExitChoicesTogether() {
-        settingsVeilStage.backgroundColor = UIColor.black.withAlphaComponent(0.48)
-        settingsVeilStage.alpha = 0
-        settingsVeilStage.isHidden = true
-        settingsVeilStage.translatesAutoresizingMaskIntoConstraints = false
+        settingsVeilStage.backgroundColor = UIColor.black.withAlphaComponent(0.48); settingsVeilStage.alpha = 0; settingsVeilStage.isHidden = true; settingsVeilStage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(settingsVeilStage)
-
-        deleteAccountCard.backgroundColor = .white
-        deleteAccountCard.layer.cornerRadius = 18
-        deleteAccountCard.layer.masksToBounds = true
-        deleteAccountCard.isHidden = true
-        deleteAccountCard.translatesAutoresizingMaskIntoConstraints = false
-        settingsVeilStage.addSubview(deleteAccountCard)
-
-        let deleteTuneTitle = UILabel()
-        deleteTuneTitle.text = "Delete account"
-        deleteTuneTitle.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        deleteTuneTitle.textColor = .black
-        deleteTuneTitle.textAlignment = .center
-        deleteTuneTitle.translatesAutoresizingMaskIntoConstraints = false
-        deleteAccountCard.addSubview(deleteTuneTitle)
-
-        let deleteTuneDetail = UILabel()
-        deleteTuneDetail.text = "Deleting the account will clear the account data. Are you sure to delete?"
-        deleteTuneDetail.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        deleteTuneDetail.textColor = UIColor.black.withAlphaComponent(0.72)
-        deleteTuneDetail.textAlignment = .center
-        deleteTuneDetail.numberOfLines = 0
-        deleteTuneDetail.translatesAutoresizingMaskIntoConstraints = false
-        deleteAccountCard.addSubview(deleteTuneDetail)
-
-        let keepSingerButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Cancel", tuneSymbolName: nil)
-        keepSingerButton.addTarget(self, action: #selector(hideRhythmSettingsVeil), for: .touchUpInside)
-        keepSingerButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteAccountCard.addSubview(keepSingerButton)
-
-        let deleteSingerButton = UIButton(type: .system)
-        deleteSingerButton.setTitle("Delete", for: .normal)
-        deleteSingerButton.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal)
-        deleteSingerButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        deleteSingerButton.backgroundColor = UIColor.black.withAlphaComponent(0.04)
-        deleteSingerButton.layer.cornerRadius = 18
-        deleteSingerButton.addTarget(self, action: #selector(confirmRhythmDeleteAccount), for: .touchUpInside)
-        deleteSingerButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteAccountCard.backgroundColor = .white; deleteAccountCard.layer.cornerRadius = 18; deleteAccountCard.layer.masksToBounds = true; deleteAccountCard.isHidden = true
+        deleteAccountCard.translatesAutoresizingMaskIntoConstraints = false; settingsVeilStage.addSubview(deleteAccountCard)
+        let deleteTuneTitle = UILabel(); deleteTuneTitle.text = TinkieVerseCipherTrail.singBack("DHeYlQeTtTeM LaJcecHoduTnLtv"); deleteTuneTitle.font = UIFont.systemFont(ofSize: 17, weight: .bold); deleteTuneTitle.textColor = .black
+        deleteTuneTitle.textAlignment = .center; deleteTuneTitle.translatesAutoresizingMaskIntoConstraints = false; deleteAccountCard.addSubview(deleteTuneTitle)
+        let deleteTuneDetail = UILabel(); deleteTuneDetail.text = TinkieVerseCipherTrail.singBack("DOeBlJeVtCiCnKgG YtmhNeU MaBcscPozuAnFtb NwWinlflQ dcdlpesaJrX wtKhjen kajcWcfoSurnptC qdWaPtHaO.L jAprgef pyboYux nsguTrSeA Ttaon odPeNlHeZtLeG?g"); deleteTuneDetail.font = UIFont.systemFont(ofSize: 13, weight: .regular); deleteTuneDetail.textColor = UIColor.black.withAlphaComponent(0.72)
+        deleteTuneDetail.textAlignment = .center; deleteTuneDetail.numberOfLines = 0; deleteTuneDetail.translatesAutoresizingMaskIntoConstraints = false; deleteAccountCard.addSubview(deleteTuneDetail)
+        let keepSingerButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Cancel", tuneSymbolName: nil); keepSingerButton.addTarget(self, action: #selector(hideRhythmSettingsVeil), for: .touchUpInside); keepSingerButton.translatesAutoresizingMaskIntoConstraints = false; deleteAccountCard.addSubview(keepSingerButton)
+        let deleteSingerButton = UIButton(type: .system); deleteSingerButton.setTitle(TinkieVerseCipherTrail.singBack("DNeElZeBtCeL"), for: .normal); deleteSingerButton.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal); deleteSingerButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        deleteSingerButton.backgroundColor = UIColor.black.withAlphaComponent(0.04); deleteSingerButton.layer.cornerRadius = 18; deleteSingerButton.addTarget(self, action: #selector(confirmRhythmDeleteAccount), for: .touchUpInside); deleteSingerButton.translatesAutoresizingMaskIntoConstraints = false
         deleteAccountCard.addSubview(deleteSingerButton)
-
-        signOutSheetStage.backgroundColor = .white
-        signOutSheetStage.layer.cornerRadius = 20
-        signOutSheetStage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        signOutSheetStage.layer.masksToBounds = true
-        signOutSheetStage.isHidden = true
-        signOutSheetStage.translatesAutoresizingMaskIntoConstraints = false
-        settingsVeilStage.addSubview(signOutSheetStage)
-
-        let signOutTuneButton = UIButton(type: .system)
-        signOutTuneButton.setTitle("Log out", for: .normal)
-        signOutTuneButton.setTitleColor(UIColor.black.withAlphaComponent(0.46), for: .normal)
-        signOutTuneButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        signOutTuneButton.backgroundColor = .white
-        signOutTuneButton.layer.cornerRadius = 18
-        signOutTuneButton.layer.borderWidth = 1
-        signOutTuneButton.layer.borderColor = UIColor.black.withAlphaComponent(0.16).cgColor
-        signOutTuneButton.addTarget(self, action: #selector(confirmRhythmSignOut), for: .touchUpInside)
-        signOutTuneButton.translatesAutoresizingMaskIntoConstraints = false
-        signOutSheetStage.addSubview(signOutTuneButton)
-
-        let stayTuneButton = UIButton(type: .system)
-        stayTuneButton.setTitle("Cancel", for: .normal)
-        stayTuneButton.setTitleColor(.white, for: .normal)
-        stayTuneButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        stayTuneButton.backgroundColor = UIColor(red: 0.02, green: 0.05, blue: 0.04, alpha: 1)
-        stayTuneButton.layer.cornerRadius = 18
-        stayTuneButton.addTarget(self, action: #selector(hideRhythmSettingsVeil), for: .touchUpInside)
-        stayTuneButton.translatesAutoresizingMaskIntoConstraints = false
+        signOutSheetStage.backgroundColor = .white; signOutSheetStage.layer.cornerRadius = 20; signOutSheetStage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]; signOutSheetStage.layer.masksToBounds = true
+        signOutSheetStage.isHidden = true; signOutSheetStage.translatesAutoresizingMaskIntoConstraints = false; settingsVeilStage.addSubview(signOutSheetStage)
+        let signOutTuneButton = UIButton(type: .system); signOutTuneButton.setTitle(TinkieVerseCipherTrail.singBack("LFoOgs rohuRtH"), for: .normal); signOutTuneButton.setTitleColor(UIColor.black.withAlphaComponent(0.46), for: .normal); signOutTuneButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        signOutTuneButton.backgroundColor = .white; signOutTuneButton.layer.cornerRadius = 18; signOutTuneButton.layer.borderWidth = 1; signOutTuneButton.layer.borderColor = UIColor.black.withAlphaComponent(0.16).cgColor
+        signOutTuneButton.addTarget(self, action: #selector(confirmRhythmSignOut), for: .touchUpInside); signOutTuneButton.translatesAutoresizingMaskIntoConstraints = false; signOutSheetStage.addSubview(signOutTuneButton)
+        let stayTuneButton = UIButton(type: .system); stayTuneButton.setTitle(TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), for: .normal); stayTuneButton.setTitleColor(.white, for: .normal); stayTuneButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        stayTuneButton.backgroundColor = UIColor(red: 0.02, green: 0.05, blue: 0.04, alpha: 1); stayTuneButton.layer.cornerRadius = 18; stayTuneButton.addTarget(self, action: #selector(hideRhythmSettingsVeil), for: .touchUpInside); stayTuneButton.translatesAutoresizingMaskIntoConstraints = false
         signOutSheetStage.addSubview(stayTuneButton)
+        pinRhythmExitChoicesBeat3(deleteTuneTitle: deleteTuneTitle, deleteTuneDetail: deleteTuneDetail, keepSingerButton: keepSingerButton)
+        pinRhythmExitChoicesBeat4(keepSingerButton: keepSingerButton, deleteSingerButton: deleteSingerButton, signOutTuneButton: signOutTuneButton, stayTuneButton: stayTuneButton)
+    }
 
+    private func pinRhythmExitChoicesBeat3(deleteTuneTitle: UILabel, deleteTuneDetail: UILabel, keepSingerButton: TinkieRhythmSettingsBeatButton) {
         NSLayoutConstraint.activate([
             settingsVeilStage.topAnchor.constraint(equalTo: view.topAnchor),
             settingsVeilStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             settingsVeilStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             settingsVeilStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             deleteAccountCard.centerXAnchor.constraint(equalTo: settingsVeilStage.centerXAnchor),
             deleteAccountCard.centerYAnchor.constraint(equalTo: settingsVeilStage.centerYAnchor, constant: -18),
             deleteAccountCard.leadingAnchor.constraint(greaterThanOrEqualTo: settingsVeilStage.leadingAnchor, constant: 32),
             deleteAccountCard.trailingAnchor.constraint(lessThanOrEqualTo: settingsVeilStage.trailingAnchor, constant: -32),
             deleteAccountCard.widthAnchor.constraint(lessThanOrEqualToConstant: 330),
-
+            
             deleteTuneTitle.topAnchor.constraint(equalTo: deleteAccountCard.topAnchor, constant: 24),
             deleteTuneTitle.leadingAnchor.constraint(equalTo: deleteAccountCard.leadingAnchor, constant: 24),
             deleteTuneTitle.trailingAnchor.constraint(equalTo: deleteAccountCard.trailingAnchor, constant: -24),
-
+            
             deleteTuneDetail.topAnchor.constraint(equalTo: deleteTuneTitle.bottomAnchor, constant: 10),
             deleteTuneDetail.leadingAnchor.constraint(equalTo: deleteAccountCard.leadingAnchor, constant: 32),
             deleteTuneDetail.trailingAnchor.constraint(equalTo: deleteAccountCard.trailingAnchor, constant: -32),
-
+            
             keepSingerButton.topAnchor.constraint(equalTo: deleteTuneDetail.bottomAnchor, constant: 18),
             keepSingerButton.leadingAnchor.constraint(equalTo: deleteAccountCard.leadingAnchor, constant: 24),
-            keepSingerButton.trailingAnchor.constraint(equalTo: deleteAccountCard.trailingAnchor, constant: -24),
-            keepSingerButton.heightAnchor.constraint(equalToConstant: 38),
+            keepSingerButton.trailingAnchor.constraint(equalTo: deleteAccountCard.trailingAnchor, constant: -24)
+        ])
+    }
 
+    private func pinRhythmExitChoicesBeat4(keepSingerButton: TinkieRhythmSettingsBeatButton, deleteSingerButton: UIButton, signOutTuneButton: UIButton, stayTuneButton: UIButton) {
+        NSLayoutConstraint.activate([
+            keepSingerButton.heightAnchor.constraint(equalToConstant: 38),
+            
             deleteSingerButton.topAnchor.constraint(equalTo: keepSingerButton.bottomAnchor, constant: 10),
             deleteSingerButton.leadingAnchor.constraint(equalTo: deleteAccountCard.leadingAnchor, constant: 24),
             deleteSingerButton.trailingAnchor.constraint(equalTo: deleteAccountCard.trailingAnchor, constant: -24),
             deleteSingerButton.heightAnchor.constraint(equalToConstant: 38),
             deleteSingerButton.bottomAnchor.constraint(equalTo: deleteAccountCard.bottomAnchor, constant: -22),
-
+            
             signOutSheetStage.leadingAnchor.constraint(equalTo: settingsVeilStage.leadingAnchor),
             signOutSheetStage.trailingAnchor.constraint(equalTo: settingsVeilStage.trailingAnchor),
             signOutSheetStage.bottomAnchor.constraint(equalTo: settingsVeilStage.bottomAnchor),
-
+            
             signOutTuneButton.topAnchor.constraint(equalTo: signOutSheetStage.topAnchor, constant: 18),
             signOutTuneButton.leadingAnchor.constraint(equalTo: signOutSheetStage.leadingAnchor, constant: 24),
             signOutTuneButton.trailingAnchor.constraint(equalTo: signOutSheetStage.trailingAnchor, constant: -24),
             signOutTuneButton.heightAnchor.constraint(equalToConstant: 40),
-
+            
             stayTuneButton.topAnchor.constraint(equalTo: signOutTuneButton.bottomAnchor, constant: 10),
             stayTuneButton.leadingAnchor.constraint(equalTo: signOutSheetStage.leadingAnchor, constant: 24),
             stayTuneButton.trailingAnchor.constraint(equalTo: signOutSheetStage.trailingAnchor, constant: -24),
@@ -278,11 +211,11 @@ final class TinkieRhythmSettingsViewController: UIViewController {
     }
 
     private func openTermsSongPaper() {
-        navigationController?.pushViewController(TinkieMelodyPolicyPaperViewController(paperTitle: "Terms of Use", paperBody: TinkieMelodyRulebookVerse.termsTuneBody), animated: true)
+        navigationController?.pushViewController(TinkieMelodyPolicyPaperViewController(paperTitle: TinkieVerseCipherTrail.singBack("TzexrkmvsH VoOfA rUgsWen"), paperBody: TinkieMelodyRulebookVerse.termsTuneBody), animated: true)
     }
 
     private func openPrivacySongPaper() {
-        navigationController?.pushViewController(TinkieMelodyPolicyPaperViewController(paperTitle: "Privacy Policy", paperBody: TinkieMelodyRulebookVerse.privacyTuneBody), animated: true)
+        navigationController?.pushViewController(TinkieMelodyPolicyPaperViewController(paperTitle: TinkieVerseCipherTrail.singBack("PMrxivvaascCyy yPPoZlNiJcxyT"), paperBody: TinkieMelodyRulebookVerse.privacyTuneBody), animated: true)
     }
 
     private func openBlockedSingerCircle() {
@@ -323,7 +256,7 @@ private final class TinkieRhythmSettingsVerseRow: UIControl {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
     private func putSettingsVerseMarksTogether() {
@@ -397,7 +330,7 @@ final class TinkieRhythmSettingsBeatButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
     override func layoutSubviews() {

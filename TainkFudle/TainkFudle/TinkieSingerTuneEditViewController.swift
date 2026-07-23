@@ -3,7 +3,7 @@ import UIKit
 final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onSingerTuneSealed: (() -> Void)?
 
-    private let singerSnapshot: TinkieSingerSnapshot
+    private let singerSnapshot: TinkieSingerStageSnapshot
     private let editScrollStage = UIScrollView()
     private let editContentStage = UIView()
     private let heroPortraitBackdropView = UIImageView()
@@ -13,14 +13,14 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     private var confirmBottomTether: NSLayoutConstraint?
     private var chosenPortraitPath: String?
 
-    init(singerSnapshot: TinkieSingerSnapshot) {
+    init(singerSnapshot: TinkieSingerStageSnapshot) {
         self.singerSnapshot = singerSnapshot
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iRnViEtB(scroBdBePrA:j)s dhJaPsm ynHoZtJ xbPeIecng MiYmapulHeXmdeHnNtnexdt"))
     }
 
     deinit {
@@ -35,52 +35,19 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     }
 
     private func putSingerTuneEditStageTogether() {
-        view.backgroundColor = .white
-        editScrollStage.contentInsetAdjustmentBehavior = .never
-        editScrollStage.translatesAutoresizingMaskIntoConstraints = false
-        editScrollStage.alwaysBounceVertical = true
-        editScrollStage.keyboardDismissMode = .interactive
-        view.addSubview(editScrollStage)
-        self.avatarPortraitView.setBackgroundImage(UIImage(named: "takeimageimge"), for: .normal)
-        editContentStage.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white; editScrollStage.contentInsetAdjustmentBehavior = .never; editScrollStage.translatesAutoresizingMaskIntoConstraints = false; editScrollStage.alwaysBounceVertical = true
+        editScrollStage.keyboardDismissMode = .interactive; view.addSubview(editScrollStage); self.avatarPortraitView.setBackgroundImage(UIImage(named: "takeimageimge"), for: .normal); editContentStage.translatesAutoresizingMaskIntoConstraints = false
         editScrollStage.addSubview(editContentStage)
-
-        chosenPortraitPath = singerSnapshot.heroImagePath
-
-        heroPortraitBackdropView.image = singerPortraitArtwork()
-        heroPortraitBackdropView.contentMode = .scaleAspectFill
-        heroPortraitBackdropView.clipsToBounds = true
-        heroPortraitBackdropView.translatesAutoresizingMaskIntoConstraints = false
+        chosenPortraitPath = singerSnapshot.portraitLocalPath
+        heroPortraitBackdropView.image = singerPortraitArtwork(); heroPortraitBackdropView.contentMode = .scaleAspectFill; heroPortraitBackdropView.clipsToBounds = true; heroPortraitBackdropView.translatesAutoresizingMaskIntoConstraints = false
         editContentStage.addSubview(heroPortraitBackdropView)
-
-        let shadeView = TinkieBottomShadeView()
-        shadeView.translatesAutoresizingMaskIntoConstraints = false
-        heroPortraitBackdropView.addSubview(shadeView)
-
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.contentHorizontalAlignment = .leading
-        backButton.addTarget(self, action: #selector(closeRhythmSettingsTapped), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        editContentStage.addSubview(backButton)
-
-        let titleLabel = UILabel()
-        titleLabel.text = "Edit profile"
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        titleLabel.textColor = .white
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        editContentStage.addSubview(titleLabel)
-
-        let editTuneCard = UIView()
-        editTuneCard.backgroundColor = .white
-        editTuneCard.layer.cornerRadius = 24
-        editTuneCard.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        editTuneCard.layer.masksToBounds = true
-        editTuneCard.translatesAutoresizingMaskIntoConstraints = false
-        editContentStage.addSubview(editTuneCard)
-
+        let shadeView = TinkieBottomShadeView(); shadeView.translatesAutoresizingMaskIntoConstraints = false; heroPortraitBackdropView.addSubview(shadeView)
+        let editBackBeatButton = UIButton(type: .system); editBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); editBackBeatButton.tintColor = .black; editBackBeatButton.contentHorizontalAlignment = .leading
+        editBackBeatButton.addTarget(self, action: #selector(closeRhythmSettingsTapped), for: .touchUpInside); editBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; editContentStage.addSubview(editBackBeatButton)
+        let editTitleTuneLabel = UILabel(); editTitleTuneLabel.text = TinkieVerseCipherTrail.singBack("ENdFiWtQ ypKrbodfhiqlgec"); editTitleTuneLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold); editTitleTuneLabel.textColor = .white
+        editTitleTuneLabel.textAlignment = .center; editTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; editContentStage.addSubview(editTitleTuneLabel)
+        let editTuneCard = UIView(); editTuneCard.backgroundColor = .white; editTuneCard.layer.cornerRadius = 24; editTuneCard.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        editTuneCard.layer.masksToBounds = true; editTuneCard.translatesAutoresizingMaskIntoConstraints = false; editContentStage.addSubview(editTuneCard)
 //        avatarPortraitView.image = singerPortraitArtwork()
 //        avatarPortraitView.contentMode = .scaleAspectFill
 //        avatarPortraitView.layer.cornerRadius = 38
@@ -91,106 +58,105 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
 //        editTuneCard.addSubview(avatarPortraitView)
         editContentStage.addSubview(avatarPortraitView)
 //        let portraitButton = UIButton(type: .custom)
-        avatarPortraitView.accessibilityLabel = "Update Tinkie profile portrait"
-        avatarPortraitView.addTarget(self, action: #selector(portraitTuneBeatTapped), for: .touchUpInside)
-        avatarPortraitView.translatesAutoresizingMaskIntoConstraints = false
+        avatarPortraitView.accessibilityLabel = TinkieVerseCipherTrail.singBack("ULpXdzawtbeq aTYiPnEkAileM LptrXoEfTiKlYeN WpgowrgtZrsabiCtX"); avatarPortraitView.addTarget(self, action: #selector(portraitTuneBeatTapped), for: .touchUpInside); avatarPortraitView.translatesAutoresizingMaskIntoConstraints = false
 //        editTuneCard.addSubview(portraitButton)
+        let nameLabel = makeSingerTuneFieldMark(TinkieVerseCipherTrail.singBack("NwidcJkonmabmZev")); editTuneCard.addSubview(nameLabel); tuneSingerEditField(singerNameTuneBox, text: singerSnapshot.singerAlias, placeholder: TinkieVerseCipherTrail.singBack("MyiJkeoX")); editTuneCard.addSubview(singerNameTuneBox)
+        let signatureLabel = makeSingerTuneFieldMark(TinkieVerseCipherTrail.singBack("CShYaPrFaOcxtxekrg NBjigoY")); editTuneCard.addSubview(signatureLabel); tuneSingerEditField(signatureTuneField, text: singerSnapshot.melodyBio, placeholder: TinkieVerseCipherTrail.singBack("Whrwirtnex had obIrsideZfY vbCaYcckFsptkovrsyy yojrb KcKhMaRrOaEcgtjedro JiNnFtbrFoP.X")); editTuneCard.addSubview(signatureTuneField)
+        let editConfirmBeatButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Confirm", tuneSymbolName: nil); editConfirmBeatButton.addTarget(self, action: #selector(confirmSingerTuneBeat), for: .touchUpInside); editConfirmBeatButton.translatesAutoresizingMaskIntoConstraints = false; editTuneCard.addSubview(editConfirmBeatButton)
+        pinSingerTuneEditStageBeat1(shadeView: shadeView); pinSingerTuneEditStageBeat2(editBackBeatButton: editBackBeatButton, editTitleTuneLabel: editTitleTuneLabel, editTuneCard: editTuneCard)
+        pinSingerTuneEditStageBeat3(editTuneCard: editTuneCard, nameLabel: nameLabel, signatureLabel: signatureLabel, editConfirmBeatButton: editConfirmBeatButton)
+        confirmBottomTether = editConfirmBeatButton.bottomAnchor.constraint(equalTo: editTuneCard.safeAreaLayoutGuide.bottomAnchor, constant: -40); confirmBottomTether?.isActive = true
+    }
 
-        let nameLabel = makeSingerTuneFieldMark("Nickname")
-        editTuneCard.addSubview(nameLabel)
-        tuneSingerEditField(singerNameTuneBox, text: singerSnapshot.nickname, placeholder: "Miko")
-        editTuneCard.addSubview(singerNameTuneBox)
-
-        let signatureLabel = makeSingerTuneFieldMark("Character Bio")
-        editTuneCard.addSubview(signatureLabel)
-        tuneSingerEditField(signatureTuneField, text: singerSnapshot.signature, placeholder: "Write a brief backstory or character intro.")
-        editTuneCard.addSubview(signatureTuneField)
-
-        let confirmButton = TinkieRhythmSettingsBeatButton(tuneTitle: "Confirm", tuneSymbolName: nil)
-        confirmButton.addTarget(self, action: #selector(confirmSingerTuneBeat), for: .touchUpInside)
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        editTuneCard.addSubview(confirmButton)
-
+    private func pinSingerTuneEditStageBeat1(shadeView: TinkieBottomShadeView) {
         NSLayoutConstraint.activate([
             editScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             editScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             editScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             editScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             editContentStage.topAnchor.constraint(equalTo: editScrollStage.contentLayoutGuide.topAnchor),
             editContentStage.leadingAnchor.constraint(equalTo: editScrollStage.contentLayoutGuide.leadingAnchor),
             editContentStage.trailingAnchor.constraint(equalTo: editScrollStage.contentLayoutGuide.trailingAnchor),
             editContentStage.bottomAnchor.constraint(equalTo: editScrollStage.contentLayoutGuide.bottomAnchor),
             editContentStage.widthAnchor.constraint(equalTo: editScrollStage.frameLayoutGuide.widthAnchor),
             editContentStage.heightAnchor.constraint(greaterThanOrEqualTo: editScrollStage.frameLayoutGuide.heightAnchor),
-
+            
             heroPortraitBackdropView.topAnchor.constraint(equalTo: editContentStage.topAnchor),
             heroPortraitBackdropView.leadingAnchor.constraint(equalTo: editContentStage.leadingAnchor),
             heroPortraitBackdropView.trailingAnchor.constraint(equalTo: editContentStage.trailingAnchor),
             heroPortraitBackdropView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.39),
-
+            
             shadeView.leadingAnchor.constraint(equalTo: heroPortraitBackdropView.leadingAnchor),
             shadeView.trailingAnchor.constraint(equalTo: heroPortraitBackdropView.trailingAnchor),
             shadeView.bottomAnchor.constraint(equalTo: heroPortraitBackdropView.bottomAnchor),
-            shadeView.heightAnchor.constraint(equalTo: heroPortraitBackdropView.heightAnchor, multiplier: 0.52),
+            shadeView.heightAnchor.constraint(equalTo: heroPortraitBackdropView.heightAnchor, multiplier: 0.52)
+        ])
+    }
 
-            backButton.topAnchor.constraint(equalTo: editContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
-            backButton.leadingAnchor.constraint(equalTo: editContentStage.leadingAnchor, constant: 24),
-            backButton.widthAnchor.constraint(equalToConstant: 48),
-            backButton.heightAnchor.constraint(equalToConstant: 44),
-
-            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: editContentStage.centerXAnchor),
-
+    private func pinSingerTuneEditStageBeat2(editBackBeatButton: UIButton, editTitleTuneLabel: UILabel, editTuneCard: UIView) {
+        NSLayoutConstraint.activate([
+            
+            editBackBeatButton.topAnchor.constraint(equalTo: editContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
+            editBackBeatButton.leadingAnchor.constraint(equalTo: editContentStage.leadingAnchor, constant: 24),
+            editBackBeatButton.widthAnchor.constraint(equalToConstant: 48),
+            editBackBeatButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            editTitleTuneLabel.centerYAnchor.constraint(equalTo: editBackBeatButton.centerYAnchor),
+            editTitleTuneLabel.centerXAnchor.constraint(equalTo: editContentStage.centerXAnchor),
+            
             editTuneCard.topAnchor.constraint(equalTo: heroPortraitBackdropView.bottomAnchor, constant: -24),
             editTuneCard.leadingAnchor.constraint(equalTo: editContentStage.leadingAnchor),
             editTuneCard.trailingAnchor.constraint(equalTo: editContentStage.trailingAnchor),
             editTuneCard.bottomAnchor.constraint(equalTo: editContentStage.bottomAnchor),
-
+            
             avatarPortraitView.centerXAnchor.constraint(equalTo: editTuneCard.centerXAnchor),
             avatarPortraitView.topAnchor.constraint(equalTo: editTuneCard.topAnchor, constant: -40),
             avatarPortraitView.widthAnchor.constraint(equalToConstant: 66),
             avatarPortraitView.heightAnchor.constraint(equalToConstant: 34),
+            
+            //            portraitButton.centerXAnchor.constraint(equalTo: avatarPortraitView.centerXAnchor),
+            //            portraitButton.centerYAnchor.constraint(equalTo: avatarPortraitView.centerYAnchor),
+            //            portraitButton.widthAnchor.constraint(equalToConstant: 92),
+            //            portraitButton.heightAnchor.constraint(equalToConstant: 92)
+        ])
+    }
 
-//            portraitButton.centerXAnchor.constraint(equalTo: avatarPortraitView.centerXAnchor),
-//            portraitButton.centerYAnchor.constraint(equalTo: avatarPortraitView.centerYAnchor),
-//            portraitButton.widthAnchor.constraint(equalToConstant: 92),
-//            portraitButton.heightAnchor.constraint(equalToConstant: 92),
-
+    private func pinSingerTuneEditStageBeat3(editTuneCard: UIView, nameLabel: UIView, signatureLabel: UIView, editConfirmBeatButton: TinkieRhythmSettingsBeatButton) {
+        NSLayoutConstraint.activate([
+            
             nameLabel.topAnchor.constraint(equalTo: avatarPortraitView.bottomAnchor, constant: 24),
             nameLabel.leadingAnchor.constraint(equalTo: editTuneCard.leadingAnchor, constant: 26),
             nameLabel.trailingAnchor.constraint(equalTo: editTuneCard.trailingAnchor, constant: -26),
-
+            
             singerNameTuneBox.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
             singerNameTuneBox.leadingAnchor.constraint(equalTo: editTuneCard.leadingAnchor, constant: 26),
             singerNameTuneBox.trailingAnchor.constraint(equalTo: editTuneCard.trailingAnchor, constant: -26),
             singerNameTuneBox.heightAnchor.constraint(equalToConstant: 48),
-
+            
             signatureLabel.topAnchor.constraint(equalTo: singerNameTuneBox.bottomAnchor, constant: 22),
             signatureLabel.leadingAnchor.constraint(equalTo: singerNameTuneBox.leadingAnchor),
             signatureLabel.trailingAnchor.constraint(equalTo: singerNameTuneBox.trailingAnchor),
-
+            
             signatureTuneField.topAnchor.constraint(equalTo: signatureLabel.bottomAnchor, constant: 10),
             signatureTuneField.leadingAnchor.constraint(equalTo: singerNameTuneBox.leadingAnchor),
             signatureTuneField.trailingAnchor.constraint(equalTo: singerNameTuneBox.trailingAnchor),
             signatureTuneField.heightAnchor.constraint(equalToConstant: 48),
-
-            confirmButton.leadingAnchor.constraint(equalTo: editTuneCard.leadingAnchor, constant: 26),
-            confirmButton.trailingAnchor.constraint(equalTo: editTuneCard.trailingAnchor, constant: -26),
-            confirmButton.heightAnchor.constraint(equalToConstant: 46),
-            confirmButton.topAnchor.constraint(greaterThanOrEqualTo: signatureTuneField.bottomAnchor, constant: 52)
+            
+            editConfirmBeatButton.leadingAnchor.constraint(equalTo: editTuneCard.leadingAnchor, constant: 26),
+            editConfirmBeatButton.trailingAnchor.constraint(equalTo: editTuneCard.trailingAnchor, constant: -26),
+            editConfirmBeatButton.heightAnchor.constraint(equalToConstant: 46),
+            editConfirmBeatButton.topAnchor.constraint(greaterThanOrEqualTo: signatureTuneField.bottomAnchor, constant: 52)
         ])
-        confirmBottomTether = confirmButton.bottomAnchor.constraint(equalTo: editTuneCard.safeAreaLayoutGuide.bottomAnchor, constant: -40)
-        confirmBottomTether?.isActive = true
     }
 
     private func makeSingerTuneFieldMark(_ text: String) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.textColor = .black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        let fieldTuneMarkLabel = UILabel()
+        fieldTuneMarkLabel.text = text
+        fieldTuneMarkLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        fieldTuneMarkLabel.textColor = .black
+        fieldTuneMarkLabel.translatesAutoresizingMaskIntoConstraints = false
+        return fieldTuneMarkLabel
     }
 
     private func tuneSingerEditField(_ field: UITextField, text: String, placeholder: String) {
@@ -209,10 +175,10 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     }
 
     private func singerPortraitArtwork() -> UIImage? {
-        if let path = singerSnapshot.heroImagePath, let image = UIImage(contentsOfFile: path) {
+        if let path = singerSnapshot.portraitLocalPath, let image = UIImage(contentsOfFile: path) {
             return image
         }
-        return UIImage(named: singerSnapshot.heroImageName)
+        return UIImage(named: singerSnapshot.portraitAssetName)
     }
 
     private func listenForSingerEditKeyboard() {
@@ -224,8 +190,8 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     }
 
     @objc private func confirmSingerTuneBeat() {
-        guard TinkieSingerStageScorebook.retuneCurrentSinger(nickname: singerNameTuneBox.text ?? "", signature: signatureTuneField.text ?? "", heroImagePath: chosenPortraitPath) else {
-            tinkieShowTuneNotice(title: "Tinkie", detail: "Please enter a nickname.")
+        guard TinkieSingerStageScorebook.retuneCurrentSinger(singerAlias: singerNameTuneBox.text ?? "", melodyBio: signatureTuneField.text ?? "", portraitLocalPath: chosenPortraitPath) else {
+            tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: TinkieVerseCipherTrail.singBack("PllReIagsZej sednttNeXrK nav anRiPcgkAnBaCmkeP.T"))
             return
         }
         onSingerTuneSealed?()
@@ -237,16 +203,16 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     }
 
     @objc private func portraitTuneBeatTapped() {
-        let sheet = UIAlertController(title: "Profile Portrait", message: "Refresh your Tinkie stage look.", preferredStyle: .actionSheet)
+        let sheet = UIAlertController(title: TinkieVerseCipherTrail.singBack("PKroozfciplveq aPZoJrUtlrZaCihto"), message: TinkieVerseCipherTrail.singBack("RMeUfKrhedsPhP rynoMujrv RTjibndkxiTes esctiamgHen klMoHowkO.N"), preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            sheet.addAction(UIAlertAction(title: "Take Photo", style: .default) { [weak self] _ in
+            sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("TyarkCeq bPWhdobtaon"), style: .default) { [weak self] _ in
                 self?.openPortraitTuneSource(source: .camera)
             })
         }
-        sheet.addAction(UIAlertAction(title: "Choose From Library", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CshionoNsveP HFdrHoBmp kLCiIbDrgaprsyq"), style: .default) { [weak self] _ in
             self?.openPortraitTuneSource(source: .photoLibrary)
         })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
         sheet.popoverPresentationController?.sourceView = avatarPortraitView
         sheet.popoverPresentationController?.sourceRect = avatarPortraitView.bounds
         present(sheet, animated: true)

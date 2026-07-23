@@ -43,7 +43,7 @@ final class TinkieRhythmTabButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("irnlinta(YcBobdbeprp:D)Y IhfazsC Zndovtf XbzeieKnK xiqmJpUldejmNednttNeXdT"))
     }
 
     override var isSelected: Bool {
@@ -92,7 +92,7 @@ final class TinkieTopGlowView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("irnlinta(YcBobdbeprp:D)Y IhfazsC Zndovtf XbzeieKnK xiqmJpUldejmNednttNeXdT"))
     }
 }
 
@@ -112,7 +112,7 @@ final class TinkieBottomShadeView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -135,7 +135,7 @@ final class TinkieTuneRoundButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -157,7 +157,7 @@ final class TinkieCapsuleButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -183,7 +183,7 @@ final class TinkieTuneArtworkButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 
     override var intrinsicContentSize: CGSize {
@@ -200,7 +200,7 @@ final class TinkieAssetBadgeView: UIImageView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -218,7 +218,7 @@ final class TinkiePillLabel: UILabel {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 
     override var intrinsicContentSize: CGSize {
@@ -228,7 +228,7 @@ final class TinkiePillLabel: UILabel {
 }
 
 final class TinkieBadgeLabel: UIView {
-    private let label = UILabel()
+    private let badgeTuneLabel = UILabel()
 
     init(text: String) {
         super.init(frame: .zero)
@@ -238,21 +238,21 @@ final class TinkieBadgeLabel: UIView {
         layer.borderWidth = 2
         transform = CGAffineTransform(rotationAngle: -0.08)
 
-        label.text = text
-        label.textColor = .black
-        label.font = UIFont.italicSystemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(label)
+        badgeTuneLabel.text = text
+        badgeTuneLabel.textColor = .black
+        badgeTuneLabel.font = UIFont.italicSystemFont(ofSize: 15)
+        badgeTuneLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(badgeTuneLabel)
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 3),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3)
+            badgeTuneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 3),
+            badgeTuneLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            badgeTuneLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            badgeTuneLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3)
         ])
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -273,7 +273,7 @@ final class TinkieAvatarView: UIImageView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -291,7 +291,7 @@ final class TinkiePlayMarkView: UIImageView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 
     func setPlaying(_ playing: Bool) {
@@ -310,7 +310,7 @@ extension UIViewController {
     func tinkieShowTuneNotice(
         title: String,
         detail: String,
-        primaryTitle: String = "OK",
+        primaryTitle: String = TinkieVerseCipherTrail.singBack("OsKX"),
         secondaryTitle: String? = nil,
         onPrimary: (() -> Void)? = nil,
         onSecondary: (() -> Void)? = nil
@@ -339,9 +339,9 @@ final class TinkieTuneNoticeViewController: UIViewController {
     private let dimView = UIView()
     private let panelView = UIView()
     private let entryTuneMarkView = UIImageView(image: UIImage(named: "tinkie_profile_notice_bell"))
-    private let titleLabel = UILabel()
-    private let detailLabel = UILabel()
-    private let actionStack = UIStackView()
+    private let noticeTitleTuneLabel = UILabel()
+    private let noticeDetailLyricLabel = UILabel()
+    private let noticeActionBeatStack = UIStackView()
 
     init(title: String, detail: String, primaryTitle: String, secondaryTitle: String?) {
         self.titleText = title
@@ -352,7 +352,7 @@ final class TinkieTuneNoticeViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 
     override func viewDidLoad() {
@@ -362,93 +362,62 @@ final class TinkieTuneNoticeViewController: UIViewController {
 
     private func putNoticeCardTogether() {
         view.backgroundColor = .clear
-
-        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.52)
-        dimView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(dimView)
-
-        panelView.backgroundColor = .white
-        panelView.layer.cornerRadius = 24
-        panelView.layer.masksToBounds = true
-        panelView.alpha = 1
-        panelView.transform = .identity
-        panelView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(panelView)
-
-        let glowView = TinkieNoticeGlowView()
-        glowView.translatesAutoresizingMaskIntoConstraints = false
-        panelView.addSubview(glowView)
-
-        entryTuneMarkView.contentMode = .scaleAspectFit
-        entryTuneMarkView.translatesAutoresizingMaskIntoConstraints = false
-        panelView.addSubview(entryTuneMarkView)
-
-        titleLabel.text = titleText
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .black
-        titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .black)
-        titleLabel.numberOfLines = 2
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        panelView.addSubview(titleLabel)
-
-        detailLabel.text = detailText
-        detailLabel.textAlignment = .center
-        detailLabel.textColor = UIColor.black.withAlphaComponent(0.68)
-        detailLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        detailLabel.numberOfLines = 0
-        detailLabel.translatesAutoresizingMaskIntoConstraints = false
-        panelView.addSubview(detailLabel)
-
-        actionStack.axis = .vertical
-        actionStack.spacing = 10
-        actionStack.translatesAutoresizingMaskIntoConstraints = false
-        panelView.addSubview(actionStack)
-
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.52); dimView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(dimView)
+        panelView.backgroundColor = .white; panelView.layer.cornerRadius = 24; panelView.layer.masksToBounds = true; panelView.alpha = 1
+        panelView.transform = .identity; panelView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panelView)
+        let glowView = TinkieNoticeGlowView(); glowView.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(glowView)
+        entryTuneMarkView.contentMode = .scaleAspectFit; entryTuneMarkView.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(entryTuneMarkView)
+        noticeTitleTuneLabel.text = titleText; noticeTitleTuneLabel.textAlignment = .center; noticeTitleTuneLabel.textColor = .black; noticeTitleTuneLabel.font = UIFont.systemFont(ofSize: 19, weight: .black)
+        noticeTitleTuneLabel.numberOfLines = 2; noticeTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeTitleTuneLabel)
+        noticeDetailLyricLabel.text = detailText; noticeDetailLyricLabel.textAlignment = .center; noticeDetailLyricLabel.textColor = UIColor.black.withAlphaComponent(0.68); noticeDetailLyricLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        noticeDetailLyricLabel.numberOfLines = 0; noticeDetailLyricLabel.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeDetailLyricLabel)
+        noticeActionBeatStack.axis = .vertical; noticeActionBeatStack.spacing = 10; noticeActionBeatStack.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeActionBeatStack)
         if let secondaryText {
-            let secondaryButton = TinkieNoticePlainButton(title: secondaryText)
-            secondaryButton.addTarget(self, action: #selector(secondaryTapped), for: .touchUpInside)
-            actionStack.addArrangedSubview(secondaryButton)
-            secondaryButton.heightAnchor.constraint(equalToConstant: 46).isActive = true
+            let secondaryButton = TinkieNoticePlainButton(title: secondaryText); secondaryButton.addTarget(self, action: #selector(secondaryTapped), for: .touchUpInside); noticeActionBeatStack.addArrangedSubview(secondaryButton); secondaryButton.heightAnchor.constraint(equalToConstant: 46).isActive = true
         }
+        let primaryButton = TinkieNoticeGradientButton(title: primaryText); primaryButton.addTarget(self, action: #selector(primaryTapped), for: .touchUpInside); noticeActionBeatStack.addArrangedSubview(primaryButton); primaryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        pinNoticeCardBeat1(glowView: glowView); pinNoticeCardBeat2()
+    }
 
-        let primaryButton = TinkieNoticeGradientButton(title: primaryText)
-        primaryButton.addTarget(self, action: #selector(primaryTapped), for: .touchUpInside)
-        actionStack.addArrangedSubview(primaryButton)
-        primaryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
-
+    private func pinNoticeCardBeat1(glowView: TinkieNoticeGlowView) {
         NSLayoutConstraint.activate([
             dimView.topAnchor.constraint(equalTo: view.topAnchor),
             dimView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dimView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             dimView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             panelView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
             panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34),
             panelView.widthAnchor.constraint(lessThanOrEqualToConstant: 340),
-
+            
             glowView.topAnchor.constraint(equalTo: panelView.topAnchor),
             glowView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor),
             glowView.trailingAnchor.constraint(equalTo: panelView.trailingAnchor),
             glowView.heightAnchor.constraint(equalToConstant: 112),
-
+            
             entryTuneMarkView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 18),
             entryTuneMarkView.centerXAnchor.constraint(equalTo: panelView.centerXAnchor),
             entryTuneMarkView.widthAnchor.constraint(equalToConstant: 74),
             entryTuneMarkView.heightAnchor.constraint(equalToConstant: 74),
+            
+            noticeTitleTuneLabel.topAnchor.constraint(equalTo: entryTuneMarkView.bottomAnchor, constant: 12),
+            noticeTitleTuneLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 24)
+        ])
+    }
 
-            titleLabel.topAnchor.constraint(equalTo: entryTuneMarkView.bottomAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -24),
-
-            detailLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            detailLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 26),
-            detailLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -26),
-
-            actionStack.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 24),
-            actionStack.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 28),
-            actionStack.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -28),
-            actionStack.bottomAnchor.constraint(equalTo: panelView.bottomAnchor, constant: -26)
+    private func pinNoticeCardBeat2() {
+        NSLayoutConstraint.activate([
+            noticeTitleTuneLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -24),
+            
+            noticeDetailLyricLabel.topAnchor.constraint(equalTo: noticeTitleTuneLabel.bottomAnchor, constant: 10),
+            noticeDetailLyricLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 26),
+            noticeDetailLyricLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -26),
+            
+            noticeActionBeatStack.topAnchor.constraint(equalTo: noticeDetailLyricLabel.bottomAnchor, constant: 24),
+            noticeActionBeatStack.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 28),
+            noticeActionBeatStack.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -28),
+            noticeActionBeatStack.bottomAnchor.constraint(equalTo: panelView.bottomAnchor, constant: -26)
         ])
     }
 
@@ -482,7 +451,7 @@ private final class TinkieNoticeGlowView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -506,7 +475,7 @@ private final class TinkieNoticeGradientButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
 
@@ -523,6 +492,6 @@ private final class TinkieNoticePlainButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }

@@ -1,22 +1,22 @@
 import UIKit
 
 enum TinkieSingerCircleRoster {
-    case following
-    case followers
+    case followedSingerTotal
+    case listenerEchoTotal
     case blocked
 
     var title: String {
         switch self {
-        case .following: return "Following"
-        case .followers: return "Followers"
+        case .followedSingerTotal: return "Following"
+        case .listenerEchoTotal: return "Followers"
         case .blocked: return "Blacklist"
         }
     }
 
     var actionTitle: String {
         switch self {
-        case .following: return "Unfollow"
-        case .followers: return "Remove"
+        case .followedSingerTotal: return "Unfollow"
+        case .listenerEchoTotal: return "Remove"
         case .blocked: return "Remove"
         }
     }
@@ -32,20 +32,20 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
     init(rosterCircle: TinkieSingerCircleRoster) {
         self.rosterCircle = rosterCircle
         switch rosterCircle {
-        case .following:
-            singerNames = TinkieSingerTuneAtlas.followingTuneNames
-        case .followers:
-            singerNames = TinkieSingerTuneAtlas.followerTuneNames
+        case .followedSingerTotal:
+            singerNames = TinkieSingerTuneAtlas.followedSingerTuneNames
+        case .listenerEchoTotal:
+            singerNames = TinkieSingerTuneAtlas.listenerEchoSingerNames
         case .blocked:
             let saved = TinkieSongShieldLedger.shieldedSingerNames()
-            singerNames = saved.isEmpty ? ["Aria", "Jay"] : saved
+            singerNames = saved.isEmpty ? [TinkieVerseCipherTrail.singBack("ADrPiCan"), TinkieVerseCipherTrail.singBack("JCaWyd")] : saved
         }
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iPnPiJtF(qcloGdGeMrQ:p)q rhLaKsf cnUoKtL dbKeBeony HiCmspvlReImreUnMtjeddx"))
     }
 
     override func viewDidLoad() {
@@ -70,54 +70,64 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
         rosterContentStage.translatesAutoresizingMaskIntoConstraints = false
         rosterScrollStage.addSubview(rosterContentStage)
 
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.contentHorizontalAlignment = .leading
-        backButton.addTarget(self, action: #selector(closeSingerRosterTapped), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        rosterContentStage.addSubview(backButton)
+        let rosterBackBeatButton = UIButton(type: .system)
+        rosterBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        rosterBackBeatButton.tintColor = .black
+        rosterBackBeatButton.contentHorizontalAlignment = .leading
+        rosterBackBeatButton.addTarget(self, action: #selector(closeSingerRosterTapped), for: .touchUpInside)
+        rosterBackBeatButton.translatesAutoresizingMaskIntoConstraints = false
+        rosterContentStage.addSubview(rosterBackBeatButton)
 
-        let titleLabel = UILabel()
-        titleLabel.text = rosterCircle.title
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = .black
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        rosterContentStage.addSubview(titleLabel)
+        let rosterTitleTuneLabel = UILabel()
+        rosterTitleTuneLabel.text = rosterCircle.title
+        rosterTitleTuneLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        rosterTitleTuneLabel.textColor = .black
+        rosterTitleTuneLabel.textAlignment = .center
+        rosterTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false
+        rosterContentStage.addSubview(rosterTitleTuneLabel)
 
         singerRowStack.axis = .vertical
         singerRowStack.spacing = 12
         singerRowStack.translatesAutoresizingMaskIntoConstraints = false
         rosterContentStage.addSubview(singerRowStack)
 
+        pinSingerCircleRosterStageBeat1(glow: glow, rosterBackBeatButton: rosterBackBeatButton)
+        pinSingerCircleRosterStageBeat2(rosterBackBeatButton: rosterBackBeatButton, rosterTitleTuneLabel: rosterTitleTuneLabel)
+    }
+
+    private func pinSingerCircleRosterStageBeat1(glow: TinkieTopGlowView, rosterBackBeatButton: UIButton) {
         NSLayoutConstraint.activate([
             glow.topAnchor.constraint(equalTo: view.topAnchor),
             glow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             glow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             glow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.58),
-
+            
             rosterScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             rosterScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             rosterScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             rosterScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             rosterContentStage.topAnchor.constraint(equalTo: rosterScrollStage.contentLayoutGuide.topAnchor),
             rosterContentStage.leadingAnchor.constraint(equalTo: rosterScrollStage.contentLayoutGuide.leadingAnchor),
             rosterContentStage.trailingAnchor.constraint(equalTo: rosterScrollStage.contentLayoutGuide.trailingAnchor),
             rosterContentStage.bottomAnchor.constraint(equalTo: rosterScrollStage.contentLayoutGuide.bottomAnchor),
             rosterContentStage.widthAnchor.constraint(equalTo: rosterScrollStage.frameLayoutGuide.widthAnchor),
             rosterContentStage.heightAnchor.constraint(greaterThanOrEqualTo: rosterScrollStage.frameLayoutGuide.heightAnchor),
+            
+            rosterBackBeatButton.topAnchor.constraint(equalTo: rosterContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
+            rosterBackBeatButton.leadingAnchor.constraint(equalTo: rosterContentStage.leadingAnchor, constant: 22),
+            rosterBackBeatButton.widthAnchor.constraint(equalToConstant: 48),
+            rosterBackBeatButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
 
-            backButton.topAnchor.constraint(equalTo: rosterContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
-            backButton.leadingAnchor.constraint(equalTo: rosterContentStage.leadingAnchor, constant: 22),
-            backButton.widthAnchor.constraint(equalToConstant: 48),
-            backButton.heightAnchor.constraint(equalToConstant: 44),
-
-            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: rosterContentStage.centerXAnchor),
-
-            singerRowStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
+    private func pinSingerCircleRosterStageBeat2(rosterBackBeatButton: UIButton, rosterTitleTuneLabel: UILabel) {
+        NSLayoutConstraint.activate([
+            
+            rosterTitleTuneLabel.centerYAnchor.constraint(equalTo: rosterBackBeatButton.centerYAnchor),
+            rosterTitleTuneLabel.centerXAnchor.constraint(equalTo: rosterContentStage.centerXAnchor),
+            
+            singerRowStack.topAnchor.constraint(equalTo: rosterTitleTuneLabel.bottomAnchor, constant: 32),
             singerRowStack.leadingAnchor.constraint(equalTo: rosterContentStage.leadingAnchor, constant: 24),
             singerRowStack.trailingAnchor.constraint(equalTo: rosterContentStage.trailingAnchor, constant: -24),
             singerRowStack.bottomAnchor.constraint(lessThanOrEqualTo: rosterContentStage.safeAreaLayoutGuide.bottomAnchor, constant: -32)
@@ -132,7 +142,7 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
 
         singerNames.forEach { singerName in
             let singerRow = TinkieSingerCircleRosterRow(
-                singerTuneCard: TinkieSingerTuneAtlas.singerTuneCard(named: singerName),
+                singerMelodyCard: TinkieSingerTuneAtlas.singerMelodyCard(named: singerName),
                 actionTitle: rosterCircle.actionTitle
             )
             singerRow.onRosterBeat = { [weak self] in
@@ -143,9 +153,9 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
     }
 
     private func removeSingerCircleName(_ name: String) {
-        if rosterCircle == .following {
+        if rosterCircle == .followedSingerTotal {
             TinkieRhythmBondScorebook.removeBondedSinger(name)
-            singerNames = TinkieSingerTuneAtlas.followingTuneNames
+            singerNames = TinkieSingerTuneAtlas.followedSingerTuneNames
         } else if rosterCircle == .blocked {
             TinkieSongShieldLedger.bringSingerBack(name)
             singerNames.removeAll { $0 == name }
@@ -163,17 +173,17 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
 private final class TinkieSingerCircleRosterRow: UIView {
     var onRosterBeat: (() -> Void)?
 
-    init(singerTuneCard: TinkieSingerTuneCard, actionTitle: String) {
+    init(singerMelodyCard: TinkieSingerMelodyCard, actionTitle: String) {
         super.init(frame: .zero)
-        putSingerCircleRosterStageTogether(singerTuneCard: singerTuneCard, actionTitle: actionTitle)
+        putSingerCircleRosterStageTogether(singerMelodyCard: singerMelodyCard, actionTitle: actionTitle)
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("isnriptb(JcNotdtezrj:C)J LhvaqsU Snvomtv WbqegeEnC pidmMpHlbewmZevnjtYeWdD"))
     }
 
-    private func putSingerCircleRosterStageTogether(singerTuneCard: TinkieSingerTuneCard, actionTitle: String) {
-        let singerFaceView = UIImageView(image: UIImage(named: singerTuneCard.heroImageName))
+    private func putSingerCircleRosterStageTogether(singerMelodyCard: TinkieSingerMelodyCard, actionTitle: String) {
+        let singerFaceView = UIImageView(image: UIImage(named: singerMelodyCard.portraitAssetName))
         singerFaceView.contentMode = .scaleAspectFill
         singerFaceView.layer.cornerRadius = 22
         singerFaceView.layer.masksToBounds = true
@@ -181,7 +191,7 @@ private final class TinkieSingerCircleRosterRow: UIView {
         addSubview(singerFaceView)
 
         let singerNameLabel = UILabel()
-        singerNameLabel.text = singerTuneCard.nickname
+        singerNameLabel.text = singerMelodyCard.singerAlias
         singerNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         singerNameLabel.textColor = .black
         singerNameLabel.translatesAutoresizingMaskIntoConstraints = false

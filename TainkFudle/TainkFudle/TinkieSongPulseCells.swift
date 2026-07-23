@@ -49,7 +49,7 @@ enum TinkieRhythmCoverFrameStore {
 }
 
 final class TinkieSongQuestCarouselCard: UICollectionViewCell {
-    static let reuseIdentifier = "TinkieSongQuestCarouselCard"
+    static let reuseIdentifier = TinkieVerseCipherTrail.singBack("TdiknukgiQeiSQodnxgnQGuseUsbtjCyaLrVoTuxsTeqlkCgaWrUdr")
     var onQuestMoreTapped: (() -> Void)?
     private let questPanelImageView = UIImageView(image: UIImage(named: "tinkie_event_card_shadow_panel"))
     private let recordFrameImageView = UIImageView(image: UIImage(named: "tinkie_event_cover_frame"))
@@ -69,7 +69,7 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iMnJiNtZ(pcnoPdPeYrU:d)p mhFaJsc wnSoBtF kbJeRegns CiZmjpelPeHmpeSnYtxekdq"))
     }
 
     override func prepareForReuse() {
@@ -77,136 +77,106 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
         onQuestMoreTapped = nil
     }
 
-    func tuneQuestCard(with songQuest: TinkieSongQuestTune) {
-        if let coverPath = songQuest.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
+    func tuneQuestCard(with challengeCue: TinkieMelodyChallengeCue) {
+        if let coverPath = challengeCue.sleeveLocalPath, let localArt = UIImage(contentsOfFile: coverPath) {
             questCoverImageView.image = localArt
         } else {
-            questCoverImageView.image = UIImage(named: songQuest.coverName)
+            questCoverImageView.image = UIImage(named: challengeCue.sleeveAssetName)
         }
-        questTitleLabel.text = songQuest.title
-        questSubtitleLabel.text = songQuest.subtitle
-        questTagLabel.text = songQuest.tags.joined(separator: "   ")
-        hostCueLabel.text = "\(songQuest.hostName) · \(songQuest.listenerNote)"
+        questTitleLabel.text = challengeCue.challengeTitle
+        questSubtitleLabel.text = challengeCue.challengePrompt
+        questTagLabel.text = challengeCue.challengeTags.joined(separator: TinkieVerseCipherTrail.singBack(" g M s"))
+        hostCueLabel.text = "\(challengeCue.leadSingerName) · \(challengeCue.roomCueNote)"
         singerAvatarStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        songQuest.avatarNames.prefix(3).forEach { avatarTuneName in
+        challengeCue.chorusAvatarNames.prefix(3).forEach { avatarTuneName in
             singerAvatarStack.addArrangedSubview(TinkieAvatarView(imageName: avatarTuneName, size: 26))
         }
     }
 
     private func putSongQuestCarouselTogether() {
-        contentView.backgroundColor = UIColor(red: 0.02, green: 0.05, blue: 0.05, alpha: 1)
-        contentView.layer.cornerRadius = 26
-        contentView.layer.masksToBounds = true
-
-        questPanelImageView.contentMode = .scaleAspectFill
-        questPanelImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(questPanelImageView)
-
-        recordFrameImageView.contentMode = .scaleAspectFit
-        recordFrameImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(recordFrameImageView)
-
-        questCoverImageView.contentMode = .scaleAspectFill
-        questCoverImageView.layer.cornerRadius = 146/2
-        questCoverImageView.layer.masksToBounds = true
-        questCoverImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = UIColor(red: 0.02, green: 0.05, blue: 0.05, alpha: 1); contentView.layer.cornerRadius = 26; contentView.layer.masksToBounds = true
+        questPanelImageView.contentMode = .scaleAspectFill; questPanelImageView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(questPanelImageView)
+        recordFrameImageView.contentMode = .scaleAspectFit; recordFrameImageView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(recordFrameImageView)
+        questCoverImageView.contentMode = .scaleAspectFill; questCoverImageView.layer.cornerRadius = 146/2; questCoverImageView.layer.masksToBounds = true; questCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(questCoverImageView)
-
-        vinylTurntableImageView.contentMode = .scaleAspectFit
-        vinylTurntableImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(vinylTurntableImageView)
-
-        questMoreButton.addTarget(self, action: #selector(questMoreTapped), for: .touchUpInside)
-        questMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(questMoreButton)
-
-        let gradient = TinkieBottomShadeView()
-        gradient.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(gradient)
-
-        let openLabel = TinkiePillLabel(text: "OPEN", foreground: .black, background: .white)
-        openLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(openLabel)
-
-        questTagLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
-        questTagLabel.textColor = UIColor(red: 1, green: 0.17, blue: 0.72, alpha: 1)
-        questTagLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        questTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        questTitleLabel.textColor = .white
-        questTitleLabel.numberOfLines = 2
-        questTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        questSubtitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        questSubtitleLabel.textColor = UIColor.white.withAlphaComponent(0.82)
-        questSubtitleLabel.numberOfLines = 2
-        questSubtitleLabel.lineBreakMode = .byTruncatingTail
+        vinylTurntableImageView.contentMode = .scaleAspectFit; vinylTurntableImageView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(vinylTurntableImageView)
+        questMoreButton.addTarget(self, action: #selector(questMoreTapped), for: .touchUpInside); questMoreButton.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(questMoreButton)
+        let gradient = TinkieBottomShadeView(); gradient.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(gradient)
+        let openLabel = TinkiePillLabel(text: TinkieVerseCipherTrail.singBack("OxPpEpNn"), foreground: .black, background: .white); openLabel.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(openLabel)
+        questTagLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold); questTagLabel.textColor = UIColor(red: 1, green: 0.17, blue: 0.72, alpha: 1); questTagLabel.translatesAutoresizingMaskIntoConstraints = false
+        questTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold); questTitleLabel.textColor = .white; questTitleLabel.numberOfLines = 2; questTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        questSubtitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular); questSubtitleLabel.textColor = UIColor.white.withAlphaComponent(0.82); questSubtitleLabel.numberOfLines = 2; questSubtitleLabel.lineBreakMode = .byTruncatingTail
         questSubtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        hostCueLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium)
-        hostCueLabel.textColor = UIColor.white.withAlphaComponent(0.65)
-        hostCueLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        singerAvatarStack.axis = .horizontal
-        singerAvatarStack.spacing = -8
-        singerAvatarStack.translatesAutoresizingMaskIntoConstraints = false
-
+        hostCueLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium); hostCueLabel.textColor = UIColor.white.withAlphaComponent(0.65); hostCueLabel.translatesAutoresizingMaskIntoConstraints = false
+        singerAvatarStack.axis = .horizontal; singerAvatarStack.spacing = -8; singerAvatarStack.translatesAutoresizingMaskIntoConstraints = false
         joinQuestBadgeButton.translatesAutoresizingMaskIntoConstraints = false
-
         [questTagLabel, questTitleLabel, questSubtitleLabel, hostCueLabel, singerAvatarStack, joinQuestBadgeButton].forEach { contentView.addSubview($0) }
+        pinSongQuestCarouselBeat1(); pinSongQuestCarouselBeat2(gradient: gradient, openLabel: openLabel); pinSongQuestCarouselBeat3()
+    }
 
+    private func pinSongQuestCarouselBeat1() {
         NSLayoutConstraint.activate([
             questPanelImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             questPanelImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             questPanelImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             questPanelImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-
+            
             recordFrameImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             recordFrameImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             recordFrameImageView.widthAnchor.constraint(equalToConstant: 180),
             recordFrameImageView.heightAnchor.constraint(equalTo: recordFrameImageView.widthAnchor),
-
+            
             questCoverImageView.centerXAnchor.constraint(equalTo: recordFrameImageView.centerXAnchor),
             questCoverImageView.centerYAnchor.constraint(equalTo: recordFrameImageView.centerYAnchor),
             questCoverImageView.widthAnchor.constraint(equalToConstant: 146),
             questCoverImageView.heightAnchor.constraint(equalToConstant: 146),
-
+            
             vinylTurntableImageView.centerXAnchor.constraint(equalTo: recordFrameImageView.centerXAnchor),
             vinylTurntableImageView.centerYAnchor.constraint(equalTo: recordFrameImageView.centerYAnchor),
             vinylTurntableImageView.widthAnchor.constraint(equalToConstant: 94),
             vinylTurntableImageView.heightAnchor.constraint(equalToConstant: 94),
-
+            
             questMoreButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            questMoreButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            questMoreButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
+        ])
+    }
 
+    private func pinSongQuestCarouselBeat2(gradient: TinkieBottomShadeView, openLabel: TinkiePillLabel) {
+        NSLayoutConstraint.activate([
+            
             gradient.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gradient.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             gradient.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             gradient.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.72),
-
+            
             openLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             openLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
-
+            
             questTagLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
             questTagLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
             questTagLabel.bottomAnchor.constraint(equalTo: questTitleLabel.topAnchor, constant: -6),
-
+            
             questTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
             questTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
             questTitleLabel.bottomAnchor.constraint(equalTo: questSubtitleLabel.topAnchor, constant: -6),
-
+            
             questSubtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
             questSubtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
             questSubtitleLabel.bottomAnchor.constraint(equalTo: hostCueLabel.topAnchor, constant: -8),
-
+            
             hostCueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
             hostCueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            hostCueLabel.bottomAnchor.constraint(equalTo: singerAvatarStack.topAnchor, constant: -12),
+            hostCueLabel.bottomAnchor.constraint(equalTo: singerAvatarStack.topAnchor, constant: -12)
+        ])
+    }
 
+    private func pinSongQuestCarouselBeat3() {
+        NSLayoutConstraint.activate([
+            
             singerAvatarStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
             singerAvatarStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -18),
             singerAvatarStack.heightAnchor.constraint(equalToConstant: 26),
-
+            
             joinQuestBadgeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             joinQuestBadgeButton.centerYAnchor.constraint(equalTo: singerAvatarStack.centerYAnchor),
             joinQuestBadgeButton.widthAnchor.constraint(equalToConstant: 96),
@@ -220,7 +190,7 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
 }
 
 final class TinkieSongPulsePopularTile: UICollectionViewCell {
-    static let reuseIdentifier = "TinkieSongPulsePopularTile"
+    static let reuseIdentifier = TinkieVerseCipherTrail.singBack("TViZnJkBiueHSuoCnYgNPBuXlVsFesPwojpquzlcacrvTTiNlCeM")
     var onPulseMoreTapped: (() -> Void)?
     private let pulseCoverImageView = UIImageView()
     private let pulsePlayMarkView = TinkiePlayMarkView()
@@ -259,7 +229,7 @@ final class TinkieSongPulsePopularTile: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 
     override func prepareForReuse() {
@@ -293,7 +263,7 @@ final class TinkieSongPulsePopularTile: UICollectionViewCell {
 }
 
 final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
-    static let reuseIdentifier = "TinkieRhythmSparkStreamCell"
+    static let reuseIdentifier = TinkieVerseCipherTrail.singBack("TJiBnFkPieePRWhsydtkhJmYSkpiarrbkmSCtDrbecaEmnCXedlelH")
     var onRhythmMoreTapped: (() -> Void)?
     var onSingerFaceTapped: (() -> Void)?
     var onBondBeatTapped: (() -> Void)?
@@ -316,7 +286,7 @@ final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 
     deinit {
@@ -365,88 +335,43 @@ final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
     }
 
     private func putRhythmSparkStreamTileTogether() {
-        sparkCoverImageView.contentMode = .scaleAspectFill
-        sparkCoverImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(sparkCoverImageView)
-
-        let shade = TinkieBottomShadeView()
-        shade.isUserInteractionEnabled = false
-        shade.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(shade)
-
-        rhythmPlayMarkView.isUserInteractionEnabled = false
-        rhythmPlayMarkView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(rhythmPlayMarkView)
-        rhythmCenterTapShield.isUserInteractionEnabled = false
-        rhythmCenterTapShield.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(rhythmCenterTapShield)
-
-        let rhythmMoreButton = TinkieTuneRoundButton(symbolName: "ellipsis", tint: .white)
-        rhythmMoreButton.addTarget(self, action: #selector(rhythmMoreTapped), for: .touchUpInside)
-        sparkBeatButton.addTarget(self, action: #selector(sparkBeatTapped), for: .touchUpInside)
-        let actionRow = UIStackView(arrangedSubviews: [sparkBeatButton, rhythmMoreButton])
-        actionRow.axis = .horizontal
-        actionRow.alignment = .center
-        actionRow.spacing = 12
-        actionRow.translatesAutoresizingMaskIntoConstraints = false
+        sparkCoverImageView.contentMode = .scaleAspectFill; sparkCoverImageView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(sparkCoverImageView)
+        let shade = TinkieBottomShadeView(); shade.isUserInteractionEnabled = false; shade.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(shade)
+        rhythmPlayMarkView.isUserInteractionEnabled = false; rhythmPlayMarkView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(rhythmPlayMarkView); rhythmCenterTapShield.isUserInteractionEnabled = false
+        rhythmCenterTapShield.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(rhythmCenterTapShield)
+        let rhythmMoreButton = TinkieTuneRoundButton(symbolName: "ellipsis", tint: .white); rhythmMoreButton.addTarget(self, action: #selector(rhythmMoreTapped), for: .touchUpInside); sparkBeatButton.addTarget(self, action: #selector(sparkBeatTapped), for: .touchUpInside); let actionRow = UIStackView(arrangedSubviews: [sparkBeatButton, rhythmMoreButton])
+        actionRow.axis = .horizontal; actionRow.alignment = .center; actionRow.spacing = 12; actionRow.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(actionRow)
-
-        singerFaceImageView.contentMode = .scaleAspectFill
-        singerFaceImageView.layer.cornerRadius = 30
-        singerFaceImageView.layer.borderWidth = 1
-        singerFaceImageView.layer.borderColor = UIColor.white.cgColor
-        singerFaceImageView.layer.masksToBounds = true
-        singerFaceImageView.isUserInteractionEnabled = false
-        singerFaceImageView.translatesAutoresizingMaskIntoConstraints = false
-
-        singerFaceTapButton.addTarget(self, action: #selector(singerFaceBeatButtonTapped), for: .touchUpInside)
-        singerFaceTapButton.isExclusiveTouch = true
-        singerFaceTapButton.accessibilityLabel = "Open performer profile"
-        singerFaceTapButton.translatesAutoresizingMaskIntoConstraints = false
-
+        singerFaceImageView.contentMode = .scaleAspectFill; singerFaceImageView.layer.cornerRadius = 30; singerFaceImageView.layer.borderWidth = 1; singerFaceImageView.layer.borderColor = UIColor.white.cgColor
+        singerFaceImageView.layer.masksToBounds = true; singerFaceImageView.isUserInteractionEnabled = false; singerFaceImageView.translatesAutoresizingMaskIntoConstraints = false
+        singerFaceTapButton.addTarget(self, action: #selector(singerFaceBeatButtonTapped), for: .touchUpInside); singerFaceTapButton.isExclusiveTouch = true; singerFaceTapButton.accessibilityLabel = TinkieVerseCipherTrail.singBack("OBpKeKnK xpIeIrOfioqrhmaeCrV rpHrrosfdinlfez"); singerFaceTapButton.translatesAutoresizingMaskIntoConstraints = false
         bondBeatButton.setBackgroundImage(UIImage(named: "tinkie_reels_follow_pluseee"), for: .normal)
-      
-        bondBeatButton.addTarget(self, action: #selector(bondBeatTapped), for: .touchUpInside)
-        bondBeatButton.translatesAutoresizingMaskIntoConstraints = false
-
-        singerNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        singerNameLabel.textColor = .white
-        pulseTimeLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium)
-        pulseTimeLabel.textColor = UIColor.white.withAlphaComponent(0.75)
-        let nameStack = UIStackView(arrangedSubviews: [singerNameLabel, pulseTimeLabel])
-        nameStack.axis = .vertical
-        nameStack.spacing = 1
-        nameStack.translatesAutoresizingMaskIntoConstraints = false
-
-        pulseCaptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        pulseCaptionLabel.textColor = .white
-        pulseCaptionLabel.numberOfLines = 2
-        pulseCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let inputPill = UILabel()
-        inputPill.text = "  Say something..."
-        inputPill.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        inputPill.textColor = UIColor.white.withAlphaComponent(0.55)
-        inputPill.layer.cornerRadius = 18
-        inputPill.layer.borderWidth = 1
-        inputPill.layer.borderColor = UIColor.white.withAlphaComponent(0.55).cgColor
-        inputPill.layer.masksToBounds = true
-        inputPill.backgroundColor = UIColor.white.withAlphaComponent(0.12)
-        inputPill.translatesAutoresizingMaskIntoConstraints = false
-
+        bondBeatButton.addTarget(self, action: #selector(bondBeatTapped), for: .touchUpInside); bondBeatButton.translatesAutoresizingMaskIntoConstraints = false
+        singerNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .bold); singerNameLabel.textColor = .white; pulseTimeLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium); pulseTimeLabel.textColor = UIColor.white.withAlphaComponent(0.75)
+        let nameStack = UIStackView(arrangedSubviews: [singerNameLabel, pulseTimeLabel]); nameStack.axis = .vertical; nameStack.spacing = 1; nameStack.translatesAutoresizingMaskIntoConstraints = false
+        pulseCaptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular); pulseCaptionLabel.textColor = .white; pulseCaptionLabel.numberOfLines = 2; pulseCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        let inputPill = UILabel(); inputPill.text = TinkieVerseCipherTrail.singBack(" C pSjaGym msgoCmbeLtYhtiznpgd.k.W.f"); inputPill.font = UIFont.systemFont(ofSize: 12, weight: .regular); inputPill.textColor = UIColor.white.withAlphaComponent(0.55)
+        inputPill.layer.cornerRadius = 18; inputPill.layer.borderWidth = 1; inputPill.layer.borderColor = UIColor.white.withAlphaComponent(0.55).cgColor; inputPill.layer.masksToBounds = true
+        inputPill.backgroundColor = UIColor.white.withAlphaComponent(0.12); inputPill.translatesAutoresizingMaskIntoConstraints = false
         [singerFaceImageView, singerFaceTapButton, bondBeatButton, nameStack, pulseCaptionLabel, inputPill].forEach { contentView.addSubview($0) }
+        pinRhythmSparkStreamTileBeat4(shade: shade, actionRow: actionRow, inputPill: inputPill); pinRhythmSparkStreamTileBeat5(actionRow: actionRow, nameStack: nameStack, inputPill: inputPill); pinRhythmSparkStreamTileBeat6(inputPill: inputPill)
+        [actionRow, singerFaceImageView, singerFaceTapButton, bondBeatButton, nameStack, pulseCaptionLabel, inputPill, rhythmPlayMarkView, rhythmCenterTapShield].forEach {
+            contentView.bringSubviewToFront($0)
+        }
+    }
 
+    private func pinRhythmSparkStreamTileBeat4(shade: TinkieBottomShadeView, actionRow: UIStackView, inputPill: UILabel) {
         NSLayoutConstraint.activate([
             sparkCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             sparkCoverImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             sparkCoverImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             sparkCoverImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-
+            
             shade.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             shade.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             shade.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             shade.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.62),
-
+            
             rhythmPlayMarkView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             rhythmPlayMarkView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -12),
             rhythmPlayMarkView.widthAnchor.constraint(equalToConstant: 64),
@@ -455,10 +380,15 @@ final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
             rhythmCenterTapShield.centerYAnchor.constraint(equalTo: rhythmPlayMarkView.centerYAnchor),
             rhythmCenterTapShield.widthAnchor.constraint(equalToConstant: 96),
             rhythmCenterTapShield.heightAnchor.constraint(equalToConstant: 96),
-
+            
             actionRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            actionRow.bottomAnchor.constraint(equalTo: inputPill.topAnchor, constant: -22),
+            actionRow.bottomAnchor.constraint(equalTo: inputPill.topAnchor, constant: -22)
+        ])
+    }
 
+    private func pinRhythmSparkStreamTileBeat5(actionRow: UIStackView, nameStack: UIStackView, inputPill: UILabel) {
+        NSLayoutConstraint.activate([
+            
             singerFaceImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             singerFaceImageView.bottomAnchor.constraint(equalTo: pulseCaptionLabel.topAnchor, constant: -8),
             singerFaceImageView.widthAnchor.constraint(equalToConstant: 50),
@@ -474,20 +404,21 @@ final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
             nameStack.leadingAnchor.constraint(equalTo: singerFaceImageView.trailingAnchor, constant: 10),
             nameStack.centerYAnchor.constraint(equalTo: singerFaceImageView.centerYAnchor),
             nameStack.trailingAnchor.constraint(lessThanOrEqualTo: actionRow.leadingAnchor, constant: -12),
-
+            
             pulseCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             pulseCaptionLabel.trailingAnchor.constraint(equalTo: actionRow.leadingAnchor, constant: -16),
-            pulseCaptionLabel.bottomAnchor.constraint(equalTo: inputPill.topAnchor, constant: -14),
+            pulseCaptionLabel.bottomAnchor.constraint(equalTo: inputPill.topAnchor, constant: -14)
+        ])
+    }
 
+    private func pinRhythmSparkStreamTileBeat6(inputPill: UILabel) {
+        NSLayoutConstraint.activate([
+            
             inputPill.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             inputPill.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             inputPill.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -18),
             inputPill.heightAnchor.constraint(equalToConstant: 38)
         ])
-
-        [actionRow, singerFaceImageView, singerFaceTapButton, bondBeatButton, nameStack, pulseCaptionLabel, inputPill, rhythmPlayMarkView, rhythmCenterTapShield].forEach {
-            contentView.bringSubviewToFront($0)
-        }
     }
 
     @objc private func rhythmMoreTapped() {

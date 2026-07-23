@@ -24,7 +24,7 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
         dropGateBackBeat()
 
         let signupBigWords = UILabel()
-        signupBigWords.text = "Sign up"
+        signupBigWords.text = TinkieVerseCipherTrail.singBack("SNiggQnK ruapn")
         signupBigWords.textColor = .white
         signupBigWords.font = UIFont.systemFont(ofSize: 34, weight: .black)
         signupBigWords.textAlignment = .center
@@ -49,7 +49,7 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
         mailTuneEntryBox.melodyTextField.keyboardType = .emailAddress
         secretTuneEntryBox.melodyTextField.textContentType = .newPassword
 
-        let joinTuneButton = TinkieMelodyGateBlackBeatButton(title: "Continue")
+        let joinTuneButton = TinkieMelodyGateBlackBeatButton(title: TinkieVerseCipherTrail.singBack("CeoLnJtuiunmujeS"))
         joinTuneButton.addTarget(self, action: #selector(continueMelodyGateTapped), for: .touchUpInside)
 
         let signupTuneStack = UIStackView(arrangedSubviews: [signupBigWords, faceCircleSpot, singerNameTuneBox, mailTuneEntryBox, secretTuneEntryBox, joinTuneButton])
@@ -58,6 +58,10 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
         signupTuneStack.translatesAutoresizingMaskIntoConstraints = false
         melodyGateBoardStage.addSubview(signupTuneStack)
 
+        pinSingerSignUpTuneBeat1(signupBigWords: signupBigWords, faceCircleSpot: faceCircleSpot, signupTuneStack: signupTuneStack)
+    }
+
+    private func pinSingerSignUpTuneBeat1(signupBigWords: UILabel, faceCircleSpot: UIView, signupTuneStack: UIStackView) {
         NSLayoutConstraint.activate([
             signupTuneStack.leadingAnchor.constraint(equalTo: melodyGateBoardStage.leadingAnchor, constant: 20),
             signupTuneStack.trailingAnchor.constraint(equalTo: melodyGateBoardStage.trailingAnchor, constant: -20),
@@ -65,12 +69,12 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
             signupTuneStack.bottomAnchor.constraint(lessThanOrEqualTo: melodyGateBoardStage.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             signupBigWords.heightAnchor.constraint(equalToConstant: 52),
             faceCircleSpot.heightAnchor.constraint(equalToConstant: 126),
-
+            
             singerFaceBeatButton.centerXAnchor.constraint(equalTo: faceCircleSpot.centerXAnchor),
             singerFaceBeatButton.topAnchor.constraint(equalTo: faceCircleSpot.topAnchor),
             singerFaceBeatButton.widthAnchor.constraint(equalToConstant: 90),
             singerFaceBeatButton.heightAnchor.constraint(equalToConstant: 90),
-
+            
             faceCameraBeatButton.centerXAnchor.constraint(equalTo: singerFaceBeatButton.centerXAnchor),
             faceCameraBeatButton.topAnchor.constraint(equalTo: singerFaceBeatButton.bottomAnchor, constant: -20),
             faceCameraBeatButton.widthAnchor.constraint(equalToConstant: 66),
@@ -80,20 +84,20 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
 
     @objc private func singerFaceBeatTapped() {
         view.endEditing(true)
-        let faceChoiceSheet = UIAlertController(title: "Profile Avatar", message: "Take a photo or choose one for your local Tinkie profile.", preferredStyle: .actionSheet)
+        let faceChoiceSheet = UIAlertController(title: TinkieVerseCipherTrail.singBack("PkrSoZfCiNlCeM VAFvMaHtLaKrD"), message: TinkieVerseCipherTrail.singBack("TraqkPen caz jpThpovtfoc yojrb KcKhMoXoysZej soxnteu rfUoMrF aygoJuprj BlpoacLaqlm STbirnkkniIeg spBrsokfaiulbew.m"), preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            faceChoiceSheet.addAction(UIAlertAction(title: "Take Photo", style: .default) { [weak self] _ in
+            faceChoiceSheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("TYaWkmeT BPyhFoRtVoE"), style: .default) { [weak self] _ in
                 self?.openSingerFacePicker(source: .camera)
             })
         }
-        faceChoiceSheet.addAction(UIAlertAction(title: "Choose from Library", style: .default) { [weak self] _ in
+        faceChoiceSheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("COhWoVoisCel dfGrsocmT HLzipbsrPaRrOyM"), style: .default) { [weak self] _ in
             self?.openSingerFacePicker(source: .photoLibrary)
         })
-        faceChoiceSheet.addAction(UIAlertAction(title: "Use Default Avatar", style: .default) { [weak self] _ in
+        faceChoiceSheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("UZsgeD ODqexfpaduJlXtd KAIvPaKtHaYrA"), style: .default) { [weak self] _ in
             self?.pickedSingerFacePath = nil
             self?.singerFaceBeatButton.setBackgroundImage(UIImage(named: "tinkie_auth_user_placeholder"), for: .normal)
         })
-        faceChoiceSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        faceChoiceSheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CmaNnCcCemln"), style: .cancel))
         faceChoiceSheet.popoverPresentationController?.sourceView = singerFaceBeatButton
         faceChoiceSheet.popoverPresentationController?.sourceRect = singerFaceBeatButton.bounds
         present(faceChoiceSheet, animated: true)
@@ -116,7 +120,7 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
 
     private func openSingerFacePicker(source: UIImagePickerController.SourceType) {
         guard UIImagePickerController.isSourceTypeAvailable(source) else {
-            showMelodyGateHint("This avatar source is not available on this device.")
+            showMelodyGateHint(TinkieVerseCipherTrail.singBack("TghCiLsq uatvdartpanrn YsNoyuCrTcMed tissO Fnnostn RaWvAaQillpapbklDeJ SoBnL ktIhuicsH CdvemvoiucDew.m"))
             return
         }
         let facePicker = UIImagePickerController()
@@ -147,12 +151,12 @@ extension TinkieMelodySignUpViewController: UIImagePickerControllerDelegate, UIN
         facePicker.dismiss(animated: true) { [weak self] in
             guard let self, let pickedFace else { return }
             guard let facePath = self.saveSingerFaceArtwork(pickedFace) else {
-                self.showMelodyGateHint("Avatar upload failed. Please try again.")
+                self.showMelodyGateHint(TinkieVerseCipherTrail.singBack("Arvgaytmaqrq IuEpOlgoraMdF ufPaJislnerdd.V zPBldejaBsneC JtprKyN NaLgvaWibnd.K"))
                 return
             }
             self.pickedSingerFacePath = facePath
             self.singerFaceBeatButton.setBackgroundImage(pickedFace, for: .normal)
-            self.showMelodyGateHint("Avatar uploaded to your local Tinkie profile.")
+            self.showMelodyGateHint(TinkieVerseCipherTrail.singBack("AIvPaKtHaYrA jumphlPoIatdceidj Ktqou zygoHuprh PleozcJawlv NTxinngkmiOeg mpPruogfziilxen.t"))
         }
     }
 

@@ -18,7 +18,7 @@ final class TinkieMelodyGateRecordBackdropView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 }
 
@@ -40,7 +40,7 @@ final class TinkieMelodyGateGlowStageView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 }
 
@@ -57,7 +57,7 @@ final class TinkieMelodyGateBlackBeatButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 }
 
@@ -82,7 +82,7 @@ final class TinkieMelodyGateNeonBeatButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iznpigts(CcGosdsemrv:W)C BheausS Knrohte IbuebeOnZ dikmYpVlreimMernxtDeIdX"))
     }
 }
 
@@ -129,21 +129,25 @@ final class TinkieMelodyGateEntryBox: UIView, UITextFieldDelegate {
         secretEyeBeatButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(secretEyeBeatButton)
 
+        pinTinkieTuneBeat1(secure: secure, littleWhiteLine: littleWhiteLine)
+    }
+
+    private func pinTinkieTuneBeat1(secure: Bool, littleWhiteLine: UIView) {
         NSLayoutConstraint.activate([
             entryTuneMarkView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
             entryTuneMarkView.centerYAnchor.constraint(equalTo: centerYAnchor),
             entryTuneMarkView.widthAnchor.constraint(equalToConstant: 26),
             entryTuneMarkView.heightAnchor.constraint(equalToConstant: 26),
-
+            
             littleWhiteLine.leadingAnchor.constraint(equalTo: entryTuneMarkView.trailingAnchor, constant: 12),
             littleWhiteLine.centerYAnchor.constraint(equalTo: centerYAnchor),
             littleWhiteLine.widthAnchor.constraint(equalToConstant: 1),
             littleWhiteLine.heightAnchor.constraint(equalToConstant: 16),
-
+            
             melodyTextField.leadingAnchor.constraint(equalTo: littleWhiteLine.trailingAnchor, constant: 18),
             melodyTextField.centerYAnchor.constraint(equalTo: centerYAnchor),
             melodyTextField.trailingAnchor.constraint(equalTo: secure ? secretEyeBeatButton.leadingAnchor : trailingAnchor, constant: secure ? -10 : -18),
-
+            
             secretEyeBeatButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             secretEyeBeatButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             secretEyeBeatButton.widthAnchor.constraint(equalToConstant: 32),
@@ -152,7 +156,7 @@ final class TinkieMelodyGateEntryBox: UIView, UITextFieldDelegate {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iAnMiYtM(fctoTdTeHrF:c)f ghVaQsr mnLoRtV wbQeFennk WiImmpdlZeBmjeLnDtyewds"))
     }
 
     @objc private func flipSecretTuneText() {
@@ -184,12 +188,12 @@ final class TinkieMelodyRulebookCheckView: UIView {
         ruleSmallWords.textAlignment = .left
         ruleSmallWords.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         ruleSmallWords.textColor = UIColor.black.withAlphaComponent(0.56)
-        ruleSmallWords.text = "By registering, you agree to the"
+        ruleSmallWords.text = TinkieVerseCipherTrail.singBack("Bhyr rrJeGgqiHsstvelrjiknugs,j HyKoduW YaRgbrlejeZ Ptsoz rtZhleq")
         ruleSmallWords.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ruleSmallWords)
 
         let termsPaperButton = UIButton()
-        termsPaperButton.setTitle("Terms of Use", for: .normal)
+        termsPaperButton.setTitle(TinkieVerseCipherTrail.singBack("TUeLrRmPsr poxfv GUZsgeD"), for: .normal)
         termsPaperButton.setTitleColor(.black, for: .normal)
         termsPaperButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         termsPaperButton.addTarget(self, action: #selector(tapTermsRulebookPaper), for: .touchUpInside)
@@ -197,39 +201,43 @@ final class TinkieMelodyRulebookCheckView: UIView {
         addSubview(termsPaperButton)
 
         let privacyPaperButton = UIButton(type: .system)
-        privacyPaperButton.setTitle("Privacy Policy", for: .normal)
+        privacyPaperButton.setTitle(TinkieVerseCipherTrail.singBack("PfrLiNvYaCcoyK KPmohlxiecIyj"), for: .normal)
         privacyPaperButton.setTitleColor(.black, for: .normal)
         privacyPaperButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         privacyPaperButton.addTarget(self, action: #selector(tapPrivacyRulebookPaper), for: .touchUpInside)
         privacyPaperButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(privacyPaperButton)
 
+        pinTinkieTuneBeat2(ruleSmallWords: ruleSmallWords, termsPaperButton: termsPaperButton, privacyPaperButton: privacyPaperButton)
+        paintRulebookCheckState()
+    }
+
+    private func pinTinkieTuneBeat2(ruleSmallWords: UILabel, termsPaperButton: UIButton, privacyPaperButton: UIButton) {
         NSLayoutConstraint.activate([
             rulebookCheckButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             rulebookCheckButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             rulebookCheckButton.widthAnchor.constraint(equalToConstant: 22),
             rulebookCheckButton.heightAnchor.constraint(equalToConstant: 22),
-
+            
             ruleSmallWords.leadingAnchor.constraint(equalTo: rulebookCheckButton.trailingAnchor, constant: 12),
             ruleSmallWords.topAnchor.constraint(equalTo: topAnchor),
-          
-
+            
+            
             termsPaperButton.leadingAnchor.constraint(equalTo: ruleSmallWords.trailingAnchor, constant: 1),
             termsPaperButton.centerYAnchor.constraint(equalTo: ruleSmallWords.centerYAnchor, constant: 0),
-
+            
             privacyPaperButton.topAnchor.constraint(equalTo: ruleSmallWords.bottomAnchor, constant: 5),
             privacyPaperButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0)
         ])
-        paintRulebookCheckState()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("iAnMiYtM(fctoTdTeHrF:c)f ghVaQsr mnLoRtV wbQeFennk WiImmpdlZeBmjeLnDtyewds"))
     }
 
     private func paintRulebookCheckState() {
         rulebookCheckButton.backgroundColor = isRuleChecked ? UIColor(red: 0.06, green: 0.06, blue: 0.07, alpha: 1) : .clear
-        rulebookCheckButton.setTitle(isRuleChecked ? "✓" : "", for: .normal)
+        rulebookCheckButton.setTitle(isRuleChecked ? TinkieVerseCipherTrail.singBack("✓l") : "", for: .normal)
         rulebookCheckButton.setTitleColor(.white, for: .normal)
     }
 

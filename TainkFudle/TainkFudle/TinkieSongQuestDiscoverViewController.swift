@@ -1,14 +1,14 @@
 import UIKit
 
 final class TinkieSongQuestDiscoverViewController: UIViewController {
-    var onQuestPicked: ((TinkieSongQuestTune) -> Void)?
+    var onChallengeCuePicked: ((TinkieMelodyChallengeCue) -> Void)?
     private let questScrollStage = UIScrollView()
     private let questContentStage = UIView()
     private let questCarousel: UICollectionView
     private let pulseSparkCollection: UICollectionView
     private var questCarouselBeatTimer: Timer?
-    private var visibleSongQuests: [TinkieSongQuestTune] {
-        (TinkieQuestForgeScorebook.allForgedSongQuests() + TinkieSongSeedSongbook.songQuestSongbook).filter { TinkieSongShieldLedger.keepsQuestVisible($0) }
+    private var visibleChallengeCues: [TinkieMelodyChallengeCue] {
+        (TinkieMelodyChallengeForgeScorebook.allForgedMelodyChallenges() + TinkieSongSeedSongbook.melodyChallengeSongbook).filter { TinkieSongShieldLedger.keepsMelodyChallengeVisible($0) }
     }
     private var popularPulseSparks: [TinkieSongPulseSpark] = []
 
@@ -26,7 +26,7 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibnaintb(AcEondnesru:H)A ShjaxsC Wnfowtj CbxemeLnD miymZpLlhekmPefnptMeCdY"))
     }
 
     override func viewDidLoad() {
@@ -73,91 +73,63 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
     }
 
     private func putSongQuestDiscoverTogether() {
-        let discoverGlow = TinkieTopGlowView()
-        discoverGlow.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(discoverGlow)
+        let discoverGlow = TinkieTopGlowView(); discoverGlow.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(discoverGlow)
+        questScrollStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.alwaysBounceVertical = true; questScrollStage.showsVerticalScrollIndicator = false; view.addSubview(questScrollStage)
+        questContentStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.addSubview(questContentStage)
+        let brandTuneLabel = UILabel(); brandTuneLabel.text = TinkieVerseCipherTrail.singBack("TiidnqkoiXew"); brandTuneLabel.font = UIFont.systemFont(ofSize: 24, weight: .black); brandTuneLabel.textColor = .black
+        let alertButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_notice_bell", size: CGSize(width: 38, height: 38)); alertButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside); let questForgeButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_create_capsule", size: CGSize(width: 100, height: 38)); questForgeButton.addTarget(self, action: #selector(openQuestForge), for: .touchUpInside)
+        let discoverHeaderBand = UIStackView(arrangedSubviews: [brandTuneLabel, UIView(), alertButton, questForgeButton]); discoverHeaderBand.axis = .horizontal; discoverHeaderBand.alignment = .center; discoverHeaderBand.spacing = 10
+        discoverHeaderBand.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(discoverHeaderBand)
+        questCarousel.backgroundColor = .clear; questCarousel.showsHorizontalScrollIndicator = false; questCarousel.decelerationRate = .fast; questCarousel.dataSource = self
+        questCarousel.delegate = self; questCarousel.register(TinkieSongQuestCarouselCard.self, forCellWithReuseIdentifier: TinkieSongQuestCarouselCard.reuseIdentifier); questCarousel.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questCarousel)
+        let popularBadge = TinkieAssetBadgeView(assetName: "tinkie_discover_popular_badge"); popularBadge.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(popularBadge)
+        pulseSparkCollection.backgroundColor = .clear; pulseSparkCollection.showsHorizontalScrollIndicator = false; pulseSparkCollection.dataSource = self; pulseSparkCollection.delegate = self
+        pulseSparkCollection.register(TinkieSongPulsePopularTile.self, forCellWithReuseIdentifier: TinkieSongPulsePopularTile.reuseIdentifier); pulseSparkCollection.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(pulseSparkCollection)
+        pinSongQuestDiscoverBeat1(discoverGlow: discoverGlow, alertButton: alertButton, discoverHeaderBand: discoverHeaderBand); pinSongQuestDiscoverBeat2(questForgeButton: questForgeButton, discoverHeaderBand: discoverHeaderBand, popularBadge: popularBadge)
+    }
 
-        questScrollStage.translatesAutoresizingMaskIntoConstraints = false
-        questScrollStage.alwaysBounceVertical = true
-        questScrollStage.showsVerticalScrollIndicator = false
-        view.addSubview(questScrollStage)
-
-        questContentStage.translatesAutoresizingMaskIntoConstraints = false
-        questScrollStage.addSubview(questContentStage)
-
-        let brandTuneLabel = UILabel()
-        brandTuneLabel.text = "Tinkie"
-        brandTuneLabel.font = UIFont.systemFont(ofSize: 24, weight: .black)
-        brandTuneLabel.textColor = .black
-
-        let alertButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_notice_bell", size: CGSize(width: 38, height: 38))
-        alertButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside)
-        let questForgeButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_create_capsule", size: CGSize(width: 100, height: 38))
-        questForgeButton.addTarget(self, action: #selector(openQuestForge), for: .touchUpInside)
-        let discoverHeaderBand = UIStackView(arrangedSubviews: [brandTuneLabel, UIView(), alertButton, questForgeButton])
-        discoverHeaderBand.axis = .horizontal
-        discoverHeaderBand.alignment = .center
-        discoverHeaderBand.spacing = 10
-        discoverHeaderBand.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(discoverHeaderBand)
-
-        questCarousel.backgroundColor = .clear
-        questCarousel.showsHorizontalScrollIndicator = false
-        questCarousel.decelerationRate = .fast
-        questCarousel.dataSource = self
-        questCarousel.delegate = self
-        questCarousel.register(TinkieSongQuestCarouselCard.self, forCellWithReuseIdentifier: TinkieSongQuestCarouselCard.reuseIdentifier)
-        questCarousel.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(questCarousel)
-
-        let popularBadge = TinkieAssetBadgeView(assetName: "tinkie_discover_popular_badge")
-        popularBadge.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(popularBadge)
-
-        pulseSparkCollection.backgroundColor = .clear
-        pulseSparkCollection.showsHorizontalScrollIndicator = false
-        pulseSparkCollection.dataSource = self
-        pulseSparkCollection.delegate = self
-        pulseSparkCollection.register(TinkieSongPulsePopularTile.self, forCellWithReuseIdentifier: TinkieSongPulsePopularTile.reuseIdentifier)
-        pulseSparkCollection.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(pulseSparkCollection)
-
+    private func pinSongQuestDiscoverBeat1(discoverGlow: TinkieTopGlowView, alertButton: TinkieTuneArtworkButton, discoverHeaderBand: UIStackView) {
         NSLayoutConstraint.activate([
             discoverGlow.topAnchor.constraint(equalTo: view.topAnchor),
             discoverGlow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             discoverGlow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             discoverGlow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.28),
-
+            
             questScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             questScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             questScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             questScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             questContentStage.topAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.topAnchor),
             questContentStage.leadingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.leadingAnchor),
             questContentStage.trailingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.trailingAnchor),
             questContentStage.bottomAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.bottomAnchor),
             questContentStage.widthAnchor.constraint(equalTo: questScrollStage.frameLayoutGuide.widthAnchor),
-
+            
             discoverHeaderBand.topAnchor.constraint(equalTo: questContentStage.safeAreaLayoutGuide.topAnchor, constant: 18),
             discoverHeaderBand.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 20),
             discoverHeaderBand.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -20),
-
+            
             alertButton.widthAnchor.constraint(equalToConstant: 38),
-            alertButton.heightAnchor.constraint(equalToConstant: 38),
+            alertButton.heightAnchor.constraint(equalToConstant: 38)
+        ])
+    }
+
+    private func pinSongQuestDiscoverBeat2(questForgeButton: TinkieTuneArtworkButton, discoverHeaderBand: UIStackView, popularBadge: TinkieAssetBadgeView) {
+        NSLayoutConstraint.activate([
             questForgeButton.widthAnchor.constraint(equalToConstant: 100),
             questForgeButton.heightAnchor.constraint(equalToConstant: 38),
-
+            
             questCarousel.topAnchor.constraint(equalTo: discoverHeaderBand.bottomAnchor, constant: 18),
             questCarousel.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor),
             questCarousel.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor),
             questCarousel.heightAnchor.constraint(equalToConstant: 333),
-
+            
             popularBadge.topAnchor.constraint(equalTo: questCarousel.bottomAnchor, constant: 18),
             popularBadge.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 22),
             popularBadge.widthAnchor.constraint(equalToConstant: 144),
             popularBadge.heightAnchor.constraint(equalToConstant: 30),
-
+            
             pulseSparkCollection.topAnchor.constraint(equalTo: popularBadge.bottomAnchor, constant: 14),
             pulseSparkCollection.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor),
             pulseSparkCollection.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor),
@@ -169,16 +141,16 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
 
 extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        collectionView === questCarousel ? visibleSongQuests.count : popularPulseSparks.count
+        collectionView === questCarousel ? visibleChallengeCues.count : popularPulseSparks.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView === questCarousel {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TinkieSongQuestCarouselCard.reuseIdentifier, for: indexPath) as! TinkieSongQuestCarouselCard
-            let songQuest = visibleSongQuests[indexPath.item]
-            cell.tuneQuestCard(with: songQuest)
+            let challengeCue = visibleChallengeCues[indexPath.item]
+            cell.tuneQuestCard(with: challengeCue)
             cell.onQuestMoreTapped = { [weak self] in
-                self?.openSongQuestOptions(for: songQuest)
+                self?.openChallengeCueOptions(for: challengeCue)
             }
             return cell
         }
@@ -194,7 +166,7 @@ extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UIC
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView === questCarousel {
-            onQuestPicked?(visibleSongQuests[indexPath.item])
+            onChallengeCuePicked?(visibleChallengeCues[indexPath.item])
         } else {
             openPulseSparkDetail(for: popularPulseSparks[indexPath.item])
         }
@@ -206,7 +178,7 @@ extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UIC
         guard questStepWidth > 0 else { return }
         let proposedCenter = targetContentOffset.pointee.x + questCarousel.bounds.width / 2
         let targetIndex = round((proposedCenter - questCarouselFlow.sectionInset.left - questCarouselFlow.itemSize.width / 2) / questStepWidth)
-        let clamped = max(0, min(CGFloat(visibleSongQuests.count - 1), targetIndex))
+        let clamped = max(0, min(CGFloat(visibleChallengeCues.count - 1), targetIndex))
         targetContentOffset.pointee.x = clamped * questStepWidth + questCarouselFlow.sectionInset.left + questCarouselFlow.itemSize.width / 2 - questCarousel.bounds.width / 2
     }
 
@@ -229,7 +201,7 @@ extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UIC
 private extension TinkieSongQuestDiscoverViewController {
     func startQuestCarouselBeat() {
         stopQuestCarouselBeat()
-        guard visibleSongQuests.count > 1 else { return }
+        guard visibleChallengeCues.count > 1 else { return }
         let beatTimer = Timer.scheduledTimer(
             timeInterval: 3.2,
             target: self,
@@ -247,7 +219,7 @@ private extension TinkieSongQuestDiscoverViewController {
     }
 
     @objc func playNextQuestCarouselBeat() {
-        let questCount = visibleSongQuests.count
+        let questCount = visibleChallengeCues.count
         guard questCount > 1, view.window != nil else {
             stopQuestCarouselBeat()
             return
@@ -273,11 +245,11 @@ private extension TinkieSongQuestDiscoverViewController {
         }?.item
     }
 
-    func openSongQuestOptions(for songQuest: TinkieSongQuestTune) {
+    func openChallengeCueOptions(for challengeCue: TinkieMelodyChallengeCue) {
         tinkiePresentRhythmShield(
-            tuneTitle: songQuest.title,
-            tuneKey: TinkieSongShieldLedger.questKey(for: songQuest),
-            tuneKind: "activity",
+            tuneTitle: challengeCue.challengeTitle,
+            tuneKey: TinkieSongShieldLedger.melodyChallengeKey(for: challengeCue),
+            tuneKind: TinkieVerseCipherTrail.singBack("akcRtOiOvYiTtByH"),
             onShieldDone: { [weak self] in
                 self?.questCarousel.reloadData()
             }
@@ -288,7 +260,7 @@ private extension TinkieSongQuestDiscoverViewController {
         tinkiePresentRhythmShield(
             tuneTitle: popularPulseSpark.performer,
             tuneKey: TinkieSongShieldLedger.pulseKey(for: popularPulseSpark),
-            tuneKind: "clip",
+            tuneKind: TinkieVerseCipherTrail.singBack("cMlLiMpX"),
             onShieldDone: { [weak self] in
                 self?.refreshPopularPulseSparks()
                 self?.pulseSparkCollection.reloadData()

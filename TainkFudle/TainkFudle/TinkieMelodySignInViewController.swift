@@ -64,7 +64,7 @@ class TinkieMelodyGateScrollViewController: UIViewController {
     }
 
     func showMelodyGateHint(_ hintWords: String) {
-        tinkieShowTuneNotice(title: "Tinkie", detail: hintWords)
+        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TQiYnPkWiseX"), detail: hintWords)
     }
 
     @objc private func melodyKeyboardRose(_ notification: Notification) {
@@ -112,7 +112,7 @@ final class TinkieMelodySignInViewController: TinkieMelodyGateScrollViewControll
         dropGateBackBeat()
 
         let loginBigWords = UILabel()
-        loginBigWords.text = "Login"
+        loginBigWords.text = TinkieVerseCipherTrail.singBack("LqocgNisnq")
         loginBigWords.textColor = .white
         loginBigWords.font = UIFont.systemFont(ofSize: 34, weight: .black)
         loginBigWords.textAlignment = .center
@@ -120,7 +120,7 @@ final class TinkieMelodySignInViewController: TinkieMelodyGateScrollViewControll
         mailTuneEntryBox.melodyTextField.keyboardType = .emailAddress
         secretTuneEntryBox.melodyTextField.textContentType = .password
 
-        let continueBeatButton = TinkieMelodyGateBlackBeatButton(title: "Continue")
+        let continueBeatButton = TinkieMelodyGateBlackBeatButton(title: TinkieVerseCipherTrail.singBack("CVovnutQiQnHuLer"))
         continueBeatButton.addTarget(self, action: #selector(continueMelodyGateTapped), for: .touchUpInside)
 
         let signInStack = UIStackView(arrangedSubviews: [loginBigWords, mailTuneEntryBox, secretTuneEntryBox, continueBeatButton])

@@ -11,19 +11,19 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
     private let questLyricCountLabel = UILabel()
     private let questTimeButton = UIButton(type: .system)
     private let questGroupStack = UIStackView()
-    private let questSeatValueLabel = UILabel()
+    private let questSpotValueLabel = UILabel()
     private let questGemValueLabel = UILabel()
     private let questSealButton = TinkieQuestForgeActionButton()
     private var questDateChoice = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
-    private var questGenreChoice = "Pop"
-    private var questModeChoice = "Casual"
-    private var questSeatLimit = 1
+    private var questGenreChoice = TinkieVerseCipherTrail.singBack("Pkoppx")
+    private var questModeChoice = TinkieVerseCipherTrail.singBack("ChaTspuLaslt")
+    private var questSpotLimit = 1
     private var questGemNeed = 50
     private var questCoverPath: String?
     private var questGenreBeatButtons: [TinkieQuestChoiceButton] = []
     private var questModeBeatButtons: [TinkieQuestChoiceButton] = []
-    private var questGroupStates: [TinkieSongQuestFormGroup] = [
-        TinkieSongQuestFormGroup(name: "Group A", seatLimit: 10, gemNeed: 50, genre: "Pop", mode: "Casual")
+    private var questGroupStates: [TinkieMelodyCircleForm] = [
+        TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GfrjovuHpV yAx"), spotLimit: 10, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pkoppx"), mode: TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"))
     ]
 
     override func viewDidLoad() {
@@ -41,104 +41,70 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
 
     private func putSongQuestForgeStageTogether() {
         view.backgroundColor = .white
-
-        let backdrop = TinkieQuestForgeBackdropView()
-        backdrop.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(backdrop)
-
-        questScrollStage.alwaysBounceVertical = true
-        questScrollStage.showsVerticalScrollIndicator = false
-        questScrollStage.keyboardDismissMode = .interactive
-        questScrollStage.translatesAutoresizingMaskIntoConstraints = false
+        let backdrop = TinkieQuestForgeBackdropView(); backdrop.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(backdrop)
+        questScrollStage.alwaysBounceVertical = true; questScrollStage.showsVerticalScrollIndicator = false; questScrollStage.keyboardDismissMode = .interactive; questScrollStage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(questScrollStage)
-
-        questContentStage.translatesAutoresizingMaskIntoConstraints = false
-        questScrollStage.addSubview(questContentStage)
-
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(leaveSongQuestForge), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(backButton)
-
-        let headingLabel = UILabel()
-        headingLabel.text = "Create Event"
-        headingLabel.textColor = .black
-        headingLabel.font = UIFont.systemFont(ofSize: 24, weight: .black)
-        headingLabel.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(headingLabel)
-
-        let coreCard = UIView()
-        coreCard.backgroundColor = .white
-        coreCard.layer.cornerRadius = 24
-        coreCard.translatesAutoresizingMaskIntoConstraints = false
+        questContentStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.addSubview(questContentStage)
+        let questBackBeatButton = UIButton(type: .system); questBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); questBackBeatButton.tintColor = .black; questBackBeatButton.addTarget(self, action: #selector(leaveSongQuestForge), for: .touchUpInside)
+        questBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questBackBeatButton)
+        let headingLabel = UILabel(); headingLabel.text = TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"); headingLabel.textColor = .black; headingLabel.font = UIFont.systemFont(ofSize: 24, weight: .black)
+        headingLabel.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(headingLabel)
+        let coreCard = UIView(); coreCard.backgroundColor = .white; coreCard.layer.cornerRadius = 24; coreCard.translatesAutoresizingMaskIntoConstraints = false
         questContentStage.addSubview(coreCard)
-
         fillQuestCoverVerseCard(in: coreCard)
+        questGroupStack.axis = .vertical; questGroupStack.spacing = 18; questGroupStack.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questGroupStack)
+        rebuildMelodyCircleStack()
+        let addGroupButton = UIButton(type: .system); addGroupButton.setTitle("  Add Registration Group", for: .normal); addGroupButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal); addGroupButton.tintColor = UIColor(red: 0.09, green: 0.86, blue: 0.78, alpha: 1)
+        addGroupButton.setTitleColor(.black, for: .normal); addGroupButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold); addGroupButton.layer.cornerRadius = 18; addGroupButton.layer.borderWidth = 1.5
+        addGroupButton.layer.borderColor = UIColor.black.cgColor; addGroupButton.addTarget(self, action: #selector(addMelodyCircleDraftTapped), for: .touchUpInside); addGroupButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(addGroupButton)
+        questSealButton.setTitle(TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"), for: .normal); questSealButton.addTarget(self, action: #selector(sealSongQuestForge), for: .touchUpInside); questSealButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questSealButton)
+        pinSongQuestForgeStageBeat1(backdrop: backdrop, questBackBeatButton: questBackBeatButton, headingLabel: headingLabel); pinSongQuestForgeStageBeat2(questBackBeatButton: questBackBeatButton, headingLabel: headingLabel, coreCard: coreCard, addGroupButton: addGroupButton)
+    }
 
-        questGroupStack.axis = .vertical
-        questGroupStack.spacing = 18
-        questGroupStack.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(questGroupStack)
-        rebuildQuestChordStack()
-
-        let addGroupButton = UIButton(type: .system)
-        addGroupButton.setTitle("  Add Registration Group", for: .normal)
-        addGroupButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addGroupButton.tintColor = UIColor(red: 0.09, green: 0.86, blue: 0.78, alpha: 1)
-        addGroupButton.setTitleColor(.black, for: .normal)
-        addGroupButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        addGroupButton.layer.cornerRadius = 18
-        addGroupButton.layer.borderWidth = 1.5
-        addGroupButton.layer.borderColor = UIColor.black.cgColor
-        addGroupButton.addTarget(self, action: #selector(addQuestChordDraftTapped), for: .touchUpInside)
-        addGroupButton.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(addGroupButton)
-
-        questSealButton.setTitle("Create Event", for: .normal)
-        questSealButton.addTarget(self, action: #selector(sealSongQuestForge), for: .touchUpInside)
-        questSealButton.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(questSealButton)
-
+    private func pinSongQuestForgeStageBeat1(backdrop: TinkieQuestForgeBackdropView, questBackBeatButton: UIButton, headingLabel: UILabel) {
         NSLayoutConstraint.activate([
             backdrop.topAnchor.constraint(equalTo: view.topAnchor),
             backdrop.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backdrop.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backdrop.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             questScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             questScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             questScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             questScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
+            
             questContentStage.topAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.topAnchor),
             questContentStage.leadingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.leadingAnchor),
             questContentStage.trailingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.trailingAnchor),
             questContentStage.bottomAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.bottomAnchor),
             questContentStage.widthAnchor.constraint(equalTo: questScrollStage.frameLayoutGuide.widthAnchor),
+            
+            questBackBeatButton.topAnchor.constraint(equalTo: questContentStage.safeAreaLayoutGuide.topAnchor, constant: 22),
+            questBackBeatButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 22),
+            questBackBeatButton.widthAnchor.constraint(equalToConstant: 44),
+            questBackBeatButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            headingLabel.centerYAnchor.constraint(equalTo: questBackBeatButton.centerYAnchor)
+        ])
+    }
 
-            backButton.topAnchor.constraint(equalTo: questContentStage.safeAreaLayoutGuide.topAnchor, constant: 22),
-            backButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 22),
-            backButton.widthAnchor.constraint(equalToConstant: 44),
-            backButton.heightAnchor.constraint(equalToConstant: 44),
-
-            headingLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+    private func pinSongQuestForgeStageBeat2(questBackBeatButton: UIButton, headingLabel: UILabel, coreCard: UIView, addGroupButton: UIButton) {
+        NSLayoutConstraint.activate([
             headingLabel.centerXAnchor.constraint(equalTo: questContentStage.centerXAnchor),
-
-            coreCard.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 34),
+            
+            coreCard.topAnchor.constraint(equalTo: questBackBeatButton.bottomAnchor, constant: 34),
             coreCard.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 24),
             coreCard.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -24),
-
+            
             questGroupStack.topAnchor.constraint(equalTo: coreCard.bottomAnchor, constant: 24),
             questGroupStack.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 18),
             questGroupStack.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -18),
-
+            
             addGroupButton.topAnchor.constraint(equalTo: questGroupStack.bottomAnchor, constant: 28),
             addGroupButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 24),
             addGroupButton.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -24),
             addGroupButton.heightAnchor.constraint(equalToConstant: 48),
-
+            
             questSealButton.topAnchor.constraint(equalTo: addGroupButton.bottomAnchor, constant: 40),
             questSealButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 30),
             questSealButton.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -30),
@@ -148,120 +114,75 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func fillQuestCoverVerseCard(in card: UIView) {
-        questCoverButton.backgroundColor = UIColor(red: 0.95, green: 0.96, blue: 0.96, alpha: 1)
-        questCoverButton.layer.cornerRadius = 14
-        questCoverButton.addTarget(self, action: #selector(openQuestCoverSourceSheet), for: .touchUpInside)
-        questCoverButton.translatesAutoresizingMaskIntoConstraints = false
+        questCoverButton.backgroundColor = UIColor(red: 0.95, green: 0.96, blue: 0.96, alpha: 1); questCoverButton.layer.cornerRadius = 14; questCoverButton.addTarget(self, action: #selector(openQuestCoverSourceSheet), for: .touchUpInside); questCoverButton.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(questCoverButton)
-
-        questCoverImageView.contentMode = .scaleAspectFill
-        questCoverImageView.layer.cornerRadius = 14
-        questCoverImageView.layer.masksToBounds = true
-        questCoverImageView.translatesAutoresizingMaskIntoConstraints = false
+        questCoverImageView.contentMode = .scaleAspectFill; questCoverImageView.layer.cornerRadius = 14; questCoverImageView.layer.masksToBounds = true; questCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         questCoverButton.addSubview(questCoverImageView)
+        let plusLabel = UILabel(); plusLabel.text = TinkieVerseCipherTrail.singBack("+M"); plusLabel.textColor = UIColor.black.withAlphaComponent(0.12); plusLabel.font = UIFont.systemFont(ofSize: 36, weight: .regular)
+        plusLabel.translatesAutoresizingMaskIntoConstraints = false; questCoverButton.addSubview(plusLabel)
+        let uploadLabel = UILabel(); uploadLabel.text = TinkieVerseCipherTrail.singBack("UfpqlLoPakdt ECPonvjesru"); uploadLabel.textColor = UIColor.black.withAlphaComponent(0.32); uploadLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        uploadLabel.translatesAutoresizingMaskIntoConstraints = false; questCoverButton.addSubview(uploadLabel)
+        questTitleField.placeholder = TinkieVerseCipherTrail.singBack("FVoPrI gezxvasmLpPlqet:q SFurKiFdLaMys sPJoLpL qHZiXtHsM YCQhPaBlVliesnbgmeJ"); questTitleField.textColor = .black; questTitleField.font = UIFont.systemFont(ofSize: 20, weight: .medium); questTitleField.adjustsFontSizeToFitWidth = true
+        questTitleField.minimumFontSize = 15; questTitleField.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questTitleField)
+        let line = UIView(); line.backgroundColor = UIColor.black.withAlphaComponent(0.08); line.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(line)
+        questThemeLyricPad.backgroundColor = .clear; questThemeLyricPad.font = UIFont.systemFont(ofSize: 17, weight: .regular); questThemeLyricPad.textColor = .black; questThemeLyricPad.delegate = self
+        questThemeLyricPad.textContainerInset = .zero; questThemeLyricPad.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questThemeLyricPad)
+        let themePlace = UILabel(); themePlace.text = TinkieVerseCipherTrail.singBack("DyexsVcgrjilbves etVhcer vtFhdeamDeg,v CgMabmMeepwlOaOyj,q MaBnNdm ZwFhNoM PtrhEeA TeYvYeMnVtd KiBsk vfMoVrA.b"); themePlace.textColor = UIColor.black.withAlphaComponent(0.30); themePlace.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        themePlace.numberOfLines = 2; themePlace.tag = 201; themePlace.translatesAutoresizingMaskIntoConstraints = false; questThemeLyricPad.addSubview(themePlace)
+        questTimeButton.setImage(UIImage(systemName: "clock"), for: .normal); questTimeButton.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal); questTimeButton.tintColor = .black; questTimeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        questTimeButton.layer.cornerRadius = 20; questTimeButton.layer.borderWidth = 1; questTimeButton.layer.borderColor = UIColor.black.withAlphaComponent(0.10).cgColor; questTimeButton.addTarget(self, action: #selector(openQuestTimeWheel), for: .touchUpInside)
+        questTimeButton.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questTimeButton)
+        questLyricCountLabel.text = TinkieVerseCipherTrail.singBack("0K/P2I0z0T"); questLyricCountLabel.textColor = UIColor.black.withAlphaComponent(0.32); questLyricCountLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium); questLyricCountLabel.textAlignment = .right
+        questLyricCountLabel.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questLyricCountLabel)
+        pinQuestCoverVerseCardBeat3(card: card, plusLabel: plusLabel, uploadLabel: uploadLabel, line: line); pinQuestCoverVerseCardBeat4(card: card, line: line, themePlace: themePlace)
+    }
 
-        let plusLabel = UILabel()
-        plusLabel.text = "+"
-        plusLabel.textColor = UIColor.black.withAlphaComponent(0.12)
-        plusLabel.font = UIFont.systemFont(ofSize: 36, weight: .regular)
-        plusLabel.translatesAutoresizingMaskIntoConstraints = false
-        questCoverButton.addSubview(plusLabel)
-
-        let uploadLabel = UILabel()
-        uploadLabel.text = "Upload Cover"
-        uploadLabel.textColor = UIColor.black.withAlphaComponent(0.32)
-        uploadLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        uploadLabel.translatesAutoresizingMaskIntoConstraints = false
-        questCoverButton.addSubview(uploadLabel)
-
-        questTitleField.placeholder = "For example: Friday Pop Hits Challenge"
-        questTitleField.textColor = .black
-        questTitleField.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        questTitleField.adjustsFontSizeToFitWidth = true
-        questTitleField.minimumFontSize = 15
-        questTitleField.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questTitleField)
-
-        let line = UIView()
-        line.backgroundColor = UIColor.black.withAlphaComponent(0.08)
-        line.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(line)
-
-        questThemeLyricPad.backgroundColor = .clear
-        questThemeLyricPad.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        questThemeLyricPad.textColor = .black
-        questThemeLyricPad.delegate = self
-        questThemeLyricPad.textContainerInset = .zero
-        questThemeLyricPad.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questThemeLyricPad)
-
-        let themePlace = UILabel()
-        themePlace.text = "Describe the theme, gameplay, and who the event is for."
-        themePlace.textColor = UIColor.black.withAlphaComponent(0.30)
-        themePlace.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        themePlace.numberOfLines = 2
-        themePlace.tag = 201
-        themePlace.translatesAutoresizingMaskIntoConstraints = false
-        questThemeLyricPad.addSubview(themePlace)
-
-        questTimeButton.setImage(UIImage(systemName: "clock"), for: .normal)
-        questTimeButton.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal)
-        questTimeButton.tintColor = .black
-        questTimeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-        questTimeButton.layer.cornerRadius = 20
-        questTimeButton.layer.borderWidth = 1
-        questTimeButton.layer.borderColor = UIColor.black.withAlphaComponent(0.10).cgColor
-        questTimeButton.addTarget(self, action: #selector(openQuestTimeWheel), for: .touchUpInside)
-        questTimeButton.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questTimeButton)
-
-        questLyricCountLabel.text = "0/200"
-        questLyricCountLabel.textColor = UIColor.black.withAlphaComponent(0.32)
-        questLyricCountLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-        questLyricCountLabel.textAlignment = .right
-        questLyricCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questLyricCountLabel)
-
+    private func pinQuestCoverVerseCardBeat3(card: UIView, plusLabel: UILabel, uploadLabel: UILabel, line: UIView) {
         NSLayoutConstraint.activate([
             questCoverButton.topAnchor.constraint(equalTo: card.topAnchor, constant: 30),
             questCoverButton.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
             questCoverButton.widthAnchor.constraint(equalTo: card.widthAnchor, multiplier: 0.31),
             questCoverButton.heightAnchor.constraint(equalTo: questCoverButton.widthAnchor),
-
+            
             questCoverImageView.topAnchor.constraint(equalTo: questCoverButton.topAnchor),
             questCoverImageView.leadingAnchor.constraint(equalTo: questCoverButton.leadingAnchor),
             questCoverImageView.trailingAnchor.constraint(equalTo: questCoverButton.trailingAnchor),
             questCoverImageView.bottomAnchor.constraint(equalTo: questCoverButton.bottomAnchor),
-
+            
             plusLabel.centerXAnchor.constraint(equalTo: questCoverButton.centerXAnchor),
             plusLabel.centerYAnchor.constraint(equalTo: questCoverButton.centerYAnchor, constant: -14),
             uploadLabel.topAnchor.constraint(equalTo: plusLabel.bottomAnchor, constant: 8),
             uploadLabel.centerXAnchor.constraint(equalTo: questCoverButton.centerXAnchor),
-
+            
             questTitleField.topAnchor.constraint(equalTo: questCoverButton.bottomAnchor, constant: 34),
             questTitleField.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
             questTitleField.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
             questTitleField.heightAnchor.constraint(equalToConstant: 36),
-
+            
             line.topAnchor.constraint(equalTo: questTitleField.bottomAnchor, constant: 12),
-            line.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor),
+            line.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor)
+        ])
+    }
+
+    private func pinQuestCoverVerseCardBeat4(card: UIView, line: UIView, themePlace: UILabel) {
+        NSLayoutConstraint.activate([
             line.trailingAnchor.constraint(equalTo: card.trailingAnchor),
             line.heightAnchor.constraint(equalToConstant: 1),
-
+            
             questThemeLyricPad.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 22),
             questThemeLyricPad.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor),
             questThemeLyricPad.trailingAnchor.constraint(equalTo: questTitleField.trailingAnchor),
             questThemeLyricPad.heightAnchor.constraint(equalToConstant: 126),
-
+            
             themePlace.topAnchor.constraint(equalTo: questThemeLyricPad.topAnchor),
             themePlace.leadingAnchor.constraint(equalTo: questThemeLyricPad.leadingAnchor, constant: 4),
             themePlace.trailingAnchor.constraint(equalTo: questThemeLyricPad.trailingAnchor, constant: -4),
-
+            
             questTimeButton.topAnchor.constraint(equalTo: questThemeLyricPad.bottomAnchor, constant: 16),
             questTimeButton.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor),
             questTimeButton.widthAnchor.constraint(lessThanOrEqualTo: card.widthAnchor, multiplier: 0.56),
             questTimeButton.heightAnchor.constraint(equalToConstant: 40),
-
+            
             questLyricCountLabel.trailingAnchor.constraint(equalTo: questTitleField.trailingAnchor),
             questLyricCountLabel.centerYAnchor.constraint(equalTo: questTimeButton.centerYAnchor),
             questLyricCountLabel.leadingAnchor.constraint(greaterThanOrEqualTo: questTimeButton.trailingAnchor, constant: 12),
@@ -269,7 +190,7 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
         ])
     }
 
-    private func rebuildQuestChordStack() {
+    private func rebuildMelodyCircleStack() {
         questGroupStack.arrangedSubviews.forEach { view in
             questGroupStack.removeArrangedSubview(view)
             view.removeFromSuperview()
@@ -283,39 +204,31 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
 
             let heading = UIView()
             heading.translatesAutoresizingMaskIntoConstraints = false
-            let label = UILabel()
-            label.text = state.name
-            label.textColor = .black
-            label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            heading.addSubview(label)
+            let circleNameTuneLabel = UILabel()
+            circleNameTuneLabel.text = state.circleName
+            circleNameTuneLabel.textColor = .black
+            circleNameTuneLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            circleNameTuneLabel.translatesAutoresizingMaskIntoConstraints = false
+            heading.addSubview(circleNameTuneLabel)
 
             let remove = UIButton(type: .system)
-            remove.setTitle("-", for: .normal)
+            remove.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal)
             remove.setTitleColor(.white, for: .normal)
             remove.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .black)
             remove.backgroundColor = UIColor(red: 1, green: 0.24, blue: 0.08, alpha: 1)
             remove.layer.cornerRadius = 12
             remove.tag = index
-            remove.addTarget(self, action: #selector(removeQuestChordDraft(_:)), for: .touchUpInside)
+            remove.addTarget(self, action: #selector(removeMelodyCircleDraft(_:)), for: .touchUpInside)
             remove.translatesAutoresizingMaskIntoConstraints = false
             heading.addSubview(remove)
 
-            let panel = TinkieSongQuestChordPanel(state: state)
+            let panel = TinkieMelodyQuestCirclePanel(state: state)
             panel.onStateChange = { [weak self] updated in
-                self?.retuneQuestChord(updated, at: index)
+                self?.retuneMelodyCircle(updated, at: index)
             }
             panel.translatesAutoresizingMaskIntoConstraints = false
 
-            NSLayoutConstraint.activate([
-                heading.heightAnchor.constraint(equalToConstant: 30),
-                label.leadingAnchor.constraint(equalTo: heading.leadingAnchor),
-                label.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
-                remove.trailingAnchor.constraint(equalTo: heading.trailingAnchor),
-                remove.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
-                remove.widthAnchor.constraint(equalToConstant: 24),
-                remove.heightAnchor.constraint(equalToConstant: 24)
-            ])
+        pinRebuildMelodyCircleStackBeat5(heading: heading, circleNameTuneLabel: circleNameTuneLabel, remove: remove)
 
             block.addArrangedSubview(heading)
             block.addArrangedSubview(panel)
@@ -323,182 +236,164 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
         }
     }
 
-    private func retuneQuestChord(_ group: TinkieSongQuestFormGroup, at index: Int) {
+    private func pinRebuildMelodyCircleStackBeat5(heading: UIView, circleNameTuneLabel: UILabel, remove: UIButton) {
+        NSLayoutConstraint.activate([
+            heading.heightAnchor.constraint(equalToConstant: 30),
+            circleNameTuneLabel.leadingAnchor.constraint(equalTo: heading.leadingAnchor),
+            circleNameTuneLabel.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
+            remove.trailingAnchor.constraint(equalTo: heading.trailingAnchor),
+            remove.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
+            remove.widthAnchor.constraint(equalToConstant: 24),
+            remove.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+
+    private func retuneMelodyCircle(_ group: TinkieMelodyCircleForm, at index: Int) {
         guard questGroupStates.indices.contains(index) else { return }
         questGroupStates[index] = group
     }
 
-    private func fillQuestChordDraftCard(in card: UIView) {
-        let seatRow = TinkieSongQuestChordInfoRow(symbolName: "person.2.fill", title: "Participant Limit")
-        seatRow.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(seatRow)
-
-        let minus = UIButton(type: .system)
-        minus.setTitle("-", for: .normal)
-        minus.setTitleColor(.black, for: .normal)
-        minus.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
-        minus.addTarget(self, action: #selector(lowerQuestSeatLimit), for: .touchUpInside)
-        minus.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(minus)
-
-        questSeatValueLabel.textColor = UIColor.black.withAlphaComponent(0.42)
-        questSeatValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        questSeatValueLabel.textAlignment = .center
-        questSeatValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questSeatValueLabel)
-
-        let plus = UIButton(type: .system)
-        plus.setTitle("+", for: .normal)
-        plus.setTitleColor(.black, for: .normal)
-        plus.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: .regular)
-        plus.addTarget(self, action: #selector(raiseQuestSeatLimit), for: .touchUpInside)
-        plus.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(plus)
-
-        let firstLine = TinkieQuestDivider()
-        firstLine.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(firstLine)
-
-        let gemRow = TinkieSongQuestChordInfoRow(assetName: "tinkie_profile_balance_gem", title: "Gems Required")
-        gemRow.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(gemRow)
-
-        questGemValueLabel.text = "\(questGemNeed)"
-        questGemValueLabel.textColor = UIColor.black.withAlphaComponent(0.42)
-        questGemValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        questGemValueLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func fillMelodyCircleDraftCard(in card: UIView) {
+        let spotRow = TinkieMelodyQuestCircleInfoRow(symbolName: "person.2.fill", title: "Participant Limit"); spotRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(spotRow)
+        let minus = UIButton(type: .system); minus.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal); minus.setTitleColor(.black, for: .normal); minus.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        minus.addTarget(self, action: #selector(lowerQuestSpotLimit), for: .touchUpInside); minus.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(minus)
+        questSpotValueLabel.textColor = UIColor.black.withAlphaComponent(0.42); questSpotValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questSpotValueLabel.textAlignment = .center; questSpotValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(questSpotValueLabel)
+        let plus = UIButton(type: .system); plus.setTitle(TinkieVerseCipherTrail.singBack("+M"), for: .normal); plus.setTitleColor(.black, for: .normal); plus.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: .regular)
+        plus.addTarget(self, action: #selector(raiseQuestSpotLimit), for: .touchUpInside); plus.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(plus)
+        let firstLine = TinkieQuestDivider(); firstLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(firstLine)
+        let gemRow = TinkieMelodyQuestCircleInfoRow(assetName: "tinkie_profile_moip_gem", title: "Gems Required"); gemRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(gemRow)
+        questGemValueLabel.text = "\(questGemNeed)"; questGemValueLabel.textColor = UIColor.black.withAlphaComponent(0.42); questGemValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questGemValueLabel.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(questGemValueLabel)
+        let secondLine = TinkieQuestDivider(); secondLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(secondLine)
+        let genreRow = TinkieMelodyQuestCircleInfoRow(symbolName: "music.note", title: "Music Genre"); genreRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(genreRow)
+        let genreGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("PIoMpK"), TinkieVerseCipherTrail.singBack("RsoqcMkk"), TinkieVerseCipherTrail.singBack("HViFpR-EHFoSpB"), TinkieVerseCipherTrail.singBack("EqlmercStFrxoenficcQ"), TinkieVerseCipherTrail.singBack("OclmdKiMeusO"), TinkieVerseCipherTrail.singBack("MniFxFeYdG")], action: #selector(questGenreBeatTapped(_:)), store: &questGenreBeatButtons)
+        genreGrid.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(genreGrid)
+        let thirdLine = TinkieQuestDivider(); thirdLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(thirdLine)
+        let modeRow = TinkieMelodyQuestCircleInfoRow(symbolName: "bolt.fill", title: "Difficulty"); modeRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(modeRow)
+        let modeGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"), TinkieVerseCipherTrail.singBack("MxeWdDiTuqmT"), TinkieVerseCipherTrail.singBack("HLaJrZdj"), TinkieVerseCipherTrail.singBack("MNibxvegdn")], action: #selector(questModeBeatTapped(_:)), store: &questModeBeatButtons)
+        modeGrid.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(modeGrid)
+        pinMelodyCircleDraftCardBeat6(card: card, spotRow: spotRow, minus: minus, plus: plus, firstLine: firstLine)
+        pinMelodyCircleDraftCardBeat7(card: card, spotRow: spotRow, firstLine: firstLine, gemRow: gemRow, secondLine: secondLine, genreRow: genreRow, genreGrid: genreGrid, thirdLine: thirdLine)
+        pinMelodyCircleDraftCardBeat8(card: card, spotRow: spotRow, thirdLine: thirdLine, modeRow: modeRow, modeGrid: modeGrid); paintQuestSpotText()
+    }
 
-        let secondLine = TinkieQuestDivider()
-        secondLine.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(secondLine)
-
-        let genreRow = TinkieSongQuestChordInfoRow(symbolName: "music.note", title: "Music Genre")
-        genreRow.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(genreRow)
-
-        let genreGrid = makeQuestChoiceRows(titles: ["Pop", "Rock", "Hip-Hop", "Electronic", "Oldies", "Mixed"], action: #selector(questGenreBeatTapped(_:)), store: &questGenreBeatButtons)
-        genreGrid.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(genreGrid)
-
-        let thirdLine = TinkieQuestDivider()
-        thirdLine.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(thirdLine)
-
-        let modeRow = TinkieSongQuestChordInfoRow(symbolName: "bolt.fill", title: "Difficulty")
-        modeRow.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(modeRow)
-
-        let modeGrid = makeQuestChoiceRows(titles: ["Casual", "Medium", "Hard", "Mixed"], action: #selector(questModeBeatTapped(_:)), store: &questModeBeatButtons)
-        modeGrid.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(modeGrid)
-
+    private func pinMelodyCircleDraftCardBeat6(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, minus: UIButton, plus: UIButton, firstLine: TinkieQuestDivider) {
         NSLayoutConstraint.activate([
-            seatRow.topAnchor.constraint(equalTo: card.topAnchor, constant: 24),
-            seatRow.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
-            seatRow.trailingAnchor.constraint(lessThanOrEqualTo: minus.leadingAnchor, constant: -12),
-
+            spotRow.topAnchor.constraint(equalTo: card.topAnchor, constant: 24),
+            spotRow.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
+            spotRow.trailingAnchor.constraint(lessThanOrEqualTo: minus.leadingAnchor, constant: -12),
+            
             plus.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
-            plus.centerYAnchor.constraint(equalTo: seatRow.centerYAnchor),
+            plus.centerYAnchor.constraint(equalTo: spotRow.centerYAnchor),
             plus.widthAnchor.constraint(equalToConstant: 36),
             plus.heightAnchor.constraint(equalToConstant: 36),
-
-            questSeatValueLabel.trailingAnchor.constraint(equalTo: plus.leadingAnchor, constant: -6),
-            questSeatValueLabel.centerYAnchor.constraint(equalTo: plus.centerYAnchor),
-            questSeatValueLabel.widthAnchor.constraint(equalToConstant: 30),
-
-            minus.trailingAnchor.constraint(equalTo: questSeatValueLabel.leadingAnchor, constant: -6),
+            
+            questSpotValueLabel.trailingAnchor.constraint(equalTo: plus.leadingAnchor, constant: -6),
+            questSpotValueLabel.centerYAnchor.constraint(equalTo: plus.centerYAnchor),
+            questSpotValueLabel.widthAnchor.constraint(equalToConstant: 30),
+            
+            minus.trailingAnchor.constraint(equalTo: questSpotValueLabel.leadingAnchor, constant: -6),
             minus.centerYAnchor.constraint(equalTo: plus.centerYAnchor),
             minus.widthAnchor.constraint(equalToConstant: 36),
             minus.heightAnchor.constraint(equalToConstant: 36),
-
-            firstLine.topAnchor.constraint(equalTo: seatRow.bottomAnchor, constant: 24),
+            
+            firstLine.topAnchor.constraint(equalTo: spotRow.bottomAnchor, constant: 24),
             firstLine.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
             firstLine.trailingAnchor.constraint(equalTo: card.trailingAnchor),
-            firstLine.heightAnchor.constraint(equalToConstant: 1),
+            firstLine.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
 
+    private func pinMelodyCircleDraftCardBeat7(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, firstLine: TinkieQuestDivider, gemRow: TinkieMelodyQuestCircleInfoRow, secondLine: TinkieQuestDivider, genreRow: TinkieMelodyQuestCircleInfoRow, genreGrid: UIView, thirdLine: TinkieQuestDivider) {
+        NSLayoutConstraint.activate([
+            
             gemRow.topAnchor.constraint(equalTo: firstLine.bottomAnchor, constant: 24),
-            gemRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            gemRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             gemRow.trailingAnchor.constraint(lessThanOrEqualTo: questGemValueLabel.leadingAnchor, constant: -12),
-
+            
             questGemValueLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
             questGemValueLabel.centerYAnchor.constraint(equalTo: gemRow.centerYAnchor),
-
+            
             secondLine.topAnchor.constraint(equalTo: gemRow.bottomAnchor, constant: 24),
             secondLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
             secondLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor),
             secondLine.heightAnchor.constraint(equalToConstant: 1),
-
+            
             genreRow.topAnchor.constraint(equalTo: secondLine.bottomAnchor, constant: 24),
-            genreRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            genreRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             genreRow.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-
+            
             genreGrid.topAnchor.constraint(equalTo: genreRow.bottomAnchor, constant: 16),
-            genreGrid.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            genreGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             genreGrid.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-
+            
             thirdLine.topAnchor.constraint(equalTo: genreGrid.bottomAnchor, constant: 24),
             thirdLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
-            thirdLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor),
+            thirdLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor)
+        ])
+    }
+
+    private func pinMelodyCircleDraftCardBeat8(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, thirdLine: TinkieQuestDivider, modeRow: TinkieMelodyQuestCircleInfoRow, modeGrid: UIView) {
+        NSLayoutConstraint.activate([
             thirdLine.heightAnchor.constraint(equalToConstant: 1),
-
+            
             modeRow.topAnchor.constraint(equalTo: thirdLine.bottomAnchor, constant: 24),
-            modeRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            modeRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             modeRow.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-
+            
             modeGrid.topAnchor.constraint(equalTo: modeRow.bottomAnchor, constant: 16),
-            modeGrid.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            modeGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             modeGrid.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
             modeGrid.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -24)
         ])
-        paintQuestSeatText()
     }
 
     private func makeQuestChoiceRows(titles: [String], action: Selector, store: inout [TinkieQuestChoiceButton]) -> UIStackView {
         let root = UIStackView()
         root.axis = .vertical
         root.spacing = 10
-        var row = UIStackView()
-        row.axis = .horizontal
-        row.spacing = 10
-        row.distribution = .fillEqually
-        root.addArrangedSubview(row)
+        var choiceBeatRow = UIStackView()
+        choiceBeatRow.axis = .horizontal
+        choiceBeatRow.spacing = 10
+        choiceBeatRow.distribution = .fillEqually
+        root.addArrangedSubview(choiceBeatRow)
 
         for title in titles {
-            if row.arrangedSubviews.count == 4 {
-                row = UIStackView()
-                row.axis = .horizontal
-                row.spacing = 10
-                row.distribution = .fillEqually
-                root.addArrangedSubview(row)
+            if choiceBeatRow.arrangedSubviews.count == 4 {
+                choiceBeatRow = UIStackView()
+                choiceBeatRow.axis = .horizontal
+                choiceBeatRow.spacing = 10
+                choiceBeatRow.distribution = .fillEqually
+                root.addArrangedSubview(choiceBeatRow)
             }
-            let button = TinkieQuestChoiceButton(title: title)
-            button.addTarget(self, action: action, for: .touchUpInside)
-            row.addArrangedSubview(button)
-            store.append(button)
+            let choiceBeatButton = TinkieQuestChoiceButton(title: title)
+            choiceBeatButton.addTarget(self, action: action, for: .touchUpInside)
+            choiceBeatRow.addArrangedSubview(choiceBeatButton)
+            store.append(choiceBeatButton)
         }
-        while row.arrangedSubviews.count < 4 {
+        while choiceBeatRow.arrangedSubviews.count < 4 {
             let spacer = UIView()
-            row.addArrangedSubview(spacer)
+            choiceBeatRow.addArrangedSubview(spacer)
         }
         return root
     }
 
     @objc private func openQuestCoverSourceSheet() {
-        let sheet = UIAlertController(title: "Event Cover", message: "Add a cover for your Tinkie song challenge.", preferredStyle: .actionSheet)
+        let sheet = UIAlertController(title: TinkieVerseCipherTrail.singBack("EDvPeGnItw UCBorvaehrs"), message: TinkieVerseCipherTrail.singBack("AQdLde QaN CcCokvoeerr Afdopra MyNomuHrB bTHiPnPkXireA TsLonnogf icihvaqlxlYePnUgAel.n"), preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            sheet.addAction(UIAlertAction(title: "Take Photo", style: .default) { [weak self] _ in
+            sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("TyarkCeq bPWhdobtaon"), style: .default) { [weak self] _ in
                 self?.presentQuestCoverPicker(source: .camera)
             })
         }
-        sheet.addAction(UIAlertAction(title: "Choose from Library", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CthroaoRsceJ SfgrKoLmq fLJiUbArsabrtym"), style: .default) { [weak self] _ in
             self?.presentQuestCoverPicker(source: .photoLibrary)
         })
-        sheet.addAction(UIAlertAction(title: "Use Default Cover", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("UmsNec gDIeZfFaLumlwtZ nCzoPvDeYrU"), style: .default) { [weak self] _ in
             self?.questCoverPath = nil
             self?.questCoverImageView.image = UIImage(named: "tinkie_event_cover_friday_pop_hits")
         })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
         sheet.popoverPresentationController?.sourceView = questCoverButton
         sheet.popoverPresentationController?.sourceRect = questCoverButton.bounds
         present(sheet, animated: true)
@@ -550,24 +445,24 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
         holder.view = picker
         holder.preferredContentSize = CGSize(width: 320, height: 220)
 
-        let alert = UIAlertController(title: "Event Time", message: nil, preferredStyle: .alert)
-        alert.setValue(holder, forKey: "contentViewController")
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Done", style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: TinkieVerseCipherTrail.singBack("ECvYeMnLto HTniimCen"), message: nil, preferredStyle: .alert)
+        alert.setValue(holder, forKey: TinkieVerseCipherTrail.singBack("cpoWnDtyewnxtKVlixeWwiCJoxnbtPreoslclUeArL"))
+        alert.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
+        alert.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("DLoCnYeL"), style: .default) { [weak self] _ in
             self?.questDateChoice = picker.date
             self?.paintQuestTimeText()
         })
         present(alert, animated: true)
     }
 
-    @objc private func lowerQuestSeatLimit() {
-        questSeatLimit = max(1, questSeatLimit - 1)
-        paintQuestSeatText()
+    @objc private func lowerQuestSpotLimit() {
+        questSpotLimit = max(1, questSpotLimit - 1)
+        paintQuestSpotText()
     }
 
-    @objc private func raiseQuestSeatLimit() {
-        questSeatLimit = min(24, questSeatLimit + 1)
-        paintQuestSeatText()
+    @objc private func raiseQuestSpotLimit() {
+        questSpotLimit = min(24, questSpotLimit + 1)
+        paintQuestSpotText()
     }
 
     @objc private func questGenreBeatTapped(_ sender: TinkieQuestChoiceButton) {
@@ -580,59 +475,59 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
         paintQuestChoiceButtons()
     }
 
-    @objc private func addQuestChordDraftTapped() {
+    @objc private func addMelodyCircleDraftTapped() {
         guard questGroupStates.count < 2 else {
-            showPulseForgeHint("Group A and Group B are ready.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("GvrqomuBpR fAp sapnpdL qGqrrosuZpL jBA saordes brLeJavdsyl.p"))
             return
         }
-        questGroupStates.append(TinkieSongQuestFormGroup(name: "Group B", seatLimit: 12, gemNeed: 50, genre: "Pop", mode: "Casual"))
-        rebuildQuestChordStack()
+        questGroupStates.append(TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV"), spotLimit: 12, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg")))
+        rebuildMelodyCircleStack()
     }
 
-    @objc private func removeQuestChordDraft(_ sender: UIButton) {
+    @objc private func removeMelodyCircleDraft(_ sender: UIButton) {
         guard questGroupStates.count > 1, questGroupStates.indices.contains(sender.tag) else { return }
         questGroupStates.remove(at: sender.tag)
         for index in questGroupStates.indices {
-            questGroupStates[index].name = index == 0 ? "Group A" : "Group B"
+            questGroupStates[index].circleName = index == 0 ? TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD") : TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV")
         }
-        rebuildQuestChordStack()
+        rebuildMelodyCircleStack()
     }
 
     @objc private func sealSongQuestForge() {
         let titleText = questTitleField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let themeText = questThemeLyricPad.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !titleText.isEmpty else {
-            showPulseForgeHint("Please enter an event title.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PXlpesaJsceJ SeFnLtvearz QaNnC pemvoeenmtH xtKiKtYloef.v"))
             return
         }
         guard themeText.count >= 12 else {
-            showPulseForgeHint("Please add a clearer song challenge description.")
+            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PslNeEapsKem qandfdQ xal jcjloefaVrBeCrL nsgoNnOgS TcThLaClXlyepnrgpeG IdoebsCcjrjikpotQiQojnq.B"))
             return
         }
-        let firstGroup = questGroupStates.first ?? TinkieSongQuestFormGroup(name: "Group A", seatLimit: 10, gemNeed: 50, genre: "Pop", mode: "Casual")
-        let savedGroups = questGroupStates.map {
-            TinkieSongQuestChordDraft(name: $0.name, genre: $0.genre, mode: $0.mode, seatLimit: $0.seatLimit, gemNeed: $0.gemNeed)
+        let firstGroup = questGroupStates.first ?? TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD"), spotLimit: 10, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg"))
+        let savedGroups = questGroupStates.map { circleForm in
+            TinkieMelodyQuestCircleDraft(circleName: circleForm.circleName, genre: circleForm.genre, mode: circleForm.mode, spotLimit: circleForm.spotLimit, gemNeed: circleForm.gemNeed)
         }
-        let draft = TinkieSongQuestForgeDraft(
-            title: titleText,
-            theme: themeText,
-            dayText: makeQuestDayCue(from: questDateChoice),
-            hourText: makeQuestHourCue(from: questDateChoice),
-            genre: firstGroup.genre,
-            mode: firstGroup.mode,
-            seatLimit: firstGroup.seatLimit,
+        let draft = TinkieMelodyChallengeForgeDraft(
+            challengeTitle: titleText,
+            challengeTheme: themeText,
+            challengeDayText: makeQuestDayCue(from: questDateChoice),
+            challengeHourText: makeQuestHourCue(from: questDateChoice),
+            challengeGenre: firstGroup.genre,
+            challengeMood: firstGroup.mode,
+            seatLimit: firstGroup.spotLimit,
             gemNeed: firstGroup.gemNeed,
-            groups: savedGroups,
-            artPath: questCoverPath
+            melodyCircleDrafts: savedGroups,
+            sleeveLocalPath: questCoverPath
         )
-        TinkieQuestForgeScorebook.save(draft)
+        TinkieMelodyChallengeForgeScorebook.save(draft)
         showQuestSealedNotice()
     }
 
     private func showQuestSealedNotice() {
         tinkieShowTuneNotice(
-            title: "Event Created",
-            detail: "Your Tinkie song guessing event is now saved locally and ready on Discover.",
+            title: TinkieVerseCipherTrail.singBack("EdvcefnptM bCmreeqaItFeAdZ"),
+            detail: TinkieVerseCipherTrail.singBack("YloBugrm UTgivndkaiWeo ysxoZnKgG YgPuseUsbsGijntgo reyvpeqnatP gibsK BnmoawD HsUamvbendm WlsowcQaplblGyD DaPnAds YraekaBdDyZ ZoYnG nDCiJsdcOobvxejrf.A"),
             onPrimary: { [weak self] in
             self?.onQuestReady?()
             self?.dismiss(animated: true)
@@ -640,11 +535,11 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func showPulseForgeHint(_ text: String) {
-        tinkieShowTuneNotice(title: "Tinkie", detail: text)
+        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: text)
     }
 
-    private func paintQuestSeatText() {
-        questSeatValueLabel.text = "\(questSeatLimit)"
+    private func paintQuestSpotText() {
+        questSpotValueLabel.text = "\(questSpotLimit)"
     }
 
     private func paintQuestTimeText() {
@@ -658,13 +553,13 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
 
     private func makeQuestDayCue(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
+        formatter.dateFormat = TinkieVerseCipherTrail.singBack("MjMMMs bdY")
         return formatter.string(from: date)
     }
 
     private func makeQuestHourCue(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.dateFormat = TinkieVerseCipherTrail.singBack("hr:LmTmh nav")
         return formatter.string(from: date)
     }
 
@@ -677,21 +572,21 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func listenForQuestKeyboardRise() {
-        NotificationCenter.default.addObserver(self, selector: #selector(questKeyboardRose), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(questKeyboardSettled), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(melodyChallengeKeyboardRose), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(melodyChallengeKeyboardSettled), name: UIResponder.keyboardWillHideNotification, object: nil)
         let tap = UITapGestureRecognizer(target: self, action: #selector(hushQuestTyping))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
 
-    @objc private func questKeyboardRose(_ notification: Notification) {
+    @objc private func melodyChallengeKeyboardRose(_ notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         let overlap = max(0, view.bounds.maxY - view.convert(frame, from: nil).minY)
         questScrollStage.contentInset.bottom = overlap + 24
         questScrollStage.scrollIndicatorInsets.bottom = overlap + 24
     }
 
-    @objc private func questKeyboardSettled() {
+    @objc private func melodyChallengeKeyboardSettled() {
         questScrollStage.contentInset.bottom = 0
         questScrollStage.scrollIndicatorInsets.bottom = 0
     }
@@ -705,283 +600,252 @@ final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerC
     }
 }
 
-private struct TinkieSongQuestFormGroup {
-    var name: String
-    var seatLimit: Int
+private struct TinkieMelodyCircleForm {
+    var circleName: String
+    var spotLimit: Int
     var gemNeed: Int
     var genre: String
     var mode: String
 }
 
-private final class TinkieSongQuestChordPanel: UIView {
-    var onStateChange: ((TinkieSongQuestFormGroup) -> Void)?
-    private var state: TinkieSongQuestFormGroup
-    private let questSeatValueLabel = UILabel()
+private final class TinkieMelodyQuestCirclePanel: UIView {
+    var onStateChange: ((TinkieMelodyCircleForm) -> Void)?
+    private var state: TinkieMelodyCircleForm
+    private let questSpotValueLabel = UILabel()
     private let questGemValueLabel = UILabel()
     private var questGenreBeatButtons: [TinkieQuestChoiceButton] = []
     private var questModeBeatButtons: [TinkieQuestChoiceButton] = []
 
-    init(state: TinkieSongQuestFormGroup) {
+    init(state: TinkieMelodyCircleForm) {
         self.state = state
         super.init(frame: .zero)
-        putQuestChordDraftPanelTogether()
-        paintQuestChordDraftPanel()
+        putMelodyCircleDraftPanelTogether()
+        paintMelodyCircleDraftPanel()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
-    private func putQuestChordDraftPanelTogether() {
-        backgroundColor = .white
-        layer.cornerRadius = 18
-
-        let seatRow = TinkieSongQuestChordInfoRow(symbolName: "person.2.fill", title: "Participant Limit")
-        seatRow.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(seatRow)
-
-        let seatMinus = makeChordStepper(title: "-")
-        seatMinus.addTarget(self, action: #selector(lowerChordSeatLimit), for: .touchUpInside)
-        addSubview(seatMinus)
-
-        questSeatValueLabel.textColor = UIColor.black.withAlphaComponent(0.72)
-        questSeatValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        questSeatValueLabel.textAlignment = .center
-        questSeatValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(questSeatValueLabel)
-
-        let seatPlus = makeChordStepper(title: "+")
-        seatPlus.addTarget(self, action: #selector(raiseChordSeatLimit), for: .touchUpInside)
-        addSubview(seatPlus)
-
-        let firstLine = TinkieQuestDivider()
-        firstLine.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(firstLine)
-
-        let gemRow = TinkieSongQuestChordInfoRow(assetName: "tinkie_profile_balance_gem", title: "Coins Required")
-        gemRow.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(gemRow)
-
-        let gemMinus = makeChordStepper(title: "-")
-        gemMinus.addTarget(self, action: #selector(lowerChordGemNeed), for: .touchUpInside)
-        addSubview(gemMinus)
-
-        questGemValueLabel.textColor = UIColor.black.withAlphaComponent(0.72)
-        questGemValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        questGemValueLabel.textAlignment = .center
-        questGemValueLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func putMelodyCircleDraftPanelTogether() {
+        backgroundColor = .white; layer.cornerRadius = 18
+        let spotRow = TinkieMelodyQuestCircleInfoRow(symbolName: "person.2.fill", title: "Participant Limit"); spotRow.translatesAutoresizingMaskIntoConstraints = false; addSubview(spotRow)
+        let spotMinus = makeMelodyCircleStepper(title: TinkieVerseCipherTrail.singBack("-R")); spotMinus.addTarget(self, action: #selector(lowerMelodyCircleSpotLimit), for: .touchUpInside); addSubview(spotMinus)
+        questSpotValueLabel.textColor = UIColor.black.withAlphaComponent(0.72); questSpotValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questSpotValueLabel.textAlignment = .center; questSpotValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(questSpotValueLabel)
+        let spotPlus = makeMelodyCircleStepper(title: TinkieVerseCipherTrail.singBack("+M")); spotPlus.addTarget(self, action: #selector(raiseMelodyCircleSpotLimit), for: .touchUpInside); addSubview(spotPlus)
+        let firstLine = TinkieQuestDivider(); firstLine.translatesAutoresizingMaskIntoConstraints = false; addSubview(firstLine)
+        let gemRow = TinkieMelodyQuestCircleInfoRow(assetName: "tinkie_profile_moip_gem", title: "Coins Required"); gemRow.translatesAutoresizingMaskIntoConstraints = false; addSubview(gemRow)
+        let gemMinus = makeMelodyCircleStepper(title: TinkieVerseCipherTrail.singBack("-R")); gemMinus.addTarget(self, action: #selector(lowerMelodyCircleGemNeed), for: .touchUpInside); addSubview(gemMinus)
+        questGemValueLabel.textColor = UIColor.black.withAlphaComponent(0.72); questGemValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questGemValueLabel.textAlignment = .center; questGemValueLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(questGemValueLabel)
+        let gemPlus = makeMelodyCircleStepper(title: TinkieVerseCipherTrail.singBack("+M")); gemPlus.addTarget(self, action: #selector(raiseMelodyCircleGemNeed), for: .touchUpInside); addSubview(gemPlus)
+        let secondLine = TinkieQuestDivider(); secondLine.translatesAutoresizingMaskIntoConstraints = false; addSubview(secondLine)
+        let genreRow = TinkieMelodyQuestCircleInfoRow(symbolName: "music.note", title: "Music Genre"); genreRow.translatesAutoresizingMaskIntoConstraints = false; addSubview(genreRow)
+        let genreGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("PIoMpK"), TinkieVerseCipherTrail.singBack("RsoqcMkk"), TinkieVerseCipherTrail.singBack("HViFpR-EHFoSpB"), TinkieVerseCipherTrail.singBack("EqlmercStFrxoenficcQ"), TinkieVerseCipherTrail.singBack("OclmdKiMeusO"), TinkieVerseCipherTrail.singBack("MniFxFeYdG")], selector: #selector(pickMelodyCircleGenre(_:)), store: &questGenreBeatButtons)
+        genreGrid.translatesAutoresizingMaskIntoConstraints = false; addSubview(genreGrid)
+        let thirdLine = TinkieQuestDivider(); thirdLine.translatesAutoresizingMaskIntoConstraints = false; addSubview(thirdLine)
+        let modeRow = TinkieMelodyQuestCircleInfoRow(symbolName: "bolt.fill", title: "Difficulty"); modeRow.translatesAutoresizingMaskIntoConstraints = false; addSubview(modeRow)
+        let modeGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"), TinkieVerseCipherTrail.singBack("MxeWdDiTuqmT"), TinkieVerseCipherTrail.singBack("HLaJrZdj"), TinkieVerseCipherTrail.singBack("MNibxvegdn")], selector: #selector(pickMelodyCircleMode(_:)), store: &questModeBeatButtons)
+        modeGrid.translatesAutoresizingMaskIntoConstraints = false; addSubview(modeGrid)
+        pinMelodyCircleDraftPanelBeat9(spotRow: spotRow, spotMinus: spotMinus, spotPlus: spotPlus, firstLine: firstLine)
+        pinMelodyCircleDraftPanelBeat10(spotRow: spotRow, spotPlus: spotPlus, firstLine: firstLine, gemRow: gemRow, gemMinus: gemMinus, gemPlus: gemPlus, secondLine: secondLine)
+        pinMelodyCircleDraftPanelBeat11(spotRow: spotRow, firstLine: firstLine, secondLine: secondLine, genreRow: genreRow, genreGrid: genreGrid, thirdLine: thirdLine, modeRow: modeRow, modeGrid: modeGrid)
+    }
 
-        let gemPlus = makeChordStepper(title: "+")
-        gemPlus.addTarget(self, action: #selector(raiseChordGemNeed), for: .touchUpInside)
-        addSubview(gemPlus)
-
-        let secondLine = TinkieQuestDivider()
-        secondLine.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(secondLine)
-
-        let genreRow = TinkieSongQuestChordInfoRow(symbolName: "music.note", title: "Music Genre")
-        genreRow.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(genreRow)
-
-        let genreGrid = makeQuestChoiceRows(titles: ["Pop", "Rock", "Hip-Hop", "Electronic", "Oldies", "Mixed"], selector: #selector(pickChordGenre(_:)), store: &questGenreBeatButtons)
-        genreGrid.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(genreGrid)
-
-        let thirdLine = TinkieQuestDivider()
-        thirdLine.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(thirdLine)
-
-        let modeRow = TinkieSongQuestChordInfoRow(symbolName: "bolt.fill", title: "Difficulty")
-        modeRow.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(modeRow)
-
-        let modeGrid = makeQuestChoiceRows(titles: ["Casual", "Medium", "Hard", "Mixed"], selector: #selector(pickChordMode(_:)), store: &questModeBeatButtons)
-        modeGrid.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(modeGrid)
-
+    private func pinMelodyCircleDraftPanelBeat9(spotRow: TinkieMelodyQuestCircleInfoRow, spotMinus: UIView, spotPlus: UIView, firstLine: TinkieQuestDivider) {
         NSLayoutConstraint.activate([
-            seatRow.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            seatRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
-            seatRow.trailingAnchor.constraint(lessThanOrEqualTo: seatMinus.leadingAnchor, constant: -10),
-
-            seatPlus.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            seatPlus.centerYAnchor.constraint(equalTo: seatRow.centerYAnchor),
-            seatPlus.widthAnchor.constraint(equalToConstant: 36),
-            seatPlus.heightAnchor.constraint(equalToConstant: 36),
-
-            questSeatValueLabel.trailingAnchor.constraint(equalTo: seatPlus.leadingAnchor, constant: -6),
-            questSeatValueLabel.centerYAnchor.constraint(equalTo: seatPlus.centerYAnchor),
-            questSeatValueLabel.widthAnchor.constraint(equalToConstant: 34),
-
-            seatMinus.trailingAnchor.constraint(equalTo: questSeatValueLabel.leadingAnchor, constant: -6),
-            seatMinus.centerYAnchor.constraint(equalTo: seatPlus.centerYAnchor),
-            seatMinus.widthAnchor.constraint(equalToConstant: 36),
-            seatMinus.heightAnchor.constraint(equalToConstant: 36),
-
-            firstLine.topAnchor.constraint(equalTo: seatRow.bottomAnchor, constant: 24),
+            spotRow.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            spotRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
+            spotRow.trailingAnchor.constraint(lessThanOrEqualTo: spotMinus.leadingAnchor, constant: -10),
+            
+            spotPlus.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            spotPlus.centerYAnchor.constraint(equalTo: spotRow.centerYAnchor),
+            spotPlus.widthAnchor.constraint(equalToConstant: 36),
+            spotPlus.heightAnchor.constraint(equalToConstant: 36),
+            
+            questSpotValueLabel.trailingAnchor.constraint(equalTo: spotPlus.leadingAnchor, constant: -6),
+            questSpotValueLabel.centerYAnchor.constraint(equalTo: spotPlus.centerYAnchor),
+            questSpotValueLabel.widthAnchor.constraint(equalToConstant: 34),
+            
+            spotMinus.trailingAnchor.constraint(equalTo: questSpotValueLabel.leadingAnchor, constant: -6),
+            spotMinus.centerYAnchor.constraint(equalTo: spotPlus.centerYAnchor),
+            spotMinus.widthAnchor.constraint(equalToConstant: 36),
+            spotMinus.heightAnchor.constraint(equalToConstant: 36),
+            
+            firstLine.topAnchor.constraint(equalTo: spotRow.bottomAnchor, constant: 24),
             firstLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
             firstLine.trailingAnchor.constraint(equalTo: trailingAnchor),
-            firstLine.heightAnchor.constraint(equalToConstant: 1),
+            firstLine.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
 
+    private func pinMelodyCircleDraftPanelBeat10(spotRow: TinkieMelodyQuestCircleInfoRow, spotPlus: UIView, firstLine: TinkieQuestDivider, gemRow: TinkieMelodyQuestCircleInfoRow, gemMinus: UIView, gemPlus: UIView, secondLine: TinkieQuestDivider) {
+        NSLayoutConstraint.activate([
+            
             gemRow.topAnchor.constraint(equalTo: firstLine.bottomAnchor, constant: 24),
-            gemRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            gemRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             gemRow.trailingAnchor.constraint(lessThanOrEqualTo: gemMinus.leadingAnchor, constant: -10),
-
-            gemPlus.trailingAnchor.constraint(equalTo: seatPlus.trailingAnchor),
+            
+            gemPlus.trailingAnchor.constraint(equalTo: spotPlus.trailingAnchor),
             gemPlus.centerYAnchor.constraint(equalTo: gemRow.centerYAnchor),
             gemPlus.widthAnchor.constraint(equalToConstant: 36),
             gemPlus.heightAnchor.constraint(equalToConstant: 36),
-
+            
             questGemValueLabel.trailingAnchor.constraint(equalTo: gemPlus.leadingAnchor, constant: -6),
             questGemValueLabel.centerYAnchor.constraint(equalTo: gemPlus.centerYAnchor),
             questGemValueLabel.widthAnchor.constraint(equalToConstant: 46),
-
+            
             gemMinus.trailingAnchor.constraint(equalTo: questGemValueLabel.leadingAnchor, constant: -6),
             gemMinus.centerYAnchor.constraint(equalTo: gemPlus.centerYAnchor),
             gemMinus.widthAnchor.constraint(equalToConstant: 36),
             gemMinus.heightAnchor.constraint(equalToConstant: 36),
-
+            
             secondLine.topAnchor.constraint(equalTo: gemRow.bottomAnchor, constant: 24),
             secondLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
             secondLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor),
-            secondLine.heightAnchor.constraint(equalToConstant: 1),
+            secondLine.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
 
+    private func pinMelodyCircleDraftPanelBeat11(spotRow: TinkieMelodyQuestCircleInfoRow, firstLine: TinkieQuestDivider, secondLine: TinkieQuestDivider, genreRow: TinkieMelodyQuestCircleInfoRow, genreGrid: UIView, thirdLine: TinkieQuestDivider, modeRow: TinkieMelodyQuestCircleInfoRow, modeGrid: UIView) {
+        NSLayoutConstraint.activate([
+            
             genreRow.topAnchor.constraint(equalTo: secondLine.bottomAnchor, constant: 24),
-            genreRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            genreRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             genreRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
-
+            
             genreGrid.topAnchor.constraint(equalTo: genreRow.bottomAnchor, constant: 16),
-            genreGrid.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            genreGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             genreGrid.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
-
+            
             thirdLine.topAnchor.constraint(equalTo: genreGrid.bottomAnchor, constant: 24),
             thirdLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
             thirdLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor),
             thirdLine.heightAnchor.constraint(equalToConstant: 1),
-
+            
             modeRow.topAnchor.constraint(equalTo: thirdLine.bottomAnchor, constant: 24),
-            modeRow.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            modeRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             modeRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
-
+            
             modeGrid.topAnchor.constraint(equalTo: modeRow.bottomAnchor, constant: 16),
-            modeGrid.leadingAnchor.constraint(equalTo: seatRow.leadingAnchor),
+            modeGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
             modeGrid.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
             modeGrid.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
         ])
     }
 
-    private func makeChordStepper(title: String) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: title == "+" ? 26 : 24, weight: .regular)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private func makeMelodyCircleStepper(title: String) -> UIButton {
+        let choiceBeatButton = UIButton(type: .system)
+        choiceBeatButton.setTitle(title, for: .normal)
+        choiceBeatButton.setTitleColor(.black, for: .normal)
+        choiceBeatButton.titleLabel?.font = UIFont.systemFont(ofSize: title == TinkieVerseCipherTrail.singBack("+M") ? 26 : 24, weight: .regular)
+        choiceBeatButton.translatesAutoresizingMaskIntoConstraints = false
+        return choiceBeatButton
     }
 
     private func makeQuestChoiceRows(titles: [String], selector: Selector, store: inout [TinkieQuestChoiceButton]) -> UIStackView {
         let root = UIStackView()
         root.axis = .vertical
         root.spacing = 10
-        var row = UIStackView()
-        row.axis = .horizontal
-        row.spacing = 10
-        row.distribution = .fillEqually
-        root.addArrangedSubview(row)
+        var choiceBeatRow = UIStackView()
+        choiceBeatRow.axis = .horizontal
+        choiceBeatRow.spacing = 10
+        choiceBeatRow.distribution = .fillEqually
+        root.addArrangedSubview(choiceBeatRow)
 
         for title in titles {
-            if row.arrangedSubviews.count == 4 {
-                row = UIStackView()
-                row.axis = .horizontal
-                row.spacing = 10
-                row.distribution = .fillEqually
-                root.addArrangedSubview(row)
+            if choiceBeatRow.arrangedSubviews.count == 4 {
+                choiceBeatRow = UIStackView()
+                choiceBeatRow.axis = .horizontal
+                choiceBeatRow.spacing = 10
+                choiceBeatRow.distribution = .fillEqually
+                root.addArrangedSubview(choiceBeatRow)
             }
-            let button = TinkieQuestChoiceButton(title: title)
-            button.addTarget(self, action: selector, for: .touchUpInside)
-            row.addArrangedSubview(button)
-            store.append(button)
+            let choiceBeatButton = TinkieQuestChoiceButton(title: title)
+            choiceBeatButton.addTarget(self, action: selector, for: .touchUpInside)
+            choiceBeatRow.addArrangedSubview(choiceBeatButton)
+            store.append(choiceBeatButton)
         }
-        while row.arrangedSubviews.count < 4 {
-            row.addArrangedSubview(UIView())
+        while choiceBeatRow.arrangedSubviews.count < 4 {
+            choiceBeatRow.addArrangedSubview(UIView())
         }
         return root
     }
 
-    @objc private func lowerChordSeatLimit() {
-        state.seatLimit = max(1, state.seatLimit - 1)
-        publishQuestChordState()
+    @objc private func lowerMelodyCircleSpotLimit() {
+        state.spotLimit = max(1, state.spotLimit - 1)
+        publishMelodyCircleState()
     }
 
-    @objc private func raiseChordSeatLimit() {
-        state.seatLimit = min(24, state.seatLimit + 1)
-        publishQuestChordState()
+    @objc private func raiseMelodyCircleSpotLimit() {
+        state.spotLimit = min(24, state.spotLimit + 1)
+        publishMelodyCircleState()
     }
 
-    @objc private func lowerChordGemNeed() {
+    @objc private func lowerMelodyCircleGemNeed() {
         state.gemNeed = max(0, state.gemNeed - 10)
-        publishQuestChordState()
+        publishMelodyCircleState()
     }
 
-    @objc private func raiseChordGemNeed() {
+    @objc private func raiseMelodyCircleGemNeed() {
         state.gemNeed = min(500, state.gemNeed + 10)
-        publishQuestChordState()
+        publishMelodyCircleState()
     }
 
-    @objc private func pickChordGenre(_ sender: TinkieQuestChoiceButton) {
+    @objc private func pickMelodyCircleGenre(_ sender: TinkieQuestChoiceButton) {
         state.genre = sender.titleText
-        publishQuestChordState()
+        publishMelodyCircleState()
     }
 
-    @objc private func pickChordMode(_ sender: TinkieQuestChoiceButton) {
+    @objc private func pickMelodyCircleMode(_ sender: TinkieQuestChoiceButton) {
         state.mode = sender.titleText
-        publishQuestChordState()
+        publishMelodyCircleState()
     }
 
-    private func publishQuestChordState() {
-        paintQuestChordDraftPanel()
+    private func publishMelodyCircleState() {
+        paintMelodyCircleDraftPanel()
         onStateChange?(state)
     }
 
-    private func paintQuestChordDraftPanel() {
-        questSeatValueLabel.text = "\(state.seatLimit)"
+    private func paintMelodyCircleDraftPanel() {
+        questSpotValueLabel.text = "\(state.spotLimit)"
         questGemValueLabel.text = "\(state.gemNeed)"
         questGenreBeatButtons.forEach { $0.isPicked = $0.titleText == state.genre }
         questModeBeatButtons.forEach { $0.isPicked = $0.titleText == state.mode }
     }
 }
 
-final class TinkieSongQuestChordInfoRow: UIView {
+final class TinkieMelodyQuestCircleInfoRow: UIView {
     init(symbolName: String, title: String) {
         super.init(frame: .zero)
-        putQuestChordInfoTogether(icon: UIImage(systemName: symbolName), title: title)
+        putMelodyCircleInfoTogether(icon: UIImage(systemName: symbolName), title: title)
     }
 
     init(assetName: String, title: String) {
         super.init(frame: .zero)
-        putQuestChordInfoTogether(icon: UIImage(named: assetName), title: title)
+        putMelodyCircleInfoTogether(icon: UIImage(named: assetName), title: title)
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
-    private func putQuestChordInfoTogether(icon: UIImage?, title: String) {
+    private func putMelodyCircleInfoTogether(icon: UIImage?, title: String) {
         let mark = UIImageView(image: icon)
         mark.tintColor = .black
         mark.contentMode = .scaleAspectFit
         mark.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mark)
 
-        let label = UILabel()
-        label.text = title
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.75
-        label.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(label)
+        let circleNameTuneLabel = UILabel()
+        circleNameTuneLabel.text = title
+        circleNameTuneLabel.textColor = .black
+        circleNameTuneLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        circleNameTuneLabel.adjustsFontSizeToFitWidth = true
+        circleNameTuneLabel.minimumScaleFactor = 0.75
+        circleNameTuneLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(circleNameTuneLabel)
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 24),
@@ -990,9 +854,9 @@ final class TinkieSongQuestChordInfoRow: UIView {
             mark.widthAnchor.constraint(equalToConstant: 24),
             mark.heightAnchor.constraint(equalToConstant: 24),
 
-            label.leadingAnchor.constraint(equalTo: mark.trailingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor)
+            circleNameTuneLabel.leadingAnchor.constraint(equalTo: mark.trailingAnchor, constant: 16),
+            circleNameTuneLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            circleNameTuneLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }
@@ -1016,7 +880,7 @@ final class TinkieQuestChoiceButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 
     private func refreshQuestChoiceStyle() {
@@ -1032,7 +896,7 @@ final class TinkieQuestDivider: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 }
 
@@ -1055,7 +919,7 @@ final class TinkieQuestForgeActionButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 }
 
@@ -1076,6 +940,6 @@ final class TinkieQuestForgeBackdropView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(TinkieVerseCipherTrail.singBack("ibndilth(McLogdgerrq:Y)M WhuassH Cnpoktu DbseweSnY jixmPpQliesmTepnntJeDdN"))
     }
 }
