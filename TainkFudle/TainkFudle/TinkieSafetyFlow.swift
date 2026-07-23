@@ -1,154 +1,151 @@
 import UIKit
 
-enum TinkieBassTrailre {
-    private static let reportKey = "tinkie_safety_report_records"
-    private static let blockKey = "tinkie_safety_block_records"
+enum TinkieSongShieldLedger {
+    private static let flagScrollKey = "tinkie_safety_report_records"
+    private static let shieldDeckKey = "tinkie_safety_block_records"
 
-    static func saveReport(targetKey: String, targetKind: String, reason: String, note: String) {
-        var records = stringArray(for: reportKey)
-        let stamp = "\(targetKind)|\(targetKey)|\(reason)|\(note)"
-        records.append(stamp)
-        UserDefaults.standard.set(records, forKey: reportKey)
+    static func tuckFlagReason(tuneKey: String, tuneKind: String, reason: String, note: String) {
+        var flagLines = storedStrings(for: flagScrollKey)
+        let flagStamp = "\(tuneKind)|\(tuneKey)|\(reason)|\(note)"
+        flagLines.append(flagStamp)
+        UserDefaults.standard.set(flagLines, forKey: flagScrollKey)
     }
 
-    static func blockTarget(targetKey: String, targetKind: String) {
-        var records = Set(stringArray(for: blockKey))
-        records.insert("\(targetKind)|\(targetKey)")
-        UserDefaults.standard.set(Array(records), forKey: blockKey)
+    static func hideLocalTune(tuneKey: String, tuneKind: String) {
+        var shieldLines = Set(storedStrings(for: shieldDeckKey))
+        shieldLines.insert("\(tuneKind)|\(tuneKey)")
+        UserDefaults.standard.set(Array(shieldLines), forKey: shieldDeckKey)
     }
 
     static func personKey(for name: String) -> String {
         "person:\(name)"
     }
 
-    static func activityKey(for event: TinkieLyricFlow) -> String {
+    static func questKey(for event: TinkieSongQuestTune) -> String {
         "activity:\(event.title):\(event.dateText)"
     }
 
-    static func pulseKey(for item: TinkieReelClip) -> String {
+    static func pulseKey(for item: TinkieSongPulseSpark) -> String {
         "clip:\(item.performer):\(item.coverName)"
     }
 
-    static func roomKey(event: TinkieLyricFlow, group: TinkieMelodyQuest) -> String {
+    static func roomKey(event: TinkieSongQuestTune, group: TinkieSongQuestChord) -> String {
         "room:\(event.title):\(group.name)"
     }
 
-    static func hasBlocked(targetKey: String, targetKind: String) -> Bool {
-        stringArray(for: blockKey).contains("\(targetKind)|\(targetKey)")
+    static func alreadyShielded(tuneKey: String, tuneKind: String) -> Bool {
+        storedStrings(for: shieldDeckKey).contains("\(tuneKind)|\(tuneKey)")
     }
 
-    static func hasBlockedPerson(_ name: String) -> Bool {
-        hasBlocked(targetKey: personKey(for: name), targetKind: "person")
-            || hasBlocked(targetKey: "performer:\(name)", targetKind: "profile")
-            || blockedPersonNames().contains(name)
+    static func alreadyShieldedSinger(_ name: String) -> Bool {
+        alreadyShielded(tuneKey: personKey(for: name), tuneKind: "person")
+            || alreadyShielded(tuneKey: "performer:\(name)", tuneKind: "profile")
+            || quietSingerNames().contains(name)
     }
 
-    static func allowsEvent(_ event: TinkieLyricFlow) -> Bool {
-        !hasBlocked(targetKey: activityKey(for: event), targetKind: "activity")
-            && !hasBlocked(targetKey: "eventDetail:\(event.title):\(event.dateText)", targetKind: "activity")
-            && !hasBlockedPerson(event.hostName)
+    static func keepsQuestVisible(_ event: TinkieSongQuestTune) -> Bool {
+        !alreadyShielded(tuneKey: questKey(for: event), tuneKind: "activity")
+            && !alreadyShielded(tuneKey: "eventDetail:\(event.title):\(event.dateText)", tuneKind: "activity")
+            && !alreadyShieldedSinger(event.hostName)
     }
 
-    static func allowsClip(_ item: TinkieReelClip) -> Bool {
-        !hasBlocked(targetKey: pulseKey(for: item), targetKind: "clip")
-            && !hasBlocked(targetKey: "popular:\(item.performer):\(item.coverName)", targetKind: "clip")
-            && !hasBlocked(targetKey: "clipDetail:\(item.performer):\(item.coverName)", targetKind: "clip")
-            && !hasBlockedPerson(item.performer)
+    static func keepsPulseVisible(_ item: TinkieSongPulseSpark) -> Bool {
+        !alreadyShielded(tuneKey: pulseKey(for: item), tuneKind: "clip")
+            && !alreadyShielded(tuneKey: "popular:\(item.performer):\(item.coverName)", tuneKind: "clip")
+            && !alreadyShielded(tuneKey: "clipDetail:\(item.performer):\(item.coverName)", tuneKind: "clip")
+            && !alreadyShieldedSinger(item.performer)
     }
 
-    static func hasBlockedRoom(event: TinkieLyricFlow, group: TinkieMelodyQuest) -> Bool {
-        hasBlocked(targetKey: roomKey(event: event, group: group), targetKind: "room")
+    static func alreadyShieldedRoom(event: TinkieSongQuestTune, group: TinkieSongQuestChord) -> Bool {
+        alreadyShielded(tuneKey: roomKey(event: event, group: group), tuneKind: "room")
     }
 
-    static func blockedNames() -> [String] {
-        Array(Set(blockedPersonNames())).sorted()
+    static func shieldedSingerNames() -> [String] {
+        Array(Set(quietSingerNames())).sorted()
     }
 
-    static func unblockName(_ name: String) {
-        let kept = stringArray(for: blockKey).filter { record in
-            guard let parsed = parse(record: record) else { return true }
-            guard parsed.kind == "person" || parsed.kind == "profile" else { return true }
-            return parsed.name != name
+    static func bringSingerBack(_ name: String) {
+        let keptLines = storedStrings(for: shieldDeckKey).filter { shieldLine in
+            guard let splitLine = splitShieldLine(shieldLine) else { return true }
+            guard splitLine.kind == "person" || splitLine.kind == "profile" else { return true }
+            return splitLine.name != name
         }
-        UserDefaults.standard.set(kept, forKey: blockKey)
+        UserDefaults.standard.set(keptLines, forKey: shieldDeckKey)
     }
 
-    private static func blockedPersonNames() -> [String] {
-        let names = stringArray(for: blockKey).compactMap { record -> String? in
-            guard let parsed = parse(record: record) else { return nil }
-            guard parsed.kind == "person" || parsed.kind == "profile" else { return nil }
-            return parsed.name
+    private static func quietSingerNames() -> [String] {
+        let singerNames = storedStrings(for: shieldDeckKey).compactMap { shieldLine -> String? in
+            guard let splitLine = splitShieldLine(shieldLine) else { return nil }
+            guard splitLine.kind == "person" || splitLine.kind == "profile" else { return nil }
+            return splitLine.name
         }
-        return names.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        return singerNames.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
 
-    private static func parse(record: String) -> (kind: String, name: String)? {
-        let parts = record.split(separator: "|", omittingEmptySubsequences: false)
-        guard parts.count == 2 else { return nil }
-        let rawKey = String(parts[1])
+    private static func splitShieldLine(_ shieldLine: String) -> (kind: String, name: String)? {
+        let lineParts = shieldLine.split(separator: "|", omittingEmptySubsequences: false)
+        guard lineParts.count == 2 else { return nil }
+        let rawKey = String(lineParts[1])
         let keyParts = rawKey.split(separator: ":", omittingEmptySubsequences: false)
         let name = keyParts.count > 1 ? String(keyParts[1]) : rawKey
-        return (String(parts[0]), name)
+        return (String(lineParts[0]), name)
     }
 
-    private static func stringArray(for key: String) -> [String] {
+    private static func storedStrings(for key: String) -> [String] {
         UserDefaults.standard.stringArray(forKey: key) ?? []
     }
 }
 
 extension UIViewController {
-    func tinkiePresentSafetyOptions(targetTitle: String, targetKey: String, targetKind: String, onBlock: (() -> Void)? = nil) {
-        guard TinkieProfileStore.isSignedIn else {
-            let welcome = TinkieDrumEchoer()
-            welcome.onComplete = { [weak self] in
+    func tinkiePresentRhythmShield(tuneTitle: String, tuneKey: String, tuneKind: String, onShieldDone: (() -> Void)? = nil) {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
+            let melodyGate = TinkieMelodyGateWelcomeViewController()
+            melodyGate.onMelodyGateDone = { [weak self] in
                 self?.dismiss(animated: true) {
-                    self?.tinkiePresentSafetyOptions(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind, onBlock: onBlock)
+                    self?.tinkiePresentRhythmShield(tuneTitle: tuneTitle, tuneKey: tuneKey, tuneKind: tuneKind, onShieldDone: onShieldDone)
                 }
             }
-            let navigation = UINavigationController(rootViewController: welcome)
-            navigation.modalPresentationStyle = .fullScreen
-            present(navigation, animated: true)
+            let gateNav = UINavigationController(rootViewController: melodyGate)
+            gateNav.modalPresentationStyle = .fullScreen
+            present(gateNav, animated: true)
             return
         }
 
-        let options = TinkieSafetyOptionViewController(targetTitle: targetTitle)
-        options.onReport = { [weak self] in
-            let controller = TinkieGrooveArenaController(targetTitle: targetTitle, targetKey: targetKey, targetKind: targetKind)
-            let navigation = UINavigationController(rootViewController: controller)
-            navigation.modalPresentationStyle = .fullScreen
-            self?.present(navigation, animated: true)
+        let shieldSheet = TinkieRhythmShieldSheetViewController(tuneTitle: tuneTitle)
+        shieldSheet.onFlagReason = { [weak self] in
+            let flagPage = TinkieRhythmFlagReasonViewController(tuneTitle: tuneTitle, tuneKey: tuneKey, tuneKind: tuneKind)
+            let flagNav = UINavigationController(rootViewController: flagPage)
+            flagNav.modalPresentationStyle = .fullScreen
+            self?.present(flagNav, animated: true)
         }
-        options.onBlock = { [weak self] in
-            TinkieBassTrailre.blockTarget(targetKey: targetKey, targetKind: targetKind)
-            self?.tinkieShowSafetyNotice(
+        shieldSheet.onShieldTap = { [weak self] in
+            TinkieSongShieldLedger.hideLocalTune(tuneKey: tuneKey, tuneKind: tuneKind)
+            self?.tinkieShowShieldNotice(
                 title: "Blocked",
-                detail: "This \(targetKind) is hidden from your local Tinkie experience.",
-                onDone: onBlock
+                detail: "This \(tuneKind) is hidden from your local Tinkie experience.",
+                onDone: onShieldDone
             )
         }
-        options.modalPresentationStyle = .overFullScreen
-        options.modalTransitionStyle = .crossDissolve
-        present(options, animated: true)
+        shieldSheet.modalPresentationStyle = .overFullScreen
+        present(shieldSheet, animated: false)
     }
 
-    func tinkieShowSafetyNotice(title: String, detail: String, onDone: (() -> Void)? = nil) {
-        let alert = UIAlertController(title: title, message: detail, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+    func tinkieShowShieldNotice(title: String, detail: String, onDone: (() -> Void)? = nil) {
+        tinkieShowTuneNotice(title: title, detail: detail, onPrimary: {
             onDone?()
         })
-        present(alert, animated: true)
     }
 }
 
-final class TinkieSafetyOptionViewController: UIViewController {
-    var onReport: (() -> Void)?
-    var onBlock: (() -> Void)?
-    private let targetTitle: String
-    private let dimView = UIView()
-    private let panelStack = UIStackView()
+final class TinkieRhythmShieldSheetViewController: UIViewController {
+    var onFlagReason: (() -> Void)?
+    var onShieldTap: (() -> Void)?
+    private let songTargetTitle: String
+    private let nightCoverView = UIView()
+    private let shieldButtonStack = UIStackView()
 
-    init(targetTitle: String) {
-        self.targetTitle = targetTitle
+    init(tuneTitle: String) {
+        self.songTargetTitle = tuneTitle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -158,73 +155,74 @@ final class TinkieSafetyOptionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        buildLayout()
+        putRhythmShieldSheetTogether()
     }
 
-    private func buildLayout() {
+    private func putRhythmShieldSheetTogether() {
         view.backgroundColor = .clear
-        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.46)
-        dimView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(dimView)
+        nightCoverView.backgroundColor = UIColor.black.withAlphaComponent(0.46)
+        nightCoverView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nightCoverView)
 
-        panelStack.axis = .vertical
-        panelStack.spacing = 10
-        panelStack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(panelStack)
+        shieldButtonStack.axis = .vertical
+        shieldButtonStack.spacing = 10
+        shieldButtonStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shieldButtonStack)
 
-        let report = TinkieDrumSparkton(title: "Report", style: .light)
-        report.addTarget(self, action: #selector(reportTapped), for: .touchUpInside)
-        let block = TinkieDrumSparkton(title: "Block", style: .light)
-        block.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
-        let cancel = TinkieDrumSparkton(title: "Cancel", style: .dark)
-        cancel.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        let flagButton = TinkieRhythmShieldButton(title: "Report", style: .light)
+        flagButton.addTarget(self, action: #selector(flagReasonTapped), for: .touchUpInside)
+        let shieldButton = TinkieRhythmShieldButton(title: "Block", style: .light)
+        shieldButton.addTarget(self, action: #selector(shieldTuneTapped), for: .touchUpInside)
+        let keepButton = TinkieRhythmShieldButton(title: "Cancel", style: .dark)
+        keepButton.addTarget(self, action: #selector(keepListeningTapped), for: .touchUpInside)
 
-        [report, block, cancel].forEach { panelStack.addArrangedSubview($0) }
+        [flagButton, shieldButton, keepButton].forEach { shieldButtonStack.addArrangedSubview($0) }
 
         NSLayoutConstraint.activate([
-            dimView.topAnchor.constraint(equalTo: view.topAnchor),
-            dimView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dimView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            dimView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            nightCoverView.topAnchor.constraint(equalTo: view.topAnchor),
+            nightCoverView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            nightCoverView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            nightCoverView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            panelStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28),
-            panelStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28),
-            panelStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -28),
+            shieldButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28),
+            shieldButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28),
+            shieldButtonStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -28),
 
-            report.heightAnchor.constraint(equalToConstant: 48),
-            block.heightAnchor.constraint(equalToConstant: 48),
-            cancel.heightAnchor.constraint(equalToConstant: 48)
+            flagButton.heightAnchor.constraint(equalToConstant: 48),
+            shieldButton.heightAnchor.constraint(equalToConstant: 48),
+            keepButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
 
-    @objc private func reportTapped() {
-        dismiss(animated: true) { [onReport] in onReport?() }
+    @objc private func flagReasonTapped() {
+        dismiss(animated: true) { [onFlagReason] in onFlagReason?() }
     }
 
-    @objc private func blockTapped() {
-        dismiss(animated: true) { [onBlock] in onBlock?() }
+    @objc private func shieldTuneTapped() {
+        dismiss(animated: true) { [onShieldTap] in onShieldTap?() }
     }
 
-    @objc private func cancelTapped() {
+    @objc private func keepListeningTapped() {
         dismiss(animated: true)
     }
 }
 
-final class TinkieGrooveArenaController: UIViewController, UITextViewDelegate {
-    private let targetTitle: String
-    private let targetKey: String
-    private let targetKind: String
-    private let reasons = ["Fake photo", "Scam or commercial", "Not interested", "Other"]
-    private var selectedReason: String?
-    private let scrollView = UIScrollView()
-    private let reasonStack = UIStackView()
-    private let noteView = UITextView()
-    private let confirmButton = TinkieSafetyConfirmButton()
+final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDelegate {
+    private let songTargetTitle: String
+    private let songTargetKey: String
+    private let songTargetKind: String
+    private let flagReasons = ["Fake photo", "Scam or commercial", "Not interested", "Other"]
+    private var pickedFlagReason: String?
+    private let flagScrollView = UIScrollView()
+    private let reasonBeatStack = UIStackView()
+    private let detailNoteView = UITextView()
+    private let sendFlagButton = TinkieRhythmFlagSendButton()
+    private weak var activeReasonBeatRow: TinkieRhythmFlagReasonRow?
 
-    init(targetTitle: String, targetKey: String, targetKind: String) {
-        self.targetTitle = targetTitle
-        self.targetKey = targetKey
-        self.targetKind = targetKind
+    init(tuneTitle: String, tuneKey: String, tuneKind: String) {
+        self.songTargetTitle = tuneTitle
+        self.songTargetKey = tuneKey
+        self.songTargetKind = tuneKind
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -235,199 +233,201 @@ final class TinkieGrooveArenaController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        buildLayout()
-        registerKeyboardObservers()
-        updateConfirmState()
+        putRhythmFlagPageTogether()
+        listenForKeyboardBeat()
+        paintFlagButton()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
-    private func buildLayout() {
+    private func putRhythmFlagPageTogether() {
         view.backgroundColor = .white
-        let gradient = TinkieSafetyReportBackdropView()
-        gradient.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(gradient)
+        let neonFlagWall = TinkieRhythmFlagBackdropView()
+        neonFlagWall.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(neonFlagWall)
 
-        scrollView.alwaysBounceVertical = true
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.keyboardDismissMode = .interactive
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
+        flagScrollView.alwaysBounceVertical = true
+        flagScrollView.showsVerticalScrollIndicator = false
+        flagScrollView.keyboardDismissMode = .interactive
+        flagScrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(flagScrollView)
 
-        let content = UIView()
-        content.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(content)
+        let flagContent = UIView()
+        flagContent.translatesAutoresizingMaskIntoConstraints = false
+        flagScrollView.addSubview(flagContent)
 
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(backButton)
+        let backBeatButton = UIButton(type: .system)
+        backBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backBeatButton.tintColor = .black
+        backBeatButton.addTarget(self, action: #selector(backToPreviousBeat), for: .touchUpInside)
+        backBeatButton.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(backBeatButton)
 
-        let title = UILabel()
-        title.text = "Report"
-        title.textColor = .black
-        title.font = UIFont.systemFont(ofSize: 16, weight: .black)
-        title.textAlignment = .center
-        title.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(title)
+        let flagTitleWords = UILabel()
+        flagTitleWords.text = "Report"
+        flagTitleWords.textColor = .black
+        flagTitleWords.font = UIFont.systemFont(ofSize: 16, weight: .black)
+        flagTitleWords.textAlignment = .center
+        flagTitleWords.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(flagTitleWords)
 
-        let prompt = UILabel()
-        prompt.text = "Please select the reason for reporting this \(targetKind):"
-        prompt.textColor = UIColor.black.withAlphaComponent(0.52)
-        prompt.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        prompt.numberOfLines = 0
-        prompt.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(prompt)
+        let reasonPromptWords = UILabel()
+        reasonPromptWords.text = "Please select the reason for reporting this \(songTargetKind):"
+        reasonPromptWords.textColor = UIColor.black.withAlphaComponent(0.52)
+        reasonPromptWords.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        reasonPromptWords.numberOfLines = 0
+        reasonPromptWords.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(reasonPromptWords)
 
-        reasonStack.axis = .vertical
-        reasonStack.spacing = 20
-        reasonStack.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(reasonStack)
-        reasons.forEach { reason in
-            let row = TinkieSafetyReasonRow(title: reason)
-            row.addTarget(self, action: #selector(reasonTapped(_:)), for: .touchUpInside)
-            reasonStack.addArrangedSubview(row)
+        reasonBeatStack.axis = .vertical
+        reasonBeatStack.spacing = 20
+        reasonBeatStack.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(reasonBeatStack)
+        flagReasons.forEach { flagReason in
+            let reasonRow = TinkieRhythmFlagReasonRow(title: flagReason)
+            reasonRow.addTarget(self, action: #selector(chooseFlagReason(_:)), for: .touchUpInside)
+            reasonBeatStack.addArrangedSubview(reasonRow)
         }
 
-        noteView.backgroundColor = .white
-        noteView.layer.cornerRadius = 8
-        noteView.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        noteView.textColor = .black
-        noteView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
-        noteView.delegate = self
-        noteView.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(noteView)
+        detailNoteView.backgroundColor = .white
+        detailNoteView.layer.cornerRadius = 8
+        detailNoteView.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        detailNoteView.textColor = .black
+        detailNoteView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+        detailNoteView.delegate = self
+        detailNoteView.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(detailNoteView)
 
-        let placeholder = UILabel()
-        placeholder.text = "Enter your reason here..."
-        placeholder.textColor = UIColor.black.withAlphaComponent(0.18)
-        placeholder.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        placeholder.tag = 101
-        placeholder.translatesAutoresizingMaskIntoConstraints = false
-        noteView.addSubview(placeholder)
+        let hintWordsLabel = UILabel()
+        hintWordsLabel.text = "Enter your reason here..."
+        hintWordsLabel.textColor = UIColor.black.withAlphaComponent(0.18)
+        hintWordsLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        hintWordsLabel.tag = 101
+        hintWordsLabel.translatesAutoresizingMaskIntoConstraints = false
+        detailNoteView.addSubview(hintWordsLabel)
 
-        confirmButton.setTitle("Confirm", for: .normal)
-        confirmButton.addTarget(self, action: #selector(confirmTapped), for: .touchUpInside)
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(confirmButton)
+        sendFlagButton.setTitle("Confirm", for: .normal)
+        sendFlagButton.addTarget(self, action: #selector(sendFlagReason), for: .touchUpInside)
+        sendFlagButton.translatesAutoresizingMaskIntoConstraints = false
+        flagContent.addSubview(sendFlagButton)
 
         NSLayoutConstraint.activate([
-            gradient.topAnchor.constraint(equalTo: view.topAnchor),
-            gradient.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            gradient.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            gradient.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            neonFlagWall.topAnchor.constraint(equalTo: view.topAnchor),
+            neonFlagWall.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            neonFlagWall.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            neonFlagWall.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            flagScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            flagScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            flagScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            flagScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            content.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            content.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            content.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            content.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            content.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-            content.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
+            flagContent.topAnchor.constraint(equalTo: flagScrollView.contentLayoutGuide.topAnchor),
+            flagContent.leadingAnchor.constraint(equalTo: flagScrollView.contentLayoutGuide.leadingAnchor),
+            flagContent.trailingAnchor.constraint(equalTo: flagScrollView.contentLayoutGuide.trailingAnchor),
+            flagContent.bottomAnchor.constraint(equalTo: flagScrollView.contentLayoutGuide.bottomAnchor),
+            flagContent.widthAnchor.constraint(equalTo: flagScrollView.frameLayoutGuide.widthAnchor),
+            flagContent.heightAnchor.constraint(greaterThanOrEqualTo: flagScrollView.frameLayoutGuide.heightAnchor),
 
-            backButton.topAnchor.constraint(equalTo: content.safeAreaLayoutGuide.topAnchor, constant: 18),
-            backButton.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 22),
-            backButton.widthAnchor.constraint(equalToConstant: 36),
-            backButton.heightAnchor.constraint(equalToConstant: 36),
+            backBeatButton.topAnchor.constraint(equalTo: flagContent.safeAreaLayoutGuide.topAnchor, constant: 18),
+            backBeatButton.leadingAnchor.constraint(equalTo: flagContent.leadingAnchor, constant: 22),
+            backBeatButton.widthAnchor.constraint(equalToConstant: 36),
+            backBeatButton.heightAnchor.constraint(equalToConstant: 36),
 
-            title.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            title.centerXAnchor.constraint(equalTo: content.centerXAnchor),
+            flagTitleWords.centerYAnchor.constraint(equalTo: backBeatButton.centerYAnchor),
+            flagTitleWords.centerXAnchor.constraint(equalTo: flagContent.centerXAnchor),
 
-            prompt.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 28),
-            prompt.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 28),
-            prompt.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -28),
+            reasonPromptWords.topAnchor.constraint(equalTo: backBeatButton.bottomAnchor, constant: 28),
+            reasonPromptWords.leadingAnchor.constraint(equalTo: flagContent.leadingAnchor, constant: 28),
+            reasonPromptWords.trailingAnchor.constraint(equalTo: flagContent.trailingAnchor, constant: -28),
 
-            reasonStack.topAnchor.constraint(equalTo: prompt.bottomAnchor, constant: 22),
-            reasonStack.leadingAnchor.constraint(equalTo: prompt.leadingAnchor),
-            reasonStack.trailingAnchor.constraint(equalTo: prompt.trailingAnchor),
+            reasonBeatStack.topAnchor.constraint(equalTo: reasonPromptWords.bottomAnchor, constant: 22),
+            reasonBeatStack.leadingAnchor.constraint(equalTo: reasonPromptWords.leadingAnchor),
+            reasonBeatStack.trailingAnchor.constraint(equalTo: reasonPromptWords.trailingAnchor),
 
-            noteView.topAnchor.constraint(equalTo: reasonStack.bottomAnchor, constant: 20),
-            noteView.leadingAnchor.constraint(equalTo: prompt.leadingAnchor),
-            noteView.trailingAnchor.constraint(equalTo: prompt.trailingAnchor),
-            noteView.heightAnchor.constraint(equalToConstant: 96),
+            detailNoteView.topAnchor.constraint(equalTo: reasonBeatStack.bottomAnchor, constant: 20),
+            detailNoteView.leadingAnchor.constraint(equalTo: reasonPromptWords.leadingAnchor),
+            detailNoteView.trailingAnchor.constraint(equalTo: reasonPromptWords.trailingAnchor),
+            detailNoteView.heightAnchor.constraint(equalToConstant: 96),
 
-            placeholder.topAnchor.constraint(equalTo: noteView.topAnchor, constant: 16),
-            placeholder.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: 16),
-            placeholder.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -16),
+            hintWordsLabel.topAnchor.constraint(equalTo: detailNoteView.topAnchor, constant: 16),
+            hintWordsLabel.leadingAnchor.constraint(equalTo: detailNoteView.leadingAnchor, constant: 16),
+            hintWordsLabel.trailingAnchor.constraint(equalTo: detailNoteView.trailingAnchor, constant: -16),
 
-            confirmButton.topAnchor.constraint(equalTo: noteView.bottomAnchor, constant: 34),
-            confirmButton.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 22),
-            confirmButton.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -22),
-            confirmButton.heightAnchor.constraint(equalToConstant: 48),
-            confirmButton.bottomAnchor.constraint(lessThanOrEqualTo: content.bottomAnchor, constant: -32)
+            sendFlagButton.topAnchor.constraint(equalTo: detailNoteView.bottomAnchor, constant: 34),
+            sendFlagButton.leadingAnchor.constraint(equalTo: flagContent.leadingAnchor, constant: 22),
+            sendFlagButton.trailingAnchor.constraint(equalTo: flagContent.trailingAnchor, constant: -22),
+            sendFlagButton.heightAnchor.constraint(equalToConstant: 48),
+            sendFlagButton.bottomAnchor.constraint(lessThanOrEqualTo: flagContent.bottomAnchor, constant: -32)
         ])
     }
 
-    @objc private func reasonTapped(_ sender: TinkieSafetyReasonRow) {
-        selectedReason = sender.titleText
-        reasonStack.arrangedSubviews.compactMap { $0 as? TinkieSafetyReasonRow }.forEach { row in
-            row.isPicked = row === sender
+    @objc private func chooseFlagReason(_ sender: TinkieRhythmFlagReasonRow) {
+        pickedFlagReason = sender.reasonWords
+        if activeReasonBeatRow !== sender {
+            activeReasonBeatRow?.isPicked = false
         }
-        updateConfirmState()
+        activeReasonBeatRow = sender
+        reasonBeatStack.arrangedSubviews.compactMap { $0 as? TinkieRhythmFlagReasonRow }.filter { $0 !== sender }.forEach { reasonRow in
+            reasonRow.isPicked = false
+        }
+        sender.isPicked = true
+        paintFlagButton()
     }
 
-    private func updateConfirmState() {
-        confirmButton.isEnabled = selectedReason != nil
-        confirmButton.alpha = selectedReason == nil ? 0.72 : 1
+    private func paintFlagButton() {
+        sendFlagButton.isEnabled = pickedFlagReason != nil
+        sendFlagButton.alpha = pickedFlagReason == nil ? 0.72 : 1
     }
 
     func textViewDidChange(_ textView: UITextView) {
         textView.viewWithTag(101)?.isHidden = !textView.text.isEmpty
     }
 
-    @objc private func confirmTapped() {
-        guard let selectedReason else { return }
-        let note = noteView.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        TinkieBassTrailre.saveReport(targetKey: targetKey, targetKind: targetKind, reason: selectedReason, note: note)
-        let alert = UIAlertController(
+    @objc private func sendFlagReason() {
+        guard let pickedFlagReason else { return }
+        let note = detailNoteView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        TinkieSongShieldLedger.tuckFlagReason(tuneKey: songTargetKey, tuneKind: songTargetKind, reason: pickedFlagReason, note: note)
+        tinkieShowTuneNotice(
             title: "Report Submitted",
-            message: "Thanks for helping Tinkie keep song guessing spaces safe and respectful.",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            detail: "Thanks for helping Tinkie keep song guessing spaces safe and respectful.",
+            onPrimary: { [weak self] in
             self?.dismiss(animated: true)
         })
-        present(alert, animated: true)
     }
 
-    private func registerKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditingNow))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+    private func listenForKeyboardBeat() {
+        NotificationCenter.default.addObserver(self, selector: #selector(melodyKeyboardRose), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(melodyKeyboardSettled), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let stopTypingTap = UITapGestureRecognizer(target: self, action: #selector(stopReasonTyping))
+        stopTypingTap.cancelsTouchesInView = false
+        view.addGestureRecognizer(stopTypingTap)
     }
 
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        let overlap = max(0, view.bounds.maxY - view.convert(frame, from: nil).minY)
-        scrollView.contentInset.bottom = overlap + 20
-        scrollView.scrollIndicatorInsets.bottom = overlap + 20
+    @objc private func melodyKeyboardRose(_ notification: Notification) {
+        guard let keyFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let bottomBeatGap = max(0, view.bounds.maxY - view.convert(keyFrame, from: nil).minY)
+        flagScrollView.contentInset.bottom = bottomBeatGap + 20
+        flagScrollView.verticalScrollIndicatorInsets.bottom = bottomBeatGap + 20
     }
 
-    @objc private func keyboardWillHide() {
-        scrollView.contentInset.bottom = 0
-        scrollView.scrollIndicatorInsets.bottom = 0
+    @objc private func melodyKeyboardSettled() {
+        flagScrollView.contentInset.bottom = 0
+        flagScrollView.verticalScrollIndicatorInsets.bottom = 0
     }
 
-    @objc private func endEditingNow() {
+    @objc private func stopReasonTyping() {
         view.endEditing(true)
     }
 
-    @objc private func close() {
+    @objc private func backToPreviousBeat() {
         dismiss(animated: true)
     }
 }
 
-final class TinkieDrumSparkton: UIButton {
+final class TinkieRhythmShieldButton: UIButton {
     enum Style {
         case light
         case dark
@@ -453,68 +453,76 @@ final class TinkieDrumSparkton: UIButton {
     }
 }
 
-final class TinkieSafetyReasonRow: UIControl {
-    let titleText: String
+final class TinkieRhythmFlagReasonRow: UIControl {
+    let reasonWords: String
     var isPicked: Bool = false {
-        didSet { updateState() }
+        didSet {
+            super.isSelected = isPicked
+            paintReasonDot()
+        }
     }
-    private let circleView = UIView()
-    private let dotView = UIView()
-    private let titleLabel = UILabel()
+
+    override var isSelected: Bool {
+        get { isPicked }
+        set { isPicked = newValue }
+    }
+    private let ringDotView = UIView()
+    private let whiteBeatDotView = UIView()
+    private let reasonWordsLabel = UILabel()
 
     init(title: String) {
-        self.titleText = title
+        self.reasonWords = title
         super.init(frame: .zero)
-        buildLayout()
-        updateState()
+        putReasonChoiceLineTogether()
+        paintReasonDot()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func buildLayout() {
-        circleView.layer.cornerRadius = 7
-        circleView.layer.borderWidth = 1.2
-        circleView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(circleView)
+    private func putReasonChoiceLineTogether() {
+        ringDotView.layer.cornerRadius = 7
+        ringDotView.layer.borderWidth = 1.2
+        ringDotView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(ringDotView)
 
-        dotView.layer.cornerRadius = 4
-        dotView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.addSubview(dotView)
+        whiteBeatDotView.layer.cornerRadius = 4
+        whiteBeatDotView.translatesAutoresizingMaskIntoConstraints = false
+        ringDotView.addSubview(whiteBeatDotView)
 
-        titleLabel.text = titleText
-        titleLabel.textColor = .black
-        titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
+        reasonWordsLabel.text = reasonWords
+        reasonWordsLabel.textColor = .black
+        reasonWordsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        reasonWordsLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(reasonWordsLabel)
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 24),
-            circleView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            circleView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            circleView.widthAnchor.constraint(equalToConstant: 14),
-            circleView.heightAnchor.constraint(equalToConstant: 14),
+            ringDotView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            ringDotView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ringDotView.widthAnchor.constraint(equalToConstant: 14),
+            ringDotView.heightAnchor.constraint(equalToConstant: 14),
 
-            dotView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            dotView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
-            dotView.widthAnchor.constraint(equalToConstant: 8),
-            dotView.heightAnchor.constraint(equalToConstant: 8),
+            whiteBeatDotView.centerXAnchor.constraint(equalTo: ringDotView.centerXAnchor),
+            whiteBeatDotView.centerYAnchor.constraint(equalTo: ringDotView.centerYAnchor),
+            whiteBeatDotView.widthAnchor.constraint(equalToConstant: 8),
+            whiteBeatDotView.heightAnchor.constraint(equalToConstant: 8),
 
-            titleLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 14),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            reasonWordsLabel.leadingAnchor.constraint(equalTo: ringDotView.trailingAnchor, constant: 14),
+            reasonWordsLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            reasonWordsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
-    private func updateState() {
-        circleView.layer.borderColor = isPicked ? UIColor.black.cgColor : UIColor.black.withAlphaComponent(0.24).cgColor
-        circleView.backgroundColor = isPicked ? .black : .clear
-        dotView.backgroundColor = isPicked ? .white : .clear
+    private func paintReasonDot() {
+        ringDotView.layer.borderColor = isPicked ? UIColor.black.cgColor : UIColor.black.withAlphaComponent(0.24).cgColor
+        ringDotView.backgroundColor = isPicked ? .black : .clear
+        whiteBeatDotView.backgroundColor = isPicked ? .white : .clear
     }
 }
 
-final class TinkieSafetyConfirmButton: UIButton {
+final class TinkieRhythmFlagSendButton: UIButton {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
     override init(frame: CGRect) {
@@ -553,7 +561,7 @@ final class TinkieSafetyConfirmButton: UIButton {
     }
 }
 
-final class TinkieSafetyReportBackdropView: UIView {
+final class TinkieRhythmFlagBackdropView: UIView {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
     override init(frame: CGRect) {

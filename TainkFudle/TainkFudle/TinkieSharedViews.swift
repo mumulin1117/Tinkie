@@ -1,44 +1,44 @@
 import UIKit
 
-final class TinkieTabButton: UIButton {
-    private let iconView = UIImageView()
-    private let tabTitleLabel = UILabel()
-    private let idleAssetName: String
-    private let activeAssetName: String
+final class TinkieRhythmTabButton: UIButton {
+    private let rhythmMarkView = UIImageView()
+    private let rhythmTitleLabel = UILabel()
+    private let idleTuneAssetName: String
+    private let activeTuneAssetName: String
 
     init(title: String, idleAssetName: String, activeAssetName: String) {
-        self.idleAssetName = idleAssetName
-        self.activeAssetName = activeAssetName
+        self.idleTuneAssetName = idleAssetName
+        self.activeTuneAssetName = activeAssetName
         super.init(frame: .zero)
         accessibilityLabel = title
 
-        iconView.image = UIImage(named: idleAssetName)
-        iconView.contentMode = .scaleAspectFit
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.isUserInteractionEnabled = false
+        rhythmMarkView.image = UIImage(named: idleAssetName)
+        rhythmMarkView.contentMode = .scaleAspectFit
+        rhythmMarkView.translatesAutoresizingMaskIntoConstraints = false
+        rhythmMarkView.isUserInteractionEnabled = false
 
-        tabTitleLabel.text = title
-        tabTitleLabel.textAlignment = .center
-        tabTitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        tabTitleLabel.textColor = UIColor.white.withAlphaComponent(0.45)
-        tabTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tabTitleLabel.isUserInteractionEnabled = false
+        rhythmTitleLabel.text = title
+        rhythmTitleLabel.textAlignment = .center
+        rhythmTitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        rhythmTitleLabel.textColor = UIColor.white.withAlphaComponent(0.45)
+        rhythmTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        rhythmTitleLabel.isUserInteractionEnabled = false
 
-        let stack = UIStackView(arrangedSubviews: [iconView, tabTitleLabel])
-        stack.axis = .vertical
-        stack.alignment = .center
-        stack.spacing = 4
-        stack.isUserInteractionEnabled = false
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stack)
+        let tabRhythmStack = UIStackView(arrangedSubviews: [rhythmMarkView, rhythmTitleLabel])
+        tabRhythmStack.axis = .vertical
+        tabRhythmStack.alignment = .center
+        tabRhythmStack.spacing = 4
+        tabRhythmStack.isUserInteractionEnabled = false
+        tabRhythmStack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(tabRhythmStack)
 
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
-            stack.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 4),
-            stack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -4),
-            iconView.widthAnchor.constraint(equalToConstant: 31),
-            iconView.heightAnchor.constraint(equalToConstant: 31)
+            tabRhythmStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            tabRhythmStack.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
+            tabRhythmStack.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 4),
+            tabRhythmStack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -4),
+            rhythmMarkView.widthAnchor.constraint(equalToConstant: 31),
+            rhythmMarkView.heightAnchor.constraint(equalToConstant: 31)
         ])
     }
 
@@ -48,8 +48,8 @@ final class TinkieTabButton: UIButton {
 
     override var isSelected: Bool {
         didSet {
-            iconView.image = UIImage(named: isSelected ? activeAssetName : idleAssetName)
-            tabTitleLabel.textColor = isSelected ? .white : UIColor.white.withAlphaComponent(0.45)
+            rhythmMarkView.image = UIImage(named: isSelected ? activeTuneAssetName : idleTuneAssetName)
+            rhythmTitleLabel.textColor = isSelected ? .white : UIColor.white.withAlphaComponent(0.45)
         }
     }
 }
@@ -116,7 +116,7 @@ final class TinkieBottomShadeView: UIView {
     }
 }
 
-final class TinkieCircleSymbolButton: UIButton {
+final class TinkieTuneRoundButton: UIButton {
     init(symbolName: String, tint: UIColor) {
         super.init(frame: .zero)
         var buttonConfiguration = UIButton.Configuration.plain()
@@ -161,7 +161,7 @@ final class TinkieCapsuleButton: UIButton {
     }
 }
 
-final class TinkieALyricRevea: UIButton {
+final class TinkieTuneArtworkButton: UIButton {
     private let assetImageView = UIImageView()
     private let assetSize: CGSize
 
@@ -303,5 +303,226 @@ final class TinkiePlayMarkView: UIImageView {
             image = UIImage(named: "tinkie_reels_play_mark")
             tintColor = nil
         }
+    }
+}
+
+extension UIViewController {
+    func tinkieShowTuneNotice(
+        title: String,
+        detail: String,
+        primaryTitle: String = "OK",
+        secondaryTitle: String? = nil,
+        onPrimary: (() -> Void)? = nil,
+        onSecondary: (() -> Void)? = nil
+    ) {
+        let notice = TinkieTuneNoticeViewController(
+            title: title,
+            detail: detail,
+            primaryTitle: primaryTitle,
+            secondaryTitle: secondaryTitle
+        )
+        notice.onPrimary = onPrimary
+        notice.onSecondary = onSecondary
+        notice.modalPresentationStyle = .overFullScreen
+        present(notice, animated: false)
+    }
+}
+
+final class TinkieTuneNoticeViewController: UIViewController {
+    var onPrimary: (() -> Void)?
+    var onSecondary: (() -> Void)?
+
+    private let titleText: String
+    private let detailText: String
+    private let primaryText: String
+    private let secondaryText: String?
+    private let dimView = UIView()
+    private let panelView = UIView()
+    private let entryTuneMarkView = UIImageView(image: UIImage(named: "tinkie_profile_notice_bell"))
+    private let titleLabel = UILabel()
+    private let detailLabel = UILabel()
+    private let actionStack = UIStackView()
+
+    init(title: String, detail: String, primaryTitle: String, secondaryTitle: String?) {
+        self.titleText = title
+        self.detailText = detail
+        self.primaryText = primaryTitle
+        self.secondaryText = secondaryTitle
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        putNoticeCardTogether()
+    }
+
+    private func putNoticeCardTogether() {
+        view.backgroundColor = .clear
+
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.52)
+        dimView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(dimView)
+
+        panelView.backgroundColor = .white
+        panelView.layer.cornerRadius = 24
+        panelView.layer.masksToBounds = true
+        panelView.alpha = 1
+        panelView.transform = .identity
+        panelView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(panelView)
+
+        let glowView = TinkieNoticeGlowView()
+        glowView.translatesAutoresizingMaskIntoConstraints = false
+        panelView.addSubview(glowView)
+
+        entryTuneMarkView.contentMode = .scaleAspectFit
+        entryTuneMarkView.translatesAutoresizingMaskIntoConstraints = false
+        panelView.addSubview(entryTuneMarkView)
+
+        titleLabel.text = titleText
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .black
+        titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .black)
+        titleLabel.numberOfLines = 2
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        panelView.addSubview(titleLabel)
+
+        detailLabel.text = detailText
+        detailLabel.textAlignment = .center
+        detailLabel.textColor = UIColor.black.withAlphaComponent(0.68)
+        detailLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        detailLabel.numberOfLines = 0
+        detailLabel.translatesAutoresizingMaskIntoConstraints = false
+        panelView.addSubview(detailLabel)
+
+        actionStack.axis = .vertical
+        actionStack.spacing = 10
+        actionStack.translatesAutoresizingMaskIntoConstraints = false
+        panelView.addSubview(actionStack)
+
+        if let secondaryText {
+            let secondaryButton = TinkieNoticePlainButton(title: secondaryText)
+            secondaryButton.addTarget(self, action: #selector(secondaryTapped), for: .touchUpInside)
+            actionStack.addArrangedSubview(secondaryButton)
+            secondaryButton.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        }
+
+        let primaryButton = TinkieNoticeGradientButton(title: primaryText)
+        primaryButton.addTarget(self, action: #selector(primaryTapped), for: .touchUpInside)
+        actionStack.addArrangedSubview(primaryButton)
+        primaryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+
+        NSLayoutConstraint.activate([
+            dimView.topAnchor.constraint(equalTo: view.topAnchor),
+            dimView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            dimView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            dimView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            panelView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
+            panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34),
+            panelView.widthAnchor.constraint(lessThanOrEqualToConstant: 340),
+
+            glowView.topAnchor.constraint(equalTo: panelView.topAnchor),
+            glowView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor),
+            glowView.trailingAnchor.constraint(equalTo: panelView.trailingAnchor),
+            glowView.heightAnchor.constraint(equalToConstant: 112),
+
+            entryTuneMarkView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 18),
+            entryTuneMarkView.centerXAnchor.constraint(equalTo: panelView.centerXAnchor),
+            entryTuneMarkView.widthAnchor.constraint(equalToConstant: 74),
+            entryTuneMarkView.heightAnchor.constraint(equalToConstant: 74),
+
+            titleLabel.topAnchor.constraint(equalTo: entryTuneMarkView.bottomAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -24),
+
+            detailLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            detailLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 26),
+            detailLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -26),
+
+            actionStack.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 24),
+            actionStack.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 28),
+            actionStack.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -28),
+            actionStack.bottomAnchor.constraint(equalTo: panelView.bottomAnchor, constant: -26)
+        ])
+    }
+
+    @objc private func primaryTapped() {
+        dismiss(animated: true) { [onPrimary] in
+            onPrimary?()
+        }
+    }
+
+    @objc private func secondaryTapped() {
+        dismiss(animated: true) { [onSecondary] in
+            onSecondary?()
+        }
+    }
+}
+
+private final class TinkieNoticeGlowView: UIView {
+    override class var layerClass: AnyClass { CAGradientLayer.self }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let gradient = layer as! CAGradientLayer
+        gradient.colors = [
+            UIColor(red: 0.08, green: 0.90, blue: 0.84, alpha: 0.22).cgColor,
+            UIColor(red: 0.94, green: 0.08, blue: 0.62, alpha: 0.14).cgColor,
+            UIColor.white.withAlphaComponent(0).cgColor
+        ]
+        gradient.locations = [0, 0.48, 1]
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private final class TinkieNoticeGradientButton: UIButton {
+    override class var layerClass: AnyClass { CAGradientLayer.self }
+
+    init(title: String) {
+        super.init(frame: .zero)
+        setTitle(title, for: .normal)
+        setTitleColor(.white, for: .normal)
+        titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .black)
+        layer.cornerRadius = 24
+        layer.masksToBounds = true
+        let gradient = layer as! CAGradientLayer
+        gradient.colors = [
+            UIColor(red: 0.84, green: 0.06, blue: 0.62, alpha: 1).cgColor,
+            UIColor(red: 0.12, green: 0.84, blue: 0.78, alpha: 1).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private final class TinkieNoticePlainButton: UIButton {
+    init(title: String) {
+        super.init(frame: .zero)
+        setTitle(title, for: .normal)
+        setTitleColor(UIColor.black.withAlphaComponent(0.62), for: .normal)
+        titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        backgroundColor = UIColor.black.withAlphaComponent(0.06)
+        layer.cornerRadius = 23
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.black.withAlphaComponent(0.08).cgColor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

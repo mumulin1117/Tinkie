@@ -1,39 +1,40 @@
 import UIKit
 
-final class TinkieRefrainWaveller: UIViewController {
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
+final class TinkieSingerNestViewController: UIViewController {
+    private let singerNestScroll = UIScrollView()
+    private let singerNestCanvas = UIView()
     private let headerView = UIView()
-    private let heroImageView = UIImageView()
-    private let titleLabel = UILabel()
-    private let noticeButton = TinkieAssetRoundButton(assetName: "tinkie_profile_notice_bell", diameter: 44)
-    private let settingsButton = TinkieAssetRoundButton(assetName: "tinkie_profile_settings_gear", diameter: 44)
-    private let nameButton = UIButton(type: .system)
+    private let singerHeroStageView = UIImageView()
+    private let nestTitleLabel = UILabel()
+    private let noticeButton = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_notice_bell", diameter: 44)
+    private let settingsButton = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_settings_gear", diameter: 44)
+    private let singerNameButton = UIButton(type: .system)
     private let editImageView = UIImageView(image: UIImage(named: "tinkie_profile_edit_mark"))
+    private let editTuneButton = UIButton(type: .custom)
     private let uidLabel = UILabel()
-    private let balanceCard = TinkieProfileMetricCard(style: .balance)
-    private let followersCard = TinkieProfileMetricCard(style: .dark)
-    private let followingCard = TinkieProfileMetricCard(style: .dark)
-    private enum MetricRoute: Int {
-        case balance = 1
-        case followers
+    private let gemRhythmCard = TinkieSingerPulseMeterCard(style: .balance)
+    private let fanRhythmCard = TinkieSingerPulseMeterCard(style: .dark)
+    private let followingRhythmCard = TinkieSingerPulseMeterCard(style: .dark)
+    private enum SingerNestMetric: Int {
+        case gem = 1
+        case fans
         case following
     }
     private let pulseImageView = UIImageView(image: UIImage(named: "tinkie_profile_pulse_badge"))
     private let momentsTitleLabel = UILabel()
-    private let emptyButton = UIButton(type: .system)
-    private let emptyImageView = UIImageView(image: UIImage(named: "tinkie_profile_empty_record"))
-    private let collectionView: UICollectionView
+    private let emptyPulseButton = UIButton(type: .system)
+    private let emptyPulseImageView = UIImageView(image: UIImage(named: "tinkie_profile_empty_record"))
+    private let pulseMemoryGrid: UICollectionView
     private var headerHeightConstraint: NSLayoutConstraint?
-    private var collectionHeightConstraint: NSLayoutConstraint?
-    private var snapshot = TinkieProfileStore.currentSnapshot()
+    private var pulseGridHeightConstraint: NSLayoutConstraint?
+    private var singerSnapshot = TinkieSingerStageScorebook.currentSingerStage()
 
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 14
         layout.minimumLineSpacing = 14
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        pulseMemoryGrid = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -43,14 +44,14 @@ final class TinkieRefrainWaveller: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        buildLayout()
+        putSingerNestTogether()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(sessionDidShift),
+            selector: #selector(singerSessionDidShift),
             name: .tinkieSongPulseSessionDidShift,
             object: nil
         )
-        reloadProfile()
+        reloadSingerNest()
     }
 
     deinit {
@@ -59,23 +60,23 @@ final class TinkieRefrainWaveller: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reloadProfile()
+        reloadSingerNest()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let tinkieMelodyStageHeight: CGFloat
-        if snapshot.isSignedIn {
+        if singerSnapshot.isSingerOnStage {
             tinkieMelodyStageHeight = max(360, min(430, view.bounds.height * 0.48))
         } else {
             tinkieMelodyStageHeight = max(304, min(350, view.bounds.width * 0.88))
         }
         headerHeightConstraint?.constant = tinkieMelodyStageHeight
         let tabRoom = tabBarController?.tabBar.frame.height ?? 0
-        scrollView.contentInset.bottom = tabRoom + view.safeAreaInsets.bottom + 18
-        scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: scrollView.contentInset.bottom, right: 0)
+        singerNestScroll.contentInset.bottom = tabRoom + view.safeAreaInsets.bottom + 18
+        singerNestScroll.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: singerNestScroll.contentInset.bottom, right: 0)
 
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let layout = pulseMemoryGrid.collectionViewLayout as? UICollectionViewFlowLayout {
             let spacing: CGFloat = view.bounds.width <= 340 ? 10 : 14
             let sideInset: CGFloat = view.bounds.width <= 340 ? 20 : 24
             let width = max(120, floor((view.bounds.width - sideInset * 2 - spacing) / 2))
@@ -83,65 +84,70 @@ final class TinkieRefrainWaveller: UIViewController {
             layout.minimumLineSpacing = spacing
             layout.sectionInset = UIEdgeInsets(top: 0, left: sideInset, bottom: 18, right: sideInset)
             layout.itemSize = CGSize(width: width, height: width * 1.14)
-            let rows = ceil(CGFloat(max(snapshot.moments.count, 1)) / 2)
-            collectionHeightConstraint?.constant = snapshot.moments.isEmpty ? 230 : rows * (width * 1.14) + max(0, rows - 1) * spacing + 18
+            let rows = ceil(CGFloat(max(singerSnapshot.moments.count, 1)) / 2)
+            pulseGridHeightConstraint?.constant = singerSnapshot.moments.isEmpty ? 230 : rows * (width * 1.14) + max(0, rows - 1) * spacing + 18
         }
     }
 
-    private func buildLayout() {
+    private func putSingerNestTogether() {
         view.backgroundColor = UIColor(red: 0.96, green: 0.98, blue: 0.98, alpha: 1)
 
         let glow = TinkieTopGlowView()
         glow.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(glow)
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.alwaysBounceVertical = true
-        scrollView.showsVerticalScrollIndicator = false
-        view.addSubview(scrollView)
+        singerNestScroll.contentInsetAdjustmentBehavior = .never
+        singerNestScroll.translatesAutoresizingMaskIntoConstraints = false
+        singerNestScroll.alwaysBounceVertical = true
+        singerNestScroll.showsVerticalScrollIndicator = false
+        view.addSubview(singerNestScroll)
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(contentView)
+        singerNestCanvas.translatesAutoresizingMaskIntoConstraints = false
+        singerNestScroll.addSubview(singerNestCanvas)
 
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.backgroundColor = UIColor(red: 0.02, green: 0.03, blue: 0.05, alpha: 1)
         headerView.layer.cornerRadius = 34
         headerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         headerView.layer.masksToBounds = true
-        contentView.addSubview(headerView)
+        singerNestCanvas.addSubview(headerView)
 
-        heroImageView.contentMode = .scaleAspectFill
-        heroImageView.clipsToBounds = true
-        heroImageView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(heroImageView)
+        singerHeroStageView.contentMode = .scaleAspectFill
+        singerHeroStageView.clipsToBounds = true
+        singerHeroStageView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(singerHeroStageView)
 
         let headerShade = TinkieBottomShadeView()
         headerShade.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(headerShade)
 
-        titleLabel.text = "Me"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.systemFont(ofSize: 38, weight: .black)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(titleLabel)
+        nestTitleLabel.text = "Me"
+        nestTitleLabel.textColor = .white
+        nestTitleLabel.font = UIFont.systemFont(ofSize: 38, weight: .black)
+        nestTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(nestTitleLabel)
 
-        noticeButton.addTarget(self, action: #selector(openNotice), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        noticeButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(openRhythmSettings), for: .touchUpInside)
         noticeButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(noticeButton)
         headerView.addSubview(settingsButton)
 
-        nameButton.setTitleColor(.white, for: .normal)
-        nameButton.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        nameButton.titleLabel?.lineBreakMode = .byTruncatingTail
-        nameButton.addTarget(self, action: #selector(nameTapped), for: .touchUpInside)
-        nameButton.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(nameButton)
+        singerNameButton.setTitleColor(.white, for: .normal)
+        singerNameButton.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        singerNameButton.titleLabel?.lineBreakMode = .byTruncatingTail
+        singerNameButton.addTarget(self, action: #selector(singerNameTapped), for: .touchUpInside)
+        singerNameButton.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(singerNameButton)
 
         editImageView.contentMode = .scaleAspectFit
         editImageView.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(editImageView)
+
+        editTuneButton.backgroundColor = .clear
+        editTuneButton.addTarget(self, action: #selector(singerEditTapped), for: .touchUpInside)
+        editTuneButton.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(editTuneButton)
 
         uidLabel.textColor = UIColor.white.withAlphaComponent(0.72)
         uidLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
@@ -149,52 +155,52 @@ final class TinkieRefrainWaveller: UIViewController {
         uidLabel.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(uidLabel)
 
-        let statsStack = UIStackView(arrangedSubviews: [balanceCard, followersCard, followingCard])
+        let statsStack = UIStackView(arrangedSubviews: [gemRhythmCard, fanRhythmCard, followingRhythmCard])
         statsStack.axis = .horizontal
         statsStack.alignment = .fill
         statsStack.distribution = .fill
         statsStack.spacing = 10
         statsStack.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(statsStack)
-        balanceCard.widthAnchor.constraint(equalTo: statsStack.widthAnchor, multiplier: 0.52).isActive = true
-        followersCard.widthAnchor.constraint(equalTo: followingCard.widthAnchor).isActive = true
+        singerNestCanvas.addSubview(statsStack)
+        gemRhythmCard.widthAnchor.constraint(equalTo: statsStack.widthAnchor, multiplier: 0.52).isActive = true
+        fanRhythmCard.widthAnchor.constraint(equalTo: followingRhythmCard.widthAnchor).isActive = true
 
-        [balanceCard, followersCard, followingCard].forEach { card in
-            card.addTarget(self, action: #selector(metricTapped), for: .touchUpInside)
+        [gemRhythmCard, fanRhythmCard, followingRhythmCard].forEach { card in
+            card.addTarget(self, action: #selector(singerMeterTapped), for: .touchUpInside)
         }
-        balanceCard.tag = MetricRoute.balance.rawValue
-        followersCard.tag = MetricRoute.followers.rawValue
-        followingCard.tag = MetricRoute.following.rawValue
+        gemRhythmCard.tag = SingerNestMetric.gem.rawValue
+        fanRhythmCard.tag = SingerNestMetric.fans.rawValue
+        followingRhythmCard.tag = SingerNestMetric.following.rawValue
 
         pulseImageView.contentMode = .scaleAspectFit
         pulseImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(pulseImageView)
+        singerNestCanvas.addSubview(pulseImageView)
 
         momentsTitleLabel.text = "Moments"
         momentsTitleLabel.textColor = .black
         momentsTitleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
         momentsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(momentsTitleLabel)
+        singerNestCanvas.addSubview(momentsTitleLabel)
 
-        emptyButton.addTarget(self, action: #selector(emptyTapped), for: .touchUpInside)
-        emptyButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(emptyButton)
+        emptyPulseButton.addTarget(self, action: #selector(emptyPulseNestTapped), for: .touchUpInside)
+        emptyPulseButton.translatesAutoresizingMaskIntoConstraints = false
+        singerNestCanvas.addSubview(emptyPulseButton)
 
-        emptyImageView.contentMode = .scaleAspectFit
-        emptyImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyButton.addSubview(emptyImageView)
+        emptyPulseImageView.contentMode = .scaleAspectFit
+        emptyPulseImageView.translatesAutoresizingMaskIntoConstraints = false
+        emptyPulseButton.addSubview(emptyPulseImageView)
 
-        collectionView.backgroundColor = .clear
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.isScrollEnabled = false
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(TinkieMomentCell.self, forCellWithReuseIdentifier: TinkieMomentCell.reuseIdentifier)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(collectionView)
+        pulseMemoryGrid.backgroundColor = .clear
+        pulseMemoryGrid.showsVerticalScrollIndicator = false
+        pulseMemoryGrid.isScrollEnabled = false
+        pulseMemoryGrid.dataSource = self
+        pulseMemoryGrid.delegate = self
+        pulseMemoryGrid.register(TinkieSingerPulseMemoryTile.self, forCellWithReuseIdentifier: TinkieSingerPulseMemoryTile.reuseIdentifier)
+        pulseMemoryGrid.translatesAutoresizingMaskIntoConstraints = false
+        singerNestCanvas.addSubview(pulseMemoryGrid)
 
         headerHeightConstraint = headerView.heightAnchor.constraint(equalToConstant: 344)
-        collectionHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 230)
+        pulseGridHeightConstraint = pulseMemoryGrid.heightAnchor.constraint(equalToConstant: 230)
 
         NSLayoutConstraint.activate([
             glow.topAnchor.constraint(equalTo: view.topAnchor),
@@ -202,205 +208,215 @@ final class TinkieRefrainWaveller: UIViewController {
             glow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             glow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.64),
 
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            singerNestScroll.topAnchor.constraint(equalTo: view.topAnchor),
+            singerNestScroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            singerNestScroll.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            singerNestScroll.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            singerNestCanvas.topAnchor.constraint(equalTo: singerNestScroll.contentLayoutGuide.topAnchor),
+            singerNestCanvas.leadingAnchor.constraint(equalTo: singerNestScroll.contentLayoutGuide.leadingAnchor),
+            singerNestCanvas.trailingAnchor.constraint(equalTo: singerNestScroll.contentLayoutGuide.trailingAnchor),
+            singerNestCanvas.bottomAnchor.constraint(equalTo: singerNestScroll.contentLayoutGuide.bottomAnchor),
+            singerNestCanvas.widthAnchor.constraint(equalTo: singerNestScroll.frameLayoutGuide.widthAnchor),
 
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: singerNestCanvas.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor),
             headerHeightConstraint!,
 
-            heroImageView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            heroImageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            heroImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            heroImageView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            singerHeroStageView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            singerHeroStageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            singerHeroStageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            singerHeroStageView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
 
             headerShade.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             headerShade.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             headerShade.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
             headerShade.heightAnchor.constraint(equalTo: headerView.heightAnchor, multiplier: 0.55),
 
-            titleLabel.topAnchor.constraint(equalTo: headerView.safeAreaLayoutGuide.topAnchor, constant: 28),
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 28),
+            nestTitleLabel.topAnchor.constraint(equalTo: headerView.safeAreaLayoutGuide.topAnchor, constant: 28),
+            nestTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 28),
             settingsButton.widthAnchor.constraint(equalToConstant: 44),
             settingsButton.heightAnchor.constraint(equalToConstant: 44),
             settingsButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -22),
-            settingsButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            settingsButton.centerYAnchor.constraint(equalTo: nestTitleLabel.centerYAnchor),
             noticeButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -14),
             noticeButton.centerYAnchor.constraint(equalTo: settingsButton.centerYAnchor),
             noticeButton.widthAnchor.constraint(equalToConstant: 44),
             noticeButton.heightAnchor.constraint(equalToConstant: 44),
-            nameButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            nameButton.bottomAnchor.constraint(equalTo: uidLabel.topAnchor, constant: -4),
-            nameButton.leadingAnchor.constraint(greaterThanOrEqualTo: headerView.leadingAnchor, constant: 44),
-            nameButton.trailingAnchor.constraint(lessThanOrEqualTo: headerView.trailingAnchor, constant: -44),
+            singerNameButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            singerNameButton.bottomAnchor.constraint(equalTo: uidLabel.topAnchor, constant: -4),
+            singerNameButton.leadingAnchor.constraint(greaterThanOrEqualTo: headerView.leadingAnchor, constant: 44),
+            singerNameButton.trailingAnchor.constraint(lessThanOrEqualTo: headerView.trailingAnchor, constant: -44),
 
-            editImageView.leadingAnchor.constraint(equalTo: nameButton.trailingAnchor, constant: 7),
-            editImageView.centerYAnchor.constraint(equalTo: nameButton.centerYAnchor, constant: 2),
+            editImageView.leadingAnchor.constraint(equalTo: singerNameButton.trailingAnchor, constant: 7),
+            editImageView.centerYAnchor.constraint(equalTo: singerNameButton.centerYAnchor, constant: 2),
             editImageView.widthAnchor.constraint(equalToConstant: 20),
             editImageView.heightAnchor.constraint(equalToConstant: 20),
+
+            editTuneButton.centerXAnchor.constraint(equalTo: editImageView.centerXAnchor),
+            editTuneButton.centerYAnchor.constraint(equalTo: editImageView.centerYAnchor),
+            editTuneButton.widthAnchor.constraint(equalToConstant: 44),
+            editTuneButton.heightAnchor.constraint(equalToConstant: 44),
 
             uidLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             uidLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -24),
 
             statsStack.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 22),
-            statsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            statsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            statsStack.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 20),
+            statsStack.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor, constant: -20),
             statsStack.heightAnchor.constraint(equalToConstant: 82),
 
             pulseImageView.topAnchor.constraint(equalTo: statsStack.bottomAnchor, constant: 26),
-            pulseImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            pulseImageView.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 18),
             pulseImageView.widthAnchor.constraint(equalToConstant: 138),
             pulseImageView.heightAnchor.constraint(equalToConstant: 34),
 
             momentsTitleLabel.topAnchor.constraint(equalTo: pulseImageView.bottomAnchor, constant: 12),
-            momentsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            momentsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            momentsTitleLabel.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 24),
+            momentsTitleLabel.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor, constant: -24),
 
-            emptyButton.topAnchor.constraint(equalTo: momentsTitleLabel.bottomAnchor, constant: 16),
-            emptyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            emptyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            emptyButton.heightAnchor.constraint(equalToConstant: 218),
+            emptyPulseButton.topAnchor.constraint(equalTo: momentsTitleLabel.bottomAnchor, constant: 16),
+            emptyPulseButton.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 24),
+            emptyPulseButton.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor, constant: -24),
+            emptyPulseButton.heightAnchor.constraint(equalToConstant: 218),
 
-            emptyImageView.centerXAnchor.constraint(equalTo: emptyButton.centerXAnchor),
-            emptyImageView.centerYAnchor.constraint(equalTo: emptyButton.centerYAnchor),
-            emptyImageView.widthAnchor.constraint(lessThanOrEqualTo: emptyButton.widthAnchor, multiplier: 1),
-            emptyImageView.heightAnchor.constraint(equalToConstant: 150),
+            emptyPulseImageView.centerXAnchor.constraint(equalTo: emptyPulseButton.centerXAnchor),
+            emptyPulseImageView.centerYAnchor.constraint(equalTo: emptyPulseButton.centerYAnchor),
+            emptyPulseImageView.widthAnchor.constraint(lessThanOrEqualTo: emptyPulseButton.widthAnchor, multiplier: 1),
+            emptyPulseImageView.heightAnchor.constraint(equalToConstant: 150),
 
-            collectionView.topAnchor.constraint(equalTo: momentsTitleLabel.bottomAnchor, constant: 20),
-            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            collectionHeightConstraint!,
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -28)
+            pulseMemoryGrid.topAnchor.constraint(equalTo: momentsTitleLabel.bottomAnchor, constant: 20),
+            pulseMemoryGrid.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor),
+            pulseMemoryGrid.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor),
+            pulseGridHeightConstraint!,
+            pulseMemoryGrid.bottomAnchor.constraint(equalTo: singerNestCanvas.bottomAnchor, constant: -28)
         ])
     }
 
-    private func reloadProfile() {
-        snapshot = TinkieProfileStore.currentSnapshot()
-        if let path = snapshot.heroImagePath, let image = UIImage(contentsOfFile: path) {
-            heroImageView.image = image
+    private func reloadSingerNest() {
+        singerSnapshot = TinkieSingerStageScorebook.currentSingerStage()
+        if let path = singerSnapshot.heroImagePath, let image = UIImage(contentsOfFile: path) {
+            singerHeroStageView.image = image
         } else {
-            heroImageView.image = UIImage(named: snapshot.heroImageName)
+            singerHeroStageView.image = UIImage(named: singerSnapshot.heroImageName)
         }
-        heroImageView.contentMode = snapshot.isSignedIn ? .scaleAspectFill : .scaleAspectFit
-        nameButton.setTitle(snapshot.nickname, for: .normal)
-        uidLabel.text = "Uid:\(snapshot.uid)"
-        editImageView.isHidden = !snapshot.isSignedIn
-        balanceCard.configure(value: "\(snapshot.balance)", title: "My Balance")
-        followersCard.configure(value: "\(snapshot.followers)", title: "Followers")
-        followingCard.configure(value: "\(snapshot.following)", title: "Following")
-        emptyButton.isHidden = !snapshot.moments.isEmpty
-        collectionView.isHidden = snapshot.moments.isEmpty
-        collectionView.reloadData()
+        singerHeroStageView.contentMode = singerSnapshot.isSingerOnStage ? .scaleAspectFill : .scaleAspectFit
+        singerNameButton.setTitle(singerSnapshot.nickname, for: .normal)
+        uidLabel.text = "Uid:\(singerSnapshot.uid)"
+        editImageView.isHidden = !singerSnapshot.isSingerOnStage
+        editTuneButton.isHidden = !singerSnapshot.isSingerOnStage
+        gemRhythmCard.tuneMeterCard(value: "\(singerSnapshot.balance)", title: "My Balance")
+        fanRhythmCard.tuneMeterCard(value: "\(singerSnapshot.followers)", title: "Followers")
+        followingRhythmCard.tuneMeterCard(value: "\(singerSnapshot.following)", title: "Following")
+        emptyPulseButton.isHidden = !singerSnapshot.moments.isEmpty
+        pulseMemoryGrid.isHidden = singerSnapshot.moments.isEmpty
+        pulseMemoryGrid.reloadData()
         view.setNeedsLayout()
     }
 
-    @objc private func nameTapped() {
-        snapshot.isSignedIn ? openProfileEditor() : openWelcome()
+    @objc private func singerNameTapped() {
+        singerSnapshot.isSingerOnStage ? openSingerTuneEditor() : openMelodyGateWelcome()
     }
 
-    @objc private func metricTapped(_ sender: UIButton) {
-        guard TinkieProfileStore.isSignedIn else {
-            openWelcome()
+    @objc private func singerEditTapped() {
+        singerSnapshot.isSingerOnStage ? openSingerTuneEditor() : openMelodyGateWelcome()
+    }
+
+    @objc private func singerMeterTapped(_ sender: UIButton) {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
+            openMelodyGateWelcome()
             return
         }
-        if sender.tag == MetricRoute.balance.rawValue {
-            openWallet()
+        if sender.tag == SingerNestMetric.gem.rawValue {
+            openGemRhythmVault()
             return
         }
-        if sender.tag == MetricRoute.followers.rawValue {
-            presentWrapped(TinkieTimbreWaveController(kind: .followers))
+        if sender.tag == SingerNestMetric.fans.rawValue {
+            presentSingerWrappedRoute(TinkieSingerCircleRosterViewController(rosterCircle: .followers))
             return
         }
-        presentWrapped(TinkieTimbreWaveController(kind: .following))
+        presentSingerWrappedRoute(TinkieSingerCircleRosterViewController(rosterCircle: .following))
     }
 
-    @objc private func emptyTapped() {
-        openWelcome()
+    @objc private func emptyPulseNestTapped() {
+        openMelodyGateWelcome()
     }
 
-    @objc private func sessionDidShift() {
-        reloadProfile()
+    @objc private func singerSessionDidShift() {
+        reloadSingerNest()
     }
 
-    @objc private func openNotice() {
-        guard snapshot.isSignedIn else {
-            openWelcome()
+    @objc private func openSingerEchoInbox() {
+        guard singerSnapshot.isSingerOnStage else {
+            openMelodyGateWelcome()
             return
         }
-        presentWrapped(TinkieBridgeArctroller())
+        presentSingerWrappedRoute(TinkieSingerEchoInboxViewController())
     }
 
-    @objc private func openSettings() {
-        guard snapshot.isSignedIn else {
-            openWelcome()
+    @objc private func openRhythmSettings() {
+        guard singerSnapshot.isSingerOnStage else {
+            openMelodyGateWelcome()
             return
         }
-        let route = TinkieGenreCircleler()
-        route.onSessionChanged = { [weak self] in
-            self?.reloadProfile()
+        let route = TinkieRhythmSettingsViewController()
+        route.onSettingsRhythmChanged = { [weak self] in
+            self?.reloadSingerNest()
         }
-        presentWrapped(route)
+        presentSingerWrappedRoute(route)
     }
 
-    private func openProfileEditor() {
-        let editor = TinkieteChorusCuetroller(snapshot: snapshot)
-        editor.onProfileSaved = { [weak self] in
-            self?.reloadProfile()
+    private func openSingerTuneEditor() {
+        let editor = TinkieSingerTuneEditViewController(singerSnapshot: singerSnapshot)
+        editor.onSingerTuneSealed = { [weak self] in
+            self?.reloadSingerNest()
         }
-        presentWrapped(editor)
+        presentSingerWrappedRoute(editor)
     }
 
-    private func openWallet() {
-        let wallet = TinkieLyricDeckroller()
-        wallet.onBalanceChanged = { [weak self] in
-            self?.reloadProfile()
+    private func openGemRhythmVault() {
+        let gemVault = TinkieRhythmGemVaultViewController()
+        gemVault.onGemRhythmChanged = { [weak self] in
+            self?.reloadSingerNest()
         }
-        presentWrapped(wallet)
+        presentSingerWrappedRoute(gemVault)
     }
 
-    private func openWelcome() {
-        let welcome = TinkieDrumEchoer()
-        welcome.onComplete = { [weak self] in
+    private func openMelodyGateWelcome() {
+        let welcome = TinkieMelodyGateWelcomeViewController()
+        welcome.onMelodyGateDone = { [weak self] in
             self?.dismiss(animated: true) {
-                self?.reloadProfile()
+                self?.reloadSingerNest()
             }
         }
-        presentWrapped(welcome)
+        presentSingerWrappedRoute(welcome)
     }
 
-    private func presentRoute(title: String, detail: String) {
-        presentWrapped(TinkieProfileRouteViewController(titleText: title, detailText: detail, showsSignOut: false))
+    private func presentSingerNoteRoute(title: String, detail: String) {
+        presentSingerWrappedRoute(TinkieSingerRouteNoteViewController(titleText: title, detailText: detail, showsSignOut: false))
     }
 
-    private func presentWrapped(_ controller: UIViewController) {
+    private func presentSingerWrappedRoute(_ controller: UIViewController) {
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
     }
 }
 
-extension TinkieRefrainWaveller: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension TinkieSingerNestViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        snapshot.moments.count
+        singerSnapshot.moments.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TinkieMomentCell.reuseIdentifier, for: indexPath) as! TinkieMomentCell
-        cell.configure(with: snapshot.moments[indexPath.item])
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TinkieSingerPulseMemoryTile.reuseIdentifier, for: indexPath) as! TinkieSingerPulseMemoryTile
+        cell.tuneMemoryTile(with: singerSnapshot.moments[indexPath.item])
         return cell
     }
 }
 
-final class TinkieProfileRouteViewController: UIViewController {
+final class TinkieSingerRouteNoteViewController: UIViewController {
     var onSignOut: (() -> Void)?
     private let titleText: String
     private let detailText: String
@@ -447,7 +463,7 @@ final class TinkieProfileRouteViewController: UIViewController {
         ])
 
         if showsSignOut {
-            let button = TinkieGradientActionButton(title: "Sign Out")
+            let button = TinkieSingerPulseButton(title: "Sign Out")
             button.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(button)
@@ -469,8 +485,8 @@ final class TinkieProfileRouteViewController: UIViewController {
     }
 }
 
-final class TinkieMomentCell: UICollectionViewCell {
-    static let reuseIdentifier = "TinkieMomentCell"
+final class TinkieSingerPulseMemoryTile: UICollectionViewCell {
+    static let reuseIdentifier = "TinkieSingerPulseMemoryTile"
     private let coverImageView = UIImageView()
     private let playImageView = UIImageView(image: UIImage(named: "tinkie_moment_play_mark"))
     private let titleLabel = UILabel()
@@ -524,17 +540,17 @@ final class TinkieMomentCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with moment: TinkiBeatPulse) {
-        if let coverPath = moment.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
+    func tuneMemoryTile(with pulseEcho: TinkieSongPulseEcho) {
+        if let coverPath = pulseEcho.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
             coverImageView.image = localArt
         } else {
-            coverImageView.image = UIImage(named: moment.coverName)
+            coverImageView.image = UIImage(named: pulseEcho.coverName)
         }
-        titleLabel.text = moment.title
+        titleLabel.text = pulseEcho.title
     }
 }
 
-final class TinkieAssetRoundButton: UIButton {
+final class TinkieSingerRoundAssetButton: UIButton {
     init(assetName: String, diameter: CGFloat) {
         super.init(frame: .zero)
         setBackgroundImage(UIImage(named: assetName), for: .normal)
@@ -553,7 +569,7 @@ final class TinkieAssetRoundButton: UIButton {
     }
 }
 
-final class TinkieGradientActionButton: UIButton {
+final class TinkieSingerPulseButton: UIButton {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
     init(title: String) {
@@ -577,7 +593,7 @@ final class TinkieGradientActionButton: UIButton {
     }
 }
 
-final class TinkieProfileMetricCard: UIButton {
+final class TinkieSingerPulseMeterCard: UIButton {
     enum Style {
         case balance
         case dark
@@ -593,19 +609,19 @@ final class TinkieProfileMetricCard: UIButton {
     init(style: Style) {
         self.style = style
         super.init(frame: .zero)
-        buildLayout()
+        putSingerMeterCardTogether()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(value: String, title: String) {
+    func tuneMeterCard(value: String, title: String) {
         valueLabel.text = value
         captionLabel.text = title
     }
 
-    private func buildLayout() {
+    private func putSingerMeterCardTogether() {
         layer.cornerRadius = 14
         layer.masksToBounds = true
 

@@ -2,10 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Tinkie uses the camera so you can take a local profile avatar for your song challenge identity.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Tinkie lets you choose a local profile avatar from your photo library.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tinkie uses the microphone so you can join song guessing rounds, speak in voice song rooms, and take part in rhythm challenges with your own voice.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

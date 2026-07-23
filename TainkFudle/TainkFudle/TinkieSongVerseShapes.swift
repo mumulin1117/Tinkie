@@ -1,6 +1,6 @@
 import UIKit
 
-struct TinkieLyricFlow {
+struct TinkieSongQuestTune {
     let title: String
     let dateText: String
     let timeText: String
@@ -36,16 +36,13 @@ struct TinkieLyricFlow {
         self.listenerNote = listenerNote
     }
 }
-
-typealias TinkieSongEvent = TinkieLyricFlow
-
-struct TinkieReelClip {
+struct TinkieSongPulseSpark {
     let performer: String
     let moment: String
     let caption: String
     let coverName: String
     let coverPath: String?
-    let clipFileName: String
+    let pulseFileName: String
     let avatarName: String
     let avatarPath: String?
     let echoCount: String
@@ -56,7 +53,7 @@ struct TinkieReelClip {
         caption: String,
         coverName: String,
         coverPath: String? = nil,
-        clipFileName: String,
+        pulseFileName: String,
         avatarName: String,
         avatarPath: String? = nil,
         echoCount: String
@@ -66,14 +63,14 @@ struct TinkieReelClip {
         self.caption = caption
         self.coverName = coverName
         self.coverPath = coverPath
-        self.clipFileName = clipFileName
+        self.pulseFileName = pulseFileName
         self.avatarName = avatarName
         self.avatarPath = avatarPath
         self.echoCount = echoCount
     }
 }
 
-struct TinkiBeatPulse {
+struct TinkieSongPulseEcho {
     let title: String
     let note: String
     let coverName: String
@@ -86,11 +83,8 @@ struct TinkiBeatPulse {
         self.coverPath = coverPath
     }
 }
-
-typealias TinkieProfileMoment = TinkiBeatPulse
-
-struct TinkieMelodyScoreot {
-    let isSignedIn: Bool
+struct TinkieSingerSnapshot {
+    let isSingerOnStage: Bool
     let nickname: String
     let uid: String
     let balance: Int
@@ -99,12 +93,9 @@ struct TinkieMelodyScoreot {
     let heroImageName: String
     let heroImagePath: String?
     let signature: String
-    let moments: [TinkiBeatPulse]
+    let moments: [TinkieSongPulseEcho]
 }
-
-typealias TinkieProfileSnapshot = TinkieMelodyScoreot
-
-struct TrinkieMelodyGuess {
+struct TinkieSingerTuneCard {
     let nickname: String
     let uid: String
     let balance: Int
@@ -112,25 +103,19 @@ struct TrinkieMelodyGuess {
     let following: Int
     let heroImageName: String
     let signature: String
-    let moments: [TinkiBeatPulse]
+    let moments: [TinkieSongPulseEcho]
 }
-
-typealias TinkiePersona = TrinkieMelodyGuess
-
-struct TinkieMelodyQuest {
+struct TinkieSongQuestChord {
     let name: String
     let tags: [String]
     let joinedCount: Int
     let spotsLeft: Int
     let gemNeed: Int
     let avatarNames: [String]
-    let roomMembers: [TinkieMelodyCue]
-    let roomLines: [tinkieMelodyArc]
+    let rhythmSeats: [TinkieRhythmSingerSeat]
+    let rhythmCueLines: [TinkieRhythmCueLine]
 }
-
-typealias TinkieEventGroup = TinkieMelodyQuest
-
-struct TinkieMelodyCue {
+struct TinkieRhythmSingerSeat {
     let name: String
     let avatarName: String
     let avatarPath: String?
@@ -145,26 +130,15 @@ struct TinkieMelodyCue {
         self.isMuted = isMuted
     }
 }
-
-typealias TinkieRoomMember = TinkieMelodyCue
-
-struct tinkieMelodyArc {
+struct TinkieRhythmCueLine {
     let speaker: String
     let text: String
 }
-
-typealias TinkieRoomLine = tinkieMelodyArc
-
-enum tinkieMelodyWave {
+enum TinkieQuestAvailability {
     case open
     case ended
 }
-
-typealias TinkieEventAvailability = tinkieMelodyWave
-
-struct tinkieHookRadar {
-    let availability: tinkieMelodyWave
+struct TinkieQuestEntryState {
+    let availability: TinkieQuestAvailability
     let joinedGroupName: String?
 }
-
-typealias TinkieEventDetailState = tinkieHookRadar

@@ -1,17 +1,12 @@
 import Foundation
 
-//struct TinkieAuthCredentials {
-//    let email: String
-//    let password: String
-//}
-
-enum SongAnswer {
-    case success
-    case failure(String)
+enum TinkieMelodyGateResult {
+    case melodyOpened
+    case melodyBlocked(String)
 }
 
-enum TinkieSongStreak {
-    static let eulaBody = """
+enum TinkieMelodyRulebookVerse {
+    static let eulaTuneBody = """
 Welcome to Tinkie. Tinkie is a music guessing space built around voices, song cues, quick answers, and respectful sound-based play.
 
 1. You must meet the legal age and local eligibility requirements for creating an account and using interactive audio features in your region.
@@ -25,7 +20,7 @@ Welcome to Tinkie. Tinkie is a music guessing space built around voices, song cu
 By tapping I agree, you accept the Terms of Use and Privacy Policy and agree to keep Tinkie safe for music games and relaxed voice play.
 """
 
-    static let termsBody = """
+    static let termsTuneBody = """
 Tinkie – Voice Songs Terms of Use
 
 Welcome to Tinkie – Voice Songs. Tinkie is designed as an entertainment app for music guessing, singing clues, song challenges, profile moments, and relaxed voice-themed party experiences. By creating an account, signing in, browsing activities, choosing an avatar, joining a song challenge, or using any feature in Tinkie, you agree to follow these Terms of Use and all applicable laws in your region.
@@ -41,7 +36,7 @@ Tinkie may provide report and block tools so users can respond to unwanted or ha
 This version of Tinkie primarily uses local device storage to create a realistic account and profile flow. Signing out clears the current sign-in state but does not automatically delete locally registered profile records. You are responsible for protecting your device, password, and account access. If you have questions about these Terms, safety, content handling, or account concerns, contact us at tinkie@gmail.com.
 """
 
-    static let privacyBody = """
+    static let privacyTuneBody = """
 Tinkie – Voice Songs Privacy Policy
 
 Tinkie – Voice Songs respects your privacy and is designed to use only the information needed to provide a music guessing, voice-themed party, song challenge, and profile moment experience. This Privacy Policy explains what information may be handled by the app, why it is used, and how you can contact us about privacy questions.

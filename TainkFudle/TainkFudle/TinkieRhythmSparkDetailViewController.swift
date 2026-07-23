@@ -1,8 +1,8 @@
 import AVFoundation
 import UIKit
 
-final class RefrainCircleController: UIViewController, UITextFieldDelegate {
-    private let clip: TinkieReelClip
+final class TinkieRhythmSparkDetailViewController: UIViewController, UITextFieldDelegate {
+    private let pulseSpark: TinkieSongPulseSpark
     private let rhythmLayer = AVPlayerLayer()
     private var rhythmPlayer: AVPlayer?
     private var loopToken: NSObjectProtocol?
@@ -21,11 +21,11 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
     private var sparked: Bool
     private var saved: Bool
 
-    init(clip: TinkieReelClip, bonded: Bool) {
-        self.clip = clip
+    init(pulseSpark: TinkieSongPulseSpark, bonded: Bool) {
+        self.pulseSpark = pulseSpark
         self.bonded = bonded
-        let key = Self.rhythmKey(for: clip)
-        self.sparked = TinkieRhythmBondStore.hasSpark(for: key)
+        let key = Self.rhythmKey(for: pulseSpark)
+        self.sparked = TinkieRhythmBondScorebook.hasRhythmSpark(for: key)
         self.saved = TinkieRhythmSaveStore.hasSaved(for: key)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
@@ -38,9 +38,9 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        buildLayout()
-        prepareRhythm()
-        registerKeyboardObservers()
+        putRhythmSparkDetailTogether()
+        prepareSparkLoop()
+        listenForSparkKeyboard()
     }
 
     override func viewDidLayoutSubviews() {
@@ -49,14 +49,14 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
     }
 
     deinit {
-        stopRhythm()
+        stopSparkLoop()
         NotificationCenter.default.removeObserver(self)
     }
 
-    private func buildLayout() {
+    private func putRhythmSparkDetailTogether() {
         view.backgroundColor = UIColor(red: 0.93, green: 0.99, blue: 0.98, alpha: 1)
 
-        let halo = TinkieQuestCreateBackdropView()
+        let halo = TinkieQuestForgeBackdropView()
         halo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(halo)
 
@@ -74,26 +74,26 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(leaveSparkDetail), for: .touchUpInside)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(backButton)
 
         let avatarImageView = UIImageView()
-        if let avatarPath = clip.avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
+        if let avatarPath = pulseSpark.avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
             avatarImageView.image = localArt
         } else {
-            avatarImageView.image = UIImage(named: clip.avatarName)
+            avatarImageView.image = UIImage(named: pulseSpark.avatarName)
         }
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.layer.cornerRadius = 26
         avatarImageView.layer.masksToBounds = true
         avatarImageView.isUserInteractionEnabled = true
-        avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPerformerPage)))
+        avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPerformerPulsePage)))
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(avatarImageView)
 
         let nameLabel = UILabel()
-        nameLabel.text = "\(clip.performer) 😈"
+        nameLabel.text = "\(pulseSpark.performer) 😈"
         nameLabel.textColor = .black
         nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .black)
         nameLabel.adjustsFontSizeToFitWidth = true
@@ -120,15 +120,15 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
 
         let stillImageView = UIImageView()
         stillImageView.contentMode = .scaleAspectFill
-        if let coverPath = clip.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
+        if let coverPath = pulseSpark.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
             stillImageView.image = localArt
         } else {
-            stillImageView.image = UIImage(named: clip.coverName)
+            stillImageView.image = UIImage(named: pulseSpark.coverName)
         }
-        if let firstFrame = TinkieRhythmFirstFrameStore.art(for: clip.clipFileName) {
+        if let firstFrame = TinkieRhythmCoverFrameStore.art(for: pulseSpark.pulseFileName) {
             stillImageView.image = firstFrame
         } else {
-            TinkieRhythmFirstFrameStore.resolveArt(for: clip.clipFileName) { [weak stillImageView] firstFrame in
+            TinkieRhythmCoverFrameStore.resolveArt(for: pulseSpark.pulseFileName) { [weak stillImageView] firstFrame in
                 guard let firstFrame else { return }
                 stillImageView?.image = firstFrame
             }
@@ -139,7 +139,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         rhythmView.layer.addSublayer(rhythmLayer)
 
         let playButton = UIButton(type: .custom)
-        playButton.addTarget(self, action: #selector(switchRhythm), for: .touchUpInside)
+        playButton.addTarget(self, action: #selector(switchRhythmSparkLoop), for: .touchUpInside)
         playButton.translatesAutoresizingMaskIntoConstraints = false
         rhythmView.addSubview(playMark)
         rhythmView.addSubview(playButton)
@@ -148,16 +148,16 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         let reportButton = UIButton(type: .system)
         reportButton.setImage(UIImage(systemName: "exclamationmark.circle"), for: .normal)
         reportButton.tintColor = .white
-        reportButton.addTarget(self, action: #selector(openMore), for: .touchUpInside)
+        reportButton.addTarget(self, action: #selector(openSparkMoreSheet), for: .touchUpInside)
         reportButton.translatesAutoresizingMaskIntoConstraints = false
         rhythmView.addSubview(reportButton)
 
-        let statPanel = makeStatPanel()
+        let statPanel = makeSparkStatDeck()
         statPanel.translatesAutoresizingMaskIntoConstraints = false
         rhythmView.addSubview(statPanel)
 
         let captionLabel = UILabel()
-        captionLabel.text = clip.caption
+        captionLabel.text = pulseSpark.caption
         captionLabel.textColor = UIColor.black.withAlphaComponent(0.82)
         captionLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         captionLabel.numberOfLines = 0
@@ -175,8 +175,8 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         commentStack.spacing = 16
         commentStack.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(commentStack)
-        addComment(name: "Bruno Pham", text: "Great shot! I love it", mark: "2 mins ago", avatarName: TinkiePersonaDirectory.persona(named: "Bruno Pham").heroImageName)
-        addComment(name: "Mina", text: "That melody clue feels perfect for a weekend round.", mark: "just now", avatarName: TinkiePersonaDirectory.persona(named: "Mina").heroImageName)
+        addRhythmReaction(name: "Bruno Pham", text: "Great shot! I love it", mark: "2 mins ago", avatarName: TinkieSingerTuneAtlas.singerTuneCard(named: "Bruno Pham").heroImageName)
+        addRhythmReaction(name: "Mina", text: "That melody clue feels perfect for a weekend round.", mark: "just now", avatarName: TinkieSingerTuneAtlas.singerTuneCard(named: "Mina").heroImageName)
 
         inputBar.backgroundColor = .white
         inputBar.translatesAutoresizingMaskIntoConstraints = false
@@ -295,7 +295,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         ])
     }
 
-    private func makeStatPanel() -> UIView {
+    private func makeSparkStatDeck() -> UIView {
         let panel = UIView()
         panel.backgroundColor = UIColor.black.withAlphaComponent(0.36)
         panel.layer.cornerRadius = 36
@@ -309,7 +309,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
             $0.textAlignment = .center
         }
 
-        refreshStatPanel()
+        paintSparkStats()
 
         let stack = UIStackView(arrangedSubviews: [sparkButton, sparkValueLabel, saveButton, saveValueLabel])
         stack.axis = .vertical
@@ -329,7 +329,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         return panel
     }
 
-    private func refreshStatPanel() {
+    private func paintSparkStats() {
         sparkButton.setImage(UIImage(systemName: sparked ? "heart.fill" : "heart"), for: .normal)
         saveButton.setImage(UIImage(systemName: saved ? "bookmark.fill" : "bookmark"), for: .normal)
         sparkButton.tintColor = .white
@@ -338,7 +338,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         saveValueLabel.text = saved ? "9" : "8"
     }
 
-    private func addComment(name: String, text: String, mark: String, avatarName: String, avatarPath: String? = nil) {
+    private func addRhythmReaction(name: String, text: String, mark: String, avatarName: String, avatarPath: String? = nil) {
         let avatarImageView = UIImageView()
         if let avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
             avatarImageView.image = localArt
@@ -383,8 +383,8 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         ])
     }
 
-    private func prepareRhythm() {
-        guard let url = tinkieTimbreDeck.url(for: clip.clipFileName) else { return }
+    private func prepareSparkLoop() {
+        guard let url = TinkieRhythmSparkFileVault.url(for: pulseSpark.pulseFileName) else { return }
         let player = AVPlayer(url: url)
         player.isMuted = true
         player.actionAtItemEnd = .none
@@ -400,7 +400,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    private func stopRhythm() {
+    private func stopSparkLoop() {
         rhythmPlayer?.pause()
         rhythmPlayer = nil
         rhythmLayer.player = nil
@@ -414,19 +414,19 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         bondButton.setTitle(bonded ? "Following" : "Follow", for: .normal)
     }
 
-    private static func rhythmKey(for clip: TinkieReelClip) -> String {
-        [clip.performer, clip.coverName, clip.clipFileName].joined(separator: "::")
+    private static func rhythmKey(for pulseSpark: TinkieSongPulseSpark) -> String {
+        [pulseSpark.performer, pulseSpark.coverName, pulseSpark.pulseFileName].joined(separator: "::")
     }
 
-    private func registerKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditingNow))
+    private func listenForSparkKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sparkKeyboardCameUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sparkKeyboardWentAway), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(stopSparkTyping))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
 
-    @objc private func switchRhythm() {
+    @objc private func switchRhythmSparkLoop() {
         guard let rhythmPlayer else { return }
         if isRhythmRolling {
             rhythmPlayer.pause()
@@ -439,64 +439,64 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
     }
 
     @objc private func bondTapped() {
-        guard TinkieProfileStore.isSignedIn else {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
             openWelcome()
             return
         }
-        let key = Self.rhythmKey(for: clip)
-        bonded = TinkieRhythmBondStore.switchBond(for: key)
+        let key = Self.rhythmKey(for: pulseSpark)
+        bonded = TinkieRhythmBondScorebook.switchRhythmBond(for: key)
         refreshBond()
     }
 
     @objc private func sparkTapped() {
-        guard TinkieProfileStore.isSignedIn else {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
             openWelcome()
             return
         }
-        sparked = TinkieRhythmBondStore.switchSpark(for: Self.rhythmKey(for: clip))
-        refreshStatPanel()
+        sparked = TinkieRhythmBondScorebook.switchRhythmSpark(for: Self.rhythmKey(for: pulseSpark))
+        paintSparkStats()
     }
 
     @objc private func saveTapped() {
-        guard TinkieProfileStore.isSignedIn else {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
             openWelcome()
             return
         }
-        saved = TinkieRhythmSaveStore.switchSaved(for: Self.rhythmKey(for: clip))
-        refreshStatPanel()
+        saved = TinkieRhythmSaveStore.switchSaved(for: Self.rhythmKey(for: pulseSpark))
+        paintSparkStats()
     }
 
     @objc private func sendTapped() {
-        guard TinkieProfileStore.isSignedIn else {
+        guard TinkieSingerStageScorebook.isSingerOnStage else {
             openWelcome()
             return
         }
         let text = inputField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !text.isEmpty else {
-            showNotice("Please enter a comment before sending.")
+            showSparkHint("Please enter a comment before sending.")
             return
         }
-        let snapshot = TinkieProfileStore.currentSnapshot()
-        addComment(name: snapshot.nickname, text: text, mark: "just now", avatarName: snapshot.heroImageName, avatarPath: snapshot.heroImagePath)
+        let snapshot = TinkieSingerStageScorebook.currentSingerStage()
+        addRhythmReaction(name: snapshot.nickname, text: text, mark: "just now", avatarName: snapshot.heroImageName, avatarPath: snapshot.heroImagePath)
         inputField.text = nil
         view.endEditing(true)
     }
 
-    @objc private func openPerformerPage() {
-        let key = Self.rhythmKey(for: clip)
-        let page = TinkiePerformerProfileViewController(
-            clip: clip,
-            bonded: TinkieRhythmBondStore.hasBond(for: key)
+    @objc private func openPerformerPulsePage() {
+        let key = Self.rhythmKey(for: pulseSpark)
+        let page = TinkieSingerPulseProfileViewController(
+            pulseSpark: pulseSpark,
+            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
         )
-        page.onBondChange = { [weak self] in
+        page.onTuneBondShift = { [weak self] in
             guard let self else { return }
-            guard TinkieProfileStore.isSignedIn else {
+            guard TinkieSingerStageScorebook.isSingerOnStage else {
                 self.dismiss(animated: true) {
                     self.openWelcome()
                 }
                 return
             }
-            self.bonded = TinkieRhythmBondStore.switchBond(for: key)
+            self.bonded = TinkieRhythmBondScorebook.switchRhythmBond(for: key)
             self.refreshBond()
         }
         let navigation = UINavigationController(rootViewController: page)
@@ -504,12 +504,12 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         present(navigation, animated: true)
     }
 
-    @objc private func openMore() {
-        tinkiePresentSafetyOptions(
-            targetTitle: clip.performer,
-            targetKey: TinkieBassTrailre.pulseKey(for: clip),
-            targetKind: "clip",
-            onBlock: { [weak self] in
+    @objc private func openSparkMoreSheet() {
+        tinkiePresentRhythmShield(
+            tuneTitle: pulseSpark.performer,
+            tuneKey: TinkieSongShieldLedger.pulseKey(for: pulseSpark),
+            tuneKind: "clip",
+            onShieldDone: { [weak self] in
                 self?.dismiss(animated: true)
             }
         )
@@ -517,19 +517,17 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
 
     private func openWelcome() {
         view.endEditing(true)
-        let welcome = TinkieDrumEchoer()
+        let welcome = TinkieMelodyGateWelcomeViewController()
         let navigation = UINavigationController(rootViewController: welcome)
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
     }
 
-    private func showNotice(_ text: String) {
-        let alert = UIAlertController(title: "Tinkie", message: text, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+    private func showSparkHint(_ text: String) {
+        tinkieShowTuneNotice(title: "Tinkie", detail: text)
     }
 
-    @objc private func keyboardWillShow(_ notification: Notification) {
+    @objc private func sparkKeyboardCameUp(_ notification: Notification) {
         guard
             let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
             let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
@@ -541,7 +539,7 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @objc private func keyboardWillHide(_ notification: Notification) {
+    @objc private func sparkKeyboardWentAway(_ notification: Notification) {
         let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
         inputBottomConstraint?.constant = 0
         UIView.animate(withDuration: duration) {
@@ -549,15 +547,15 @@ final class RefrainCircleController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @objc private func endEditingNow() {
+    @objc private func stopSparkTyping() {
         view.endEditing(true)
     }
 
-    @objc private func close() {
+    @objc private func leaveSparkDetail() {
         dismiss(animated: true)
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ melodyTextField: UITextField) -> Bool {
         sendTapped()
         return true
     }
@@ -590,11 +588,11 @@ private enum TinkieRhythmSaveStore {
     private static let storeKey = "tinkie_rhythm_saved_records"
 
     static func hasSaved(for key: String) -> Bool {
-        records().contains(key)
+        storedQuestDrafts().contains(key)
     }
 
     static func switchSaved(for key: String) -> Bool {
-        var values = Set(records())
+        var values = Set(storedQuestDrafts())
         if values.contains(key) {
             values.remove(key)
             UserDefaults.standard.set(Array(values), forKey: storeKey)
@@ -605,7 +603,7 @@ private enum TinkieRhythmSaveStore {
         return true
     }
 
-    private static func records() -> [String] {
+    private static func storedQuestDrafts() -> [String] {
         UserDefaults.standard.stringArray(forKey: storeKey) ?? []
     }
 }
