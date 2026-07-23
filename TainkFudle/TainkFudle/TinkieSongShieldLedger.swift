@@ -244,22 +244,22 @@ final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDe
 
     private func putRhythmFlagPageTogether() {
         view.backgroundColor = .white; let neonFlagWall = TinkieRhythmFlagBackdropView(); neonFlagWall.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(neonFlagWall)
-        flagScrollView.alwaysBounceVertical = true; flagScrollView.showsVerticalScrollIndicator = false; flagScrollView.keyboardDismissMode = .interactive; flagScrollView.translatesAutoresizingMaskIntoConstraints = false
+        flagScrollView.alwaysBounceVertical = true; flagScrollView.showsVerticalScrollIndicator = false; flagScrollView.keyboardDismissMode = .interactive; flagScrollView.delaysContentTouches = false; flagScrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(flagScrollView)
         let flagContent = UIView(); flagContent.translatesAutoresizingMaskIntoConstraints = false; flagScrollView.addSubview(flagContent)
         let backBeatButton = UIButton(type: .system); backBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); backBeatButton.tintColor = .black; backBeatButton.addTarget(self, action: #selector(backToPreviousBeat), for: .touchUpInside)
         backBeatButton.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(backBeatButton)
-        let flagTitleWords = UILabel(); flagTitleWords.text = TinkieVerseCipherTrail.singBack("RLeNpZoTrJte"); flagTitleWords.textColor = .black; flagTitleWords.font = UIFont.systemFont(ofSize: 16, weight: .black)
+        let flagTitleWords = UILabel(); flagTitleWords.text = TinkieVerseCipherTrail.singBack("RLeNpZoTrJte"); flagTitleWords.textColor = .black; flagTitleWords.font = UIFont.systemFont(ofSize: 18, weight: .black)
         flagTitleWords.textAlignment = .center; flagTitleWords.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(flagTitleWords)
-        let reasonPromptWords = UILabel(); reasonPromptWords.text = "Please select the reason for reporting this \(songTargetKind):"; reasonPromptWords.textColor = UIColor.black.withAlphaComponent(0.52); reasonPromptWords.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        let reasonPromptWords = UILabel(); reasonPromptWords.text = "Please select the reason for reporting this \(songTargetKind):"; reasonPromptWords.textColor = UIColor.black.withAlphaComponent(0.52); reasonPromptWords.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         reasonPromptWords.numberOfLines = 0; reasonPromptWords.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(reasonPromptWords)
         reasonBeatStack.axis = .vertical; reasonBeatStack.spacing = 20; reasonBeatStack.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(reasonBeatStack)
         flagReasons.forEach { flagReason in
             let reasonRow = TinkieRhythmFlagReasonRow(title: flagReason); reasonRow.addTarget(self, action: #selector(chooseFlagReason(_:)), for: .touchUpInside); reasonBeatStack.addArrangedSubview(reasonRow)
         }
-        detailNoteView.backgroundColor = .white; detailNoteView.layer.cornerRadius = 8; detailNoteView.font = UIFont.systemFont(ofSize: 13, weight: .regular); detailNoteView.textColor = .black
+        detailNoteView.backgroundColor = .white; detailNoteView.layer.cornerRadius = 8; detailNoteView.font = UIFont.systemFont(ofSize: 15, weight: .regular); detailNoteView.textColor = .black
         detailNoteView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12); detailNoteView.delegate = self; detailNoteView.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(detailNoteView)
-        let hintWordsLabel = UILabel(); hintWordsLabel.text = TinkieVerseCipherTrail.singBack("ELnOtnexrk ByVobuFrC rrJeGaxsQoinj Zhpehrseo.l.T.h"); hintWordsLabel.textColor = UIColor.black.withAlphaComponent(0.18); hintWordsLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        let hintWordsLabel = UILabel(); hintWordsLabel.text = TinkieVerseCipherTrail.singBack("ELnOtnexrk ByVobuFrC rrJeGaxsQoinj Zhpehrseo.l.T.h"); hintWordsLabel.textColor = UIColor.black.withAlphaComponent(0.18); hintWordsLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         hintWordsLabel.tag = 101; hintWordsLabel.translatesAutoresizingMaskIntoConstraints = false; detailNoteView.addSubview(hintWordsLabel)
         sendFlagButton.setTitle(TinkieVerseCipherTrail.singBack("CNonnofDiErCmZ"), for: .normal); sendFlagButton.addTarget(self, action: #selector(sendFlagReason), for: .touchUpInside); sendFlagButton.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(sendFlagButton)
         pinRhythmFlagPageBeat1(neonFlagWall: neonFlagWall, flagContent: flagContent, backBeatButton: backBeatButton)
@@ -426,6 +426,14 @@ final class TinkieRhythmFlagReasonRow: UIControl {
             paintReasonDot()
         }
     }
+    override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withDuration: 0.12) {
+                self.alpha = self.isHighlighted ? 0.68 : 1
+                self.transform = self.isHighlighted ? CGAffineTransform(scaleX: 0.985, y: 0.985) : .identity
+            }
+        }
+    }
 
     override var isSelected: Bool {
         get { isPicked }
@@ -447,27 +455,33 @@ final class TinkieRhythmFlagReasonRow: UIControl {
     }
 
     private func putReasonChoiceLineTogether() {
+        isExclusiveTouch = true
+        accessibilityTraits = [.button]
+        accessibilityLabel = reasonWords
         ringDotView.layer.cornerRadius = 7
         ringDotView.layer.borderWidth = 1.2
+        ringDotView.isUserInteractionEnabled = false
         ringDotView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ringDotView)
 
         whiteBeatDotView.layer.cornerRadius = 4
+        whiteBeatDotView.isUserInteractionEnabled = false
         whiteBeatDotView.translatesAutoresizingMaskIntoConstraints = false
         ringDotView.addSubview(whiteBeatDotView)
 
         reasonWordsLabel.text = reasonWords
         reasonWordsLabel.textColor = .black
-        reasonWordsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        reasonWordsLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        reasonWordsLabel.isUserInteractionEnabled = false
         reasonWordsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(reasonWordsLabel)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 24),
-            ringDotView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            heightAnchor.constraint(equalToConstant: 44),
+            ringDotView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
             ringDotView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            ringDotView.widthAnchor.constraint(equalToConstant: 14),
-            ringDotView.heightAnchor.constraint(equalToConstant: 14),
+            ringDotView.widthAnchor.constraint(equalToConstant: 16),
+            ringDotView.heightAnchor.constraint(equalToConstant: 16),
 
             whiteBeatDotView.centerXAnchor.constraint(equalTo: ringDotView.centerXAnchor),
             whiteBeatDotView.centerYAnchor.constraint(equalTo: ringDotView.centerYAnchor),
@@ -492,7 +506,7 @@ final class TinkieRhythmFlagSendButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
+        titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .black)
         setTitleColor(.white, for: .normal)
         setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .disabled)
         layer.cornerRadius = 24

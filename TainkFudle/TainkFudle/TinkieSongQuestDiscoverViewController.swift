@@ -203,7 +203,7 @@ private extension TinkieSongQuestDiscoverViewController {
         stopQuestCarouselBeat()
         guard visibleChallengeCues.count > 1 else { return }
         let beatTimer = Timer.scheduledTimer(
-            timeInterval: 3.2,
+            timeInterval: 1,
             target: self,
             selector: #selector(playNextQuestCarouselBeat),
             userInfo: nil,

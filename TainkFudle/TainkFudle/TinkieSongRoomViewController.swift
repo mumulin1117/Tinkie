@@ -236,7 +236,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
         rhythmShell.addSubview(singerStageGrid)
 
         NSLayoutConstraint.activate([
-            rhythmShell.heightAnchor.constraint(greaterThanOrEqualToConstant: 292),
+            rhythmShell.heightAnchor.constraint(greaterThanOrEqualToConstant: 346),
 
             ownerRhythmSpot.leadingAnchor.constraint(equalTo: rhythmShell.leadingAnchor),
             ownerRhythmSpot.topAnchor.constraint(equalTo: rhythmShell.topAnchor, constant: 44),
@@ -245,7 +245,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
             singerStageGrid.topAnchor.constraint(equalTo: rhythmShell.topAnchor, constant: 8),
             singerStageGrid.trailingAnchor.constraint(equalTo: rhythmShell.trailingAnchor),
             singerStageGrid.widthAnchor.constraint(equalTo: rhythmShell.widthAnchor, multiplier: 0.48),
-            singerStageGrid.heightAnchor.constraint(equalToConstant: 270),
+            singerStageGrid.heightAnchor.constraint(equalToConstant: 322),
             singerStageGrid.bottomAnchor.constraint(lessThanOrEqualTo: rhythmShell.bottomAnchor)
         ])
 
@@ -259,12 +259,6 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
         cueInputShell.layer.borderColor = UIColor.white.withAlphaComponent(0.08).cgColor
         cueInputShell.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cueInputShell)
-
-        let cueSmileGlyph = UIImageView(image: UIImage(systemName: "face.smiling"))
-        cueSmileGlyph.tintColor = UIColor.white.withAlphaComponent(0.78)
-        cueSmileGlyph.contentMode = .scaleAspectFit
-        cueSmileGlyph.translatesAutoresizingMaskIntoConstraints = false
-        cueInputShell.addSubview(cueSmileGlyph)
 
         cuePhraseField.placeholder = TinkieVerseCipherTrail.singBack("SlaJyw whUiK~C")
         cuePhraseField.textColor = .white
@@ -285,17 +279,12 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
         cueInputShell.addSubview(cueSendButton)
 
         NSLayoutConstraint.activate([
-            cueSmileGlyph.leadingAnchor.constraint(equalTo: cueInputShell.leadingAnchor, constant: 16),
-            cueSmileGlyph.centerYAnchor.constraint(equalTo: cueInputShell.centerYAnchor),
-            cueSmileGlyph.widthAnchor.constraint(equalToConstant: 22),
-            cueSmileGlyph.heightAnchor.constraint(equalToConstant: 22),
-
             cueSendButton.trailingAnchor.constraint(equalTo: cueInputShell.trailingAnchor, constant: -6),
             cueSendButton.centerYAnchor.constraint(equalTo: cueInputShell.centerYAnchor),
             cueSendButton.widthAnchor.constraint(equalToConstant: 44),
             cueSendButton.heightAnchor.constraint(equalToConstant: 40),
 
-            cuePhraseField.leadingAnchor.constraint(equalTo: cueSmileGlyph.trailingAnchor, constant: 8),
+            cuePhraseField.leadingAnchor.constraint(equalTo: cueInputShell.leadingAnchor, constant: 18),
             cuePhraseField.trailingAnchor.constraint(equalTo: cueSendButton.leadingAnchor, constant: -10),
             cuePhraseField.topAnchor.constraint(equalTo: cueInputShell.topAnchor, constant: 5),
             cuePhraseField.bottomAnchor.constraint(equalTo: cueInputShell.bottomAnchor, constant: -5)
@@ -312,7 +301,10 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
 
     @objc private func sendCueLine() {
         let text = cuePhraseField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        guard !text.isEmpty else { return }
+        guard !text.isEmpty else {
+            showRhythmNotice(title: TinkieVerseCipherTrail.singBack("Txixnxkxixex"), text: TinkieVerseCipherTrail.singBack("Pxlxexaxsxex xexnxtxexrx xax xrxoxoxmx xlxixnxex xfxixrxsxtx.x"))
+            return
+        }
         let singerAlias = TinkieSingerStageScorebook.currentSingerStage().singerAlias
         roomCueLines.append(TinkieRhythmCueLine(speaker: singerAlias, text: text))
         cuePhraseField.text = nil
@@ -755,7 +747,7 @@ private final class TinkieRhythmExitOverlay: UIView {
         exitCard.addSubview(exitQuestionNote)
 
         let minimizeChordButton = TinkieRhythmSendCueButton()
-        minimizeChordButton.setTitle(TinkieVerseCipherTrail.singBack("MciLnCiWmziQzZeK"), for: .normal)
+        minimizeChordButton.setTitle(TinkieVerseCipherTrail.singBack("Cxaxnxcxexlx"), for: .normal)
         minimizeChordButton.setTitleColor(.white, for: .normal)
         minimizeChordButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
         minimizeChordButton.addTarget(self, action: #selector(minimizeRhythmTapped), for: .touchUpInside)

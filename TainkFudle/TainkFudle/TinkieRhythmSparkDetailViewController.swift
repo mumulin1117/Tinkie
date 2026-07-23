@@ -78,7 +78,7 @@ final class TinkieRhythmSparkDetailViewController: UIViewController, UITextField
         }
         stillImageView.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(stillImageView); rhythmLayer.videoGravity = .resizeAspectFill; rhythmView.layer.addSublayer(rhythmLayer); let playButton = UIButton(type: .custom); playButton.addTarget(self, action: #selector(switchRhythmSparkLoop), for: .touchUpInside); playButton.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(playMark); rhythmView.addSubview(playButton); playMark.translatesAutoresizingMaskIntoConstraints = false
         let reportButton = UIButton(type: .system); reportButton.setImage(UIImage(systemName: "exclamationmark.circle"), for: .normal); reportButton.tintColor = .white; reportButton.addTarget(self, action: #selector(openSparkMoreSheet), for: .touchUpInside)
-        reportButton.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(reportButton); let statPanel = makeSparkStatDeck(); statPanel.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(statPanel); let captionLabel = UILabel(); captionLabel.text = pulseSpark.caption; captionLabel.textColor = UIColor.black.withAlphaComponent(0.82); captionLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular); captionLabel.numberOfLines = 0; captionLabel.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(captionLabel); let sparkCommentTitleLabel = UILabel(); sparkCommentTitleLabel.text = "Comments"; sparkCommentTitleLabel.textColor = .black; sparkCommentTitleLabel.font = UIFont.systemFont(ofSize: 19, weight: .black); sparkCommentTitleLabel.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(sparkCommentTitleLabel); commentStack.axis = .vertical; commentStack.spacing = 16; commentStack.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(commentStack); addRhythmReaction(name: "Bruno Pham", text: "Great shot! I love it", mark: "2 mins ago", avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Bruno Pham").portraitAssetName); addRhythmReaction(name: "Mina", text: "That melody clue feels perfect for a weekend round.", mark: "just now", avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Mina").portraitAssetName); inputBar.backgroundColor = .white; inputBar.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(inputBar)
+        reportButton.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(reportButton); let statPanel = makeSparkStatDeck(); statPanel.translatesAutoresizingMaskIntoConstraints = false; rhythmView.addSubview(statPanel); let captionLabel = UILabel(); captionLabel.text = pulseSpark.caption; captionLabel.textColor = UIColor.black.withAlphaComponent(0.82); captionLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular); captionLabel.numberOfLines = 0; captionLabel.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(captionLabel); let sparkCommentTitleLabel = UILabel(); sparkCommentTitleLabel.text = "Comments"; sparkCommentTitleLabel.textColor = .black; sparkCommentTitleLabel.font = UIFont.systemFont(ofSize: 19, weight: .black); sparkCommentTitleLabel.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(sparkCommentTitleLabel); commentStack.axis = .vertical; commentStack.spacing = 16; commentStack.translatesAutoresizingMaskIntoConstraints = false; sparkScrollStageView.addSubview(commentStack); addRhythmReaction(name: "Bruno Pham", text: "Great shot! I love it", mark: "18 mins ago", avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Bruno Pham").portraitAssetName); addRhythmReaction(name: "Mina", text: "That melody clue feels perfect for a weekend round.", mark: "1 hr ago", avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Mina").portraitAssetName); inputBar.backgroundColor = .white; inputBar.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(inputBar)
         inputField.placeholder = TinkieVerseCipherTrail.singBack("WShFaJtV wdEoB LyWoeuV Qdwov poknq DwOeweSkreLnMdqsr?F"); inputField.font = UIFont.systemFont(ofSize: 16, weight: .regular); inputField.backgroundColor = UIColor.black.withAlphaComponent(0.04); inputField.layer.cornerRadius = 24; inputField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 18, height: 1)); inputField.leftViewMode = .always; inputField.returnKeyType = .send; inputField.delegate = self; inputField.translatesAutoresizingMaskIntoConstraints = false; inputBar.addSubview(inputField); let sendButton = TinkieRhythmSendButton(); sendButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside); sendButton.translatesAutoresizingMaskIntoConstraints = false; inputBar.addSubview(sendButton); inputBottomConstraint = inputBar.bottomAnchor.constraint(equalTo: view.bottomAnchor); pinRhythmSparkDetailBeat1(halo: halo, scrollView: scrollView, sparkScrollStageView: sparkScrollStageView, sparkBackBeatButton: sparkBackBeatButton, avatarImageView: avatarImageView); pinRhythmSparkDetailBeat2(sparkScrollStageView: sparkScrollStageView, sparkBackBeatButton: sparkBackBeatButton, avatarImageView: avatarImageView, nameLabel: nameLabel, rhythmView: rhythmView, stillImageView: stillImageView); pinRhythmSparkDetailBeat3(rhythmView: rhythmView, playButton: playButton, reportButton: reportButton, statPanel: statPanel, captionLabel: captionLabel); pinRhythmSparkDetailBeat4(sparkScrollStageView: sparkScrollStageView, rhythmView: rhythmView, captionLabel: captionLabel, sparkCommentTitleLabel: sparkCommentTitleLabel, sendButton: sendButton); pinRhythmSparkDetailBeat5(sendButton: sendButton)
     }
 
@@ -288,8 +288,10 @@ final class TinkieRhythmSparkDetailViewController: UIViewController, UITextField
 
     private func prepareSparkLoop() {
         guard let url = TinkieRhythmSparkFileVault.url(for: pulseSpark.pulseFileName) else { return }
+        tuneSparkSoundRoute()
         let player = AVPlayer(url: url)
-        player.isMuted = true
+        player.isMuted = false
+        player.volume = 1
         player.actionAtItemEnd = .none
         rhythmPlayer = player
         rhythmLayer.player = player
@@ -301,6 +303,12 @@ final class TinkieRhythmSparkDetailViewController: UIViewController, UITextField
             player?.seek(to: .zero)
             player?.play()
         }
+    }
+
+    private func tuneSparkSoundRoute() {
+        let melodySession = AVAudioSession.sharedInstance()
+        try? melodySession.setCategory(.playback, mode: .moviePlayback, options: [])
+        try? melodySession.setActive(true)
     }
 
     private func stopSparkLoop() {
@@ -380,7 +388,7 @@ final class TinkieRhythmSparkDetailViewController: UIViewController, UITextField
             return
         }
         let snapshot = TinkieSingerStageScorebook.currentSingerStage()
-        addRhythmReaction(name: snapshot.singerAlias, text: text, mark: "just now", avatarName: snapshot.portraitAssetName, avatarPath: snapshot.portraitLocalPath)
+        addRhythmReaction(name: snapshot.singerAlias, text: text, mark: "moments ago", avatarName: snapshot.portraitAssetName, avatarPath: snapshot.portraitLocalPath)
         inputField.text = nil
         view.endEditing(true)
     }
