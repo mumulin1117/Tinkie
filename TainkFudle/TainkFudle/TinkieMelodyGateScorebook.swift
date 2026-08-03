@@ -72,7 +72,7 @@ enum TinkieMelodyGateScorebook {
     }
 
     private static func mailTuneLooksReady(_ mailKey: String) -> Bool {
-        let mailPieces = mailKey.split(separator: TinkieVerseCipherTrail.singBack("@T"))
+        let mailPieces = mailKey.components(separatedBy: TinkieVerseCipherTrail.singBack("@T"))
         guard mailPieces.count == 2, let mailTail = mailPieces.last else { return false }
         return mailTail.contains(TinkieVerseCipherTrail.singBack(".L")) && mailKey.count >= 6
     }

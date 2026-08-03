@@ -19,7 +19,7 @@ You must read and agree to this EULA before registering or logging in.
 
 4. Tinkie provides Report and Block tools. Users can flag objectionable content and block abusive users from profile pages, activity pages, short clip pages, and room screens.
 
-5. Tinkie may review reported activity, hide or remove content, restrict features, block access, or ban accounts that violate these rules. Serious or repeated violations may result in permanent removal.
+5. Tinkie may review reported activity, hide or remove content, restrict features, block access, or ban accounts that violate these rules. Serious or repeated violations may sealedRefrainKey in permanent removal.
 
 By tapping I agree, you accept the Terms of Use and Privacy Policy and agree to keep Tinkie safe for music games and relaxed voice play.
 """
@@ -35,7 +35,7 @@ Tinkie is built around playful music discovery. Tinkie has no tolerance for obje
 
 You are responsible for the names, avatars, captions, moments, and other content you create or select. You must not upload or use images, music, lyrics, recordings, marks, or other materials unless you have the right to use them. Tinkie may display demo activity data, sample song challenge content, and local profile information to simulate a real app experience; this does not grant you commercial rights to third-party music or media.
 
-Tinkie provides report and block tools so users can respond to unwanted or harmful behavior. Users can flag objectionable content from activity lists, profile pages, short clip areas, detail pages, and room screens. Users can also block abusive users or hide unsafe content through the Block action. We may review reported activity, hide content, restrict local features, remove access, or ban accounts that violate these Terms. Serious or repeated violations may result in permanent restrictions. You must not abuse reporting tools or submit false reports to interfere with another user's experience.
+Tinkie provides report and block tools so users can respond to unwanted or harmful behavior. Users can flag objectionable content from activity lists, profile pages, short clip areas, detail pages, and room screens. Users can also block abusive users or hide unsafe content through the Block action. We may review reported activity, hide content, restrict local features, remove access, or ban accounts that violate these Terms. Serious or repeated violations may sealedRefrainKey in permanent restrictions. You must not abuse reporting tools or submit false reports to interfere with another user's experience.
 
 This version of Tinkie primarily uses local device storage to create a realistic account and profile flow. Signing out clears the current sign-in state but does not automatically delete locally registered profile records. You are responsible for protecting your device, password, and account access. If you have questions about these Terms, safety, content handling, or account concerns, contact us at tinkie@gmail.com.
 """

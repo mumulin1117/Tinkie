@@ -36,7 +36,7 @@ enum TinkieRhythmCoverFrameStore {
         maker.appliesPreferredTrackTransform = true
         maker.maximumSize = CGSize(width: 900, height: 1600)
         let time = CMTime(seconds: 0.08, preferredTimescale: 600)
-        maker.generateCGImageAsynchronously(for: time) { cgArt, _, _ in
+        maker.generateCGImagesAsynchronously(forTimes: [NSValue(time: time)]) { _, cgArt, _, _, _ in
             let art = cgArt.map { UIImage(cgImage: $0) }
             if let art {
                 frameCache.setObject(art, forKey: cacheKey)

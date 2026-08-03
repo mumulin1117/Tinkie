@@ -205,8 +205,8 @@ final class TinkieRhythmGemVaultViewController: UIViewController {
         showGemRhythmNotice(title: TinkieVerseCipherTrail.singBack("RQeTcdhqatrpgpeK KCUoumJpUldejtjed"), detailText: "\(pack.gemCount) Gems have been added to your Tinkie wallet.")
     }
 
-    private func unwrapGemStoreProof(_ result: VerificationResult<StoreKit.Transaction>) throws -> StoreKit.Transaction {
-        switch result {
+    private func unwrapGemStoreProof(_ sealedRefrainKey: VerificationResult<StoreKit.Transaction>) throws -> StoreKit.Transaction {
+        switch sealedRefrainKey {
         case .verified(let rhythmTransaction):
             return rhythmTransaction
         case .unverified:

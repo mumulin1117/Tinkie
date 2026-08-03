@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		09E1D93DB0F57B86E11FB743 /* Pods_TainkFudle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23DA7D6FC391891A79E26B8 /* Pods_TainkFudle.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0460351B3007710E00E9B70F /* TainkFudle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TainkFudle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80E67B88561ABD98F79A7780 /* Pods-TainkFudle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TainkFudle.debug.xcconfig"; path = "Target Support Files/Pods-TainkFudle/Pods-TainkFudle.debug.xcconfig"; sourceTree = "<group>"; };
+		D23DA7D6FC391891A79E26B8 /* Pods_TainkFudle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TainkFudle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E098DFEF1038995129A06035 /* Pods-TainkFudle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TainkFudle.release.xcconfig"; path = "Target Support Files/Pods-TainkFudle/Pods-TainkFudle.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E1D93DB0F57B86E11FB743 /* Pods_TainkFudle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +55,8 @@
 			children = (
 				0460351D3007710E00E9B70F /* TainkFudle */,
 				0460351C3007710E00E9B70F /* Products */,
+				1701187B5AD5E3B68945A5EA /* Pods */,
+				51ED086BD181D37FF3088126 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +68,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		1701187B5AD5E3B68945A5EA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				80E67B88561ABD98F79A7780 /* Pods-TainkFudle.debug.xcconfig */,
+				E098DFEF1038995129A06035 /* Pods-TainkFudle.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		51ED086BD181D37FF3088126 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D23DA7D6FC391891A79E26B8 /* Pods_TainkFudle.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -65,9 +92,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0460352E3007711000E9B70F /* Build configuration list for PBXNativeTarget "TainkFudle" */;
 			buildPhases = (
+				4C31FFF536A0A4ADB9D49759 /* [CP] Check Pods Manifest.lock */,
 				046035173007710D00E9B70F /* Sources */,
 				046035183007710D00E9B70F /* Frameworks */,
 				046035193007710D00E9B70F /* Resources */,
+				294883FF779F597A0EDF3726 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -77,8 +106,6 @@
 				0460351D3007710E00E9B70F /* TainkFudle */,
 			);
 			name = TainkFudle;
-			packageProductDependencies = (
-			);
 			productName = TainkFudle;
 			productReference = 0460351B3007710E00E9B70F /* TainkFudle.app */;
 			productType = "com.apple.product-type.application";
@@ -127,6 +154,52 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		294883FF779F597A0EDF3726 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TainkFudle/Pods-TainkFudle-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TainkFudle/Pods-TainkFudle-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TainkFudle/Pods-TainkFudle-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4C31FFF536A0A4ADB9D49759 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TainkFudle-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		046035173007710D00E9B70F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -140,9 +213,11 @@
 /* Begin XCBuildConfiguration section */
 		0460352F3007711000E9B70F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 80E67B88561ABD98F79A7780 /* Pods-TainkFudle.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TainkFudle/TainkFudle.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -150,12 +225,14 @@
 				INFOPLIST_FILE = TainkFudle/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Tinkie;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Tinkie uses the camera so you can take a local profile avatar for your song challenge identity.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tinkie uses the microphone so you can join song guessing rounds, speak in voice song rooms, and take part in rhythm challenges with your own voice.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Tinkie lets you choose a local profile avatar from your photo library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -180,9 +257,11 @@
 		};
 		046035303007711000E9B70F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E098DFEF1038995129A06035 /* Pods-TainkFudle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TainkFudle/TainkFudle.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -190,12 +269,14 @@
 				INFOPLIST_FILE = TainkFudle/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Tinkie;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Tinkie uses the camera so you can take a local profile avatar for your song challenge identity.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tinkie uses the microphone so you can join song guessing rounds, speak in voice song rooms, and take part in rhythm challenges with your own voice.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Tinkie lets you choose a local profile avatar from your photo library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

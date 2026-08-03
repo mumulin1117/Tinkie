@@ -83,12 +83,12 @@ enum TinkieSongShieldLedger {
     }
 
     private static func splitShieldLine(_ shieldLine: String) -> (kind: String, name: String)? {
-        let lineParts = shieldLine.split(separator: TinkieVerseCipherTrail.singBack("|x"), omittingEmptySubsequences: false)
+        let lineParts = shieldLine.components(separatedBy: TinkieVerseCipherTrail.singBack("|x"))
         guard lineParts.count == 2 else { return nil }
-        let rawKey = String(lineParts[1])
-        let keyParts = rawKey.split(separator: TinkieVerseCipherTrail.singBack(":c"), omittingEmptySubsequences: false)
-        let name = keyParts.count > 1 ? String(keyParts[1]) : rawKey
-        return (String(lineParts[0]), name)
+        let rawKey = lineParts[1]
+        let keyParts = rawKey.components(separatedBy: TinkieVerseCipherTrail.singBack(":c"))
+        let name = keyParts.count > 1 ? keyParts[1] : rawKey
+        return (lineParts[0], name)
     }
 
     private static func storedStrings(for key: String) -> [String] {
