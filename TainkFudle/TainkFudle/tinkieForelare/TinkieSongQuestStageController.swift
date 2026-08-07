@@ -249,7 +249,7 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         let batchChord = gemScriptPack[TinkieVerseCipherTrail.singBack("bUaktUcUhqNhof")] as? String ?? ""
         let orderChord = gemScriptPack[TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT")] as? String ?? ""
         view.isUserInteractionEnabled = false
-        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("WJoyrSkcirnNgX.j.A.R"))
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("Pxaqyzipnvgn"))
         TinkieMelodyGemRibbonLedger.shared.tinkieStartGemRibbonBeat(batchChord: batchChord) { gemBeatResult in
             self.tinkieFinishGemRibbonStart(gemBeatResult, orderChord: orderChord, batchChord: batchChord)
         }
@@ -306,7 +306,7 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         switch sparkProofResult {
         case .success:
             tinkieTrackGemRibbonBeat(sparkTransactionMark: sparkTransactionMark, batchChord: batchChord)
-            TinkieTuneNoticeBridge.tinkieBrightCue(TinkieVerseCipherTrail.singBack("GteomN FtCuUneem mcSovmKpelreBthej"))
+            TinkieTuneNoticeBridge.tinkieBrightCue(TinkieVerseCipherTrail.singBack("Pxaqyz psvuncrcmexsqszfpuvln"))
         case .failure:
             TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
         }

@@ -7,7 +7,7 @@ final class TinkieSongQuestRootscore: NSObject {
         super.init()
     }
 
-    var tinkieSongQuestDebugBeat = false
+    var tinkieSongQuestDebugBeat = true
 
     private var releaseSongGate = TinkieSongGateReleaseDomain()
     private let debugSongGate = TinkieSongGateDebugDomain()

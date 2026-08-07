@@ -360,10 +360,10 @@ enum TinkieTuneNoticeBridge {
 
     static func tinkieBrightCue(_ lyricLine: String) {
         tinkieRestCue()
-        tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("DyoAnYe"), detail: lyricLine)
+        tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("DyoAnYe"), detail: lyricLine, autoRestBeat: 2)
     }
 
-    private static func tinkiePresentNotice(title tuneTitle: String, detail lyricLine: String) {
+    private static func tinkiePresentNotice(title tuneTitle: String, detail lyricLine: String, autoRestBeat: TimeInterval? = nil) {
         guard let hostStage = tinkieTopTuneHost() else { return }
         let cueNotice = TinkieTuneNoticeViewController(
             title: tuneTitle,
@@ -373,6 +373,11 @@ enum TinkieTuneNoticeBridge {
         )
         cueNotice.modalPresentationStyle = .overFullScreen
         hostStage.present(cueNotice, animated: false)
+        if let autoRestBeat {
+            DispatchQueue.main.asyncAfter(deadline: .now() + autoRestBeat) { [weak cueNotice] in
+                cueNotice?.dismiss(animated: false)
+            }
+        }
     }
 
     private static func tinkieTopTuneHost() -> UIViewController? {
