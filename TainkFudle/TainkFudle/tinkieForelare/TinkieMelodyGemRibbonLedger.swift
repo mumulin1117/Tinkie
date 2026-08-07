@@ -1,88 +1,71 @@
 import StoreKit
+import SwiftyStoreKit
 import UIKit
 
-final class TinkieMelodyGemRibbonLedger: NSObject {
+final class TinkieMelodyGemRibbonLedger {
     static let shared = TinkieMelodyGemRibbonLedger()
 
     var tinkieSparkTransactionMark: String?
-    private var gemRibbonFinishBeat: ((Result<Void, Error>) -> Void)?
-    private var gemBatchRequest: SKProductsRequest?
-
-    private override init() {
-        super.init()
-        SKPaymentQueue.default().add(self)
-    }
-
-    deinit {
-        SKPaymentQueue.default().remove(self)
-    }
+    private var gemRibbonRequest: InAppRequest?
+    private init() {}
 
     func tinkieStartGemRibbonBeat(batchChord gemBatchMark: String, finish gemFinishBeat: @escaping (Result<Void, Error>) -> Void) {
-        guard SKPaymentQueue.canMakePayments() else {
-            DispatchQueue.main.async {
-                gemFinishBeat(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("SFtDoPrjen naRckcBeUszsQ CiosP BdiiEsfaebwlXehdx yoqnG xtuhziRss edLedvLiPcaet.H")])))
-            }
+        guard tinkieGemRibbonCanBegin() else {
+            tinkieFinishGemRibbonBeat(.failure(Self.tinkieGemRibbonUnavailableError()), finish: gemFinishBeat)
             return
         }
-        gemRibbonFinishBeat = gemFinishBeat
-        gemBatchRequest?.cancel()
-        let gemRhythmRequest = SKProductsRequest(productIdentifiers: [gemBatchMark])
-        gemRhythmRequest.delegate = self
-        gemBatchRequest = gemRhythmRequest
-        gemRhythmRequest.start()
+        tinkieBeginGemRibbonBeat(gemBatchMark: gemBatchMark, finish: gemFinishBeat)
     }
 
     func tinkieLocalSparkProofData() -> Data? {
-        guard let sparkProofURL = Bundle.main.appStoreReceiptURL else { return nil }
-        return try? Data(contentsOf: sparkProofURL)
+        SwiftyStoreKit.localReceiptData
     }
-}
 
-extension TinkieMelodyGemRibbonLedger: SKProductsRequestDelegate {
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        guard let gemRibbonProduct = response.products.first else {
-            DispatchQueue.main.async {
-                self.gemRibbonFinishBeat?(.failure(NSError(domain: "", code: -2, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("NAoy ovnajlLiZdl mpfryoMdSuAczth SfBobuynIdP.e")])))
-                self.gemRibbonFinishBeat = nil
-            }
-            return
+    static func tinkieSealOpenGemTransactions() {
+        SwiftyStoreKit.completeTransactions(atomically: true) { gemPurchases in
+            guard let newestSpark = gemPurchases.last?.transaction.transactionIdentifier else { return }
+            TinkieMelodyGemRibbonLedger.shared.tinkieSparkTransactionMark = newestSpark
         }
-        SKPaymentQueue.default().add(SKPayment(product: gemRibbonProduct))
     }
 
-    func request(_ request: SKRequest, didFailWithError error: Error) {
+    private func tinkieGemRibbonCanBegin() -> Bool {
+        SwiftyStoreKit.canMakePayments
+    }
+
+    private func tinkieFinishGemRibbonBeat(_ gemResult: Result<Void, Error>, finish gemFinishBeat: @escaping (Result<Void, Error>) -> Void) {
         DispatchQueue.main.async {
-            self.gemRibbonFinishBeat?(.failure(error))
-            self.gemRibbonFinishBeat = nil
+            gemFinishBeat(gemResult)
         }
     }
-}
 
-extension TinkieMelodyGemRibbonLedger: SKPaymentTransactionObserver {
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for tuneTransaction in transactions {
-            switch tuneTransaction.transactionState {
-            case .purchased:
-                tinkieSparkTransactionMark = tuneTransaction.transactionIdentifier
-                SKPaymentQueue.default().finishTransaction(tuneTransaction)
-                DispatchQueue.main.async {
-                    self.gemRibbonFinishBeat?(.success(()))
-                    self.gemRibbonFinishBeat = nil
-                }
-            case .failed:
-                SKPaymentQueue.default().finishTransaction(tuneTransaction)
-                let gemRibbonError = (tuneTransaction.error as? SKError)?.code == .paymentCancelled
-                    ? NSError(domain: "", code: -999, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EckazndcjeClalreBdR")])
-                    : (tuneTransaction.error ?? NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("TGrBaBnfsBaAcTtBiHoenu lfUagiFlZejdz.O")]))
-                DispatchQueue.main.async {
-                    self.gemRibbonFinishBeat?(.failure(gemRibbonError))
-                    self.gemRibbonFinishBeat = nil
-                }
-            case .restored:
-                SKPaymentQueue.default().finishTransaction(tuneTransaction)
-            default:
-                break
+    private func tinkieBeginGemRibbonBeat(gemBatchMark: String, finish gemFinishBeat: @escaping (Result<Void, Error>) -> Void) {
+        gemRibbonRequest?.cancel()
+        gemRibbonRequest = SwiftyStoreKit.purchaseProduct(gemBatchMark, quantity: 1, atomically: true) { [weak self] gemResult in
+            DispatchQueue.main.async {
+                self?.tinkieCloseGemRibbonBeat(gemResult, finish: gemFinishBeat)
             }
         }
+    }
+
+    private func tinkieCloseGemRibbonBeat(_ gemResult: PurchaseResult, finish gemFinishBeat: @escaping (Result<Void, Error>) -> Void) {
+        gemRibbonRequest = nil
+        switch gemResult {
+        case .success(let gemPurchase):
+            tinkieSparkTransactionMark = gemPurchase.transaction.transactionIdentifier
+            gemFinishBeat(.success(()))
+        case .error(let gemError):
+            gemFinishBeat(.failure(Self.tinkieGemRibbonError(from: gemError)))
+        }
+    }
+
+    private static func tinkieGemRibbonUnavailableError() -> Error {
+        NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("SFtDoPrjen naRckcBeUszsQ CiosP BdiiEsfaebwlXehdx yoqnG xtuhziRss edLedvLiPcaet.H")])
+    }
+
+    private static func tinkieGemRibbonError(from gemError: SKError) -> Error {
+        if gemError.code == .paymentCancelled {
+            return NSError(domain: "", code: -999, userInfo: [NSLocalizedDescriptionKey: TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EckazndcjeClalreBdR")])
+        }
+        return gemError
     }
 }

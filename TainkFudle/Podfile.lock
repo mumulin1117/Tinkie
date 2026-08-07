@@ -10,10 +10,12 @@ PODS:
     - FBAEMKit (= 18.0.2)
     - FBSDKCoreKit_Basics (= 18.0.2)
   - FBSDKCoreKit_Basics (18.0.2)
+  - SwiftyStoreKit (0.16.1)
 
 DEPENDENCIES:
   - Adjust
   - FBSDKCoreKit
+  - SwiftyStoreKit
 
 SPEC REPOS:
   trunk:
@@ -22,6 +24,7 @@ SPEC REPOS:
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
+    - SwiftyStoreKit
 
 SPEC CHECKSUMS:
   Adjust: a0095eda439b925f809b0efbf64923c05701e937
@@ -29,7 +32,8 @@ SPEC CHECKSUMS:
   FBAEMKit: 56a4f5a9607957b547b6458b17a98c5bb2736367
   FBSDKCoreKit: 54f1240567e16862ab71c53c33dc347db5c524c5
   FBSDKCoreKit_Basics: eb530cd6a79030dbb11df460aafb2767bcad9028
+  SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
 
-PODFILE CHECKSUM: 14940b32dd1c346285b5e94d25d46cdaa9c24ca9
+PODFILE CHECKSUM: c6187423b7da23814029663abea96866ae38306b
 
 COCOAPODS: 1.16.2

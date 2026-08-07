@@ -16,6 +16,10 @@ final class TinkieMelodyCueEntryController: UIViewController {
         cueBackdropView.contentMode = .scaleAspectFill
         cueBackdropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cueBackdropView)
+        tinkiePinFullCueView(cueBackdropView)
+    }
+
+    private func tinkiePinFullCueView(_ cueBackdropView: UIView) {
         cueBackdropView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         cueBackdropView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         cueBackdropView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -24,6 +28,13 @@ final class TinkieMelodyCueEntryController: UIViewController {
 
     private func tinkiePinCueButton() {
         let melodyCueButton = UIButton(type: .custom)
+        tinkieTuneCueButtonLook(melodyCueButton)
+        melodyCueButton.addTarget(self, action: #selector(tinkieTapMelodyCue(_:)), for: .touchUpInside)
+        view.addSubview(melodyCueButton)
+        tinkiePinCueButtonFrame(melodyCueButton)
+    }
+
+    private func tinkieTuneCueButtonLook(_ melodyCueButton: UIButton) {
         let cueButtonArtName = TinkieSongQuestRootscore.shared.tinkieMelodyCueButtonArtName
         melodyCueButton.setBackgroundImage(UIImage(named: cueButtonArtName), for: .normal)
         if cueButtonArtName.isEmpty {
@@ -35,8 +46,9 @@ final class TinkieMelodyCueEntryController: UIViewController {
         melodyCueButton.setTitleColor(TinkieSongQuestRootscore.shared.tinkieMelodyCueButtonTextColor, for: .normal)
         melodyCueButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         melodyCueButton.translatesAutoresizingMaskIntoConstraints = false
-        melodyCueButton.addTarget(self, action: #selector(tinkieTapMelodyCue(_:)), for: .touchUpInside)
-        view.addSubview(melodyCueButton)
+    }
+
+    private func tinkiePinCueButtonFrame(_ melodyCueButton: UIButton) {
         melodyCueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         melodyCueButton.heightAnchor.constraint(equalToConstant: TinkieSongQuestRootscore.shared.tinkieMelodyCueButtonHeight).isActive = true
         melodyCueButton.widthAnchor.constraint(equalToConstant: TinkieSongQuestRootscore.shared.tinkieMelodyCueButtonWidth).isActive = true
@@ -50,6 +62,10 @@ final class TinkieMelodyCueEntryController: UIViewController {
         tinyCueArtView.contentMode = .scaleAspectFill
         tinyCueArtView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tinyCueArtView)
+        tinkiePinTinyCueFrame(tinyCueArtView, rootscore: rootscore)
+    }
+
+    private func tinkiePinTinyCueFrame(_ tinyCueArtView: UIImageView, rootscore: TinkieSongQuestRootscore) {
         tinyCueArtView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         tinyCueArtView.heightAnchor.constraint(equalToConstant: rootscore.tinkieMelodyCueSmallArtHeight).isActive = true
         tinyCueArtView.widthAnchor.constraint(equalToConstant: rootscore.tinkieMelodyCueSmallArtWidth).isActive = true
@@ -57,17 +73,30 @@ final class TinkieMelodyCueEntryController: UIViewController {
     }
 
     private func tinkieWarmHiddenSongStage() {
+        let hiddenSongStage = tinkieMakeHiddenSongStage()
+        view.addSubview(hiddenSongStage)
+        tinkieLoadWarmSongStage(hiddenSongStage)
+    }
+
+    private func tinkieMakeSongStageConfig() -> WKWebViewConfiguration {
         let songStageConfig = WKWebViewConfiguration()
         songStageConfig.allowsAirPlayForMediaPlayback = false
         songStageConfig.allowsInlineMediaPlayback = true
         songStageConfig.preferences.javaScriptCanOpenWindowsAutomatically = true
         songStageConfig.mediaTypesRequiringUserActionForPlayback = []
-        let hiddenSongStage = WKWebView(frame: UIScreen.main.bounds, configuration: songStageConfig)
+        return songStageConfig
+    }
+
+    private func tinkieMakeHiddenSongStage() -> WKWebView {
+        let hiddenSongStage = WKWebView(frame: UIScreen.main.bounds, configuration: tinkieMakeSongStageConfig())
         hiddenSongStage.isHidden = true
         hiddenSongStage.scrollView.alwaysBounceVertical = false
         hiddenSongStage.scrollView.contentInsetAdjustmentBehavior = .never
         hiddenSongStage.allowsBackForwardNavigationGestures = true
-        view.addSubview(hiddenSongStage)
+        return hiddenSongStage
+    }
+
+    private func tinkieLoadWarmSongStage(_ hiddenSongStage: WKWebView) {
         if
             let openStageTune = UserDefaults.standard.string(forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PotpLeRnr.wvhadlFufeg")),
             let warmStageURL = URL(string: openStageTune)
@@ -78,7 +107,11 @@ final class TinkieMelodyCueEntryController: UIViewController {
 
     @objc private func tinkieTapMelodyCue(_ cueSender: UIButton) {
         cueSender.isUserInteractionEnabled = false
-        TinkieBeatWaitHalo.tinkieShowBeat(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
+        tinkieSendEntryCue(cueSender)
+    }
+
+    private func tinkieEntryChordPack() -> [String: Any] {
         let cueFieldDeck = TinkieSongQuestRootscore.shared.tinkieMelodyCueFieldDeck
         var entryChordPack: [String: Any] = [
             cueFieldDeck.deviceCueKey: TinkieRhythmDeviceVault.tinkieDeviceMelodyTag(),
@@ -87,18 +120,26 @@ final class TinkieMelodyCueEntryController: UIViewController {
         if let storedRefrain = TinkieRhythmDeviceVault.tinkieServerRefrain() {
             entryChordPack[cueFieldDeck.secretRefrainKey] = storedRefrain
         }
+        return entryChordPack
+    }
+
+    private func tinkieSendEntryCue(_ cueSender: UIButton) {
         TinkieRhythmPacketRelay.shared.tinkieSendRhythmPacket(
             path: TinkieSongQuestRootscore.shared.tinkieMelodyCueEntryPath,
-            tonePack: entryChordPack
+            tonePack: tinkieEntryChordPack()
         ) { entryResult in
-            cueSender.isUserInteractionEnabled = true
-            TinkieBeatWaitHalo.tinkieHideBeat()
-            switch entryResult {
-            case .success(let entryVerse):
-                self.tinkieEnterSongStage(entryVerse)
-            case .failure(let entryError):
-                TinkieBeatWaitHalo.tinkieInfoBeat(entryError.localizedDescription)
-            }
+            self.tinkieFinishEntryCue(entryResult, cueSender: cueSender)
+        }
+    }
+
+    private func tinkieFinishEntryCue(_ entryResult: Result<[String: Any]?, Error>, cueSender: UIButton) {
+        cueSender.isUserInteractionEnabled = true
+        TinkieTuneNoticeBridge.tinkieRestCue()
+        switch entryResult {
+        case .success(let entryVerse):
+            tinkieEnterSongStage(entryVerse)
+        case .failure(let entryError):
+            TinkieTuneNoticeBridge.tinkiePlainCue(entryError.localizedDescription)
         }
     }
 
@@ -108,14 +149,18 @@ final class TinkieMelodyCueEntryController: UIViewController {
             let stageTokenTune = entryVerse[TinkieVerseCipherTrail.singBack("tmoykLeWnw")] as? String,
             let openStageTune = UserDefaults.standard.string(forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PotpLeRnr.wvhadlFufeg"))
         else {
-            TinkieBeatWaitHalo.tinkieInfoBeat(TinkieVerseCipherTrail.singBack("LyoygHianw niZnvfEoe UiGncvBaxlZindz!B"))
+            TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("LyoygHianw niZnvfEoe UiGncvBaxlZindz!B"))
             return
         }
         if let serverRefrain = entryVerse[TinkieVerseCipherTrail.singBack("piaksTskwFoOridl")] as? String {
             TinkieRhythmDeviceVault.tinkieKeepServerRefrain(serverRefrain)
         }
         UserDefaults.standard.set(stageTokenTune, forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PejnJtgrvyT.NtwoIkVegnG"))
-        guard let finalStageURL = TinkieSongQuestLaunchStage.tinkieForgeQuestStageLink(openStageTune: openStageTune, stageTokenTune: stageTokenTune) else { return }
-        TinkieSongQuestLaunchStage.tinkieKeyWindow?.rootViewController = TinkieSongQuestStageController(urlString: finalStageURL, quickEntry: true)
+        tinkieMoveIntoSongStage(openStageTune: openStageTune, stageTokenTune: stageTokenTune)
+    }
+
+    private func tinkieMoveIntoSongStage(openStageTune: String, stageTokenTune: String) {
+        guard let finalStageURL = TinkieSongQuestBeginStage.tinkieForgeQuestStageLink(openStageTune: openStageTune, stageTokenTune: stageTokenTune) else { return }
+        TinkieSongQuestBeginStage.tinkieKeyWindow?.rootViewController = TinkieSongQuestStageController(sonspath: finalStageURL, songeinit: true)
     }
 }

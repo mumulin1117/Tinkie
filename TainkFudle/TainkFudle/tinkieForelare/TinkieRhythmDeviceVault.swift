@@ -3,8 +3,8 @@ import Security
 
 final class TinkieRhythmDeviceVault: NSObject {
     private static var rhythmVaultService: String {
-        let appBundleChord = Bundle.main.bundleIdentifier ?? "tinkie.voice.songs"
-        return appBundleChord + ".forelare"
+        let appBundleChord = Bundle.main.bundleIdentifier ?? TinkieVerseCipherTrail.singBack("txiqnzkpiven.rvmoyitcxeq.zspovnngrsm")
+        return appBundleChord + TinkieVerseCipherTrail.singBack(".xfqozrpevlnarrmey")
     }
 
     private static var deviceMelodyAccount: String { rhythmVaultService + TinkieVerseCipherTrail.singBack(".UtDiJnfktiIeV.jfEoeryeClaagrOeS.gdzeRvziDcOeh") }
@@ -28,42 +28,45 @@ final class TinkieRhythmDeviceVault: NSObject {
     }
 
     private static func tinkieReadVaultRefrain(account vaultAccount: String) -> String? {
-        let vaultQuery: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: rhythmVaultService,
-            kSecAttrAccount as String: vaultAccount,
+        let vaultQuery = tinkieVaultQuery(account: vaultAccount, extra: [
             kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
-        ]
+        ])
         var foundVaultItem: AnyObject?
         let vaultStatus = SecItemCopyMatching(vaultQuery as CFDictionary, &foundVaultItem)
-        guard
-            vaultStatus == errSecSuccess,
-            let foundVaultBytes = foundVaultItem as? Data,
-            let foundRefrain = String(data: foundVaultBytes, encoding: .utf8)
-        else { return nil }
-        return foundRefrain
+        return tinkieReadVaultText(status: vaultStatus, item: foundVaultItem)
     }
 
     private static func tinkieSaveVaultRefrain(_ refrainValue: String, account vaultAccount: String) {
         tinkieEraseVaultRefrain(account: vaultAccount)
         guard let refrainBytes = refrainValue.data(using: .utf8) else { return }
-        let vaultQuery: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: rhythmVaultService,
-            kSecAttrAccount as String: vaultAccount,
+        let vaultQuery = tinkieVaultQuery(account: vaultAccount, extra: [
             kSecValueData as String: refrainBytes,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
-        ]
+        ])
         SecItemAdd(vaultQuery as CFDictionary, nil)
     }
 
     private static func tinkieEraseVaultRefrain(account vaultAccount: String) {
-        let vaultQuery: [String: Any] = [
+        let vaultQuery = tinkieVaultQuery(account: vaultAccount)
+        SecItemDelete(vaultQuery as CFDictionary)
+    }
+
+    private static func tinkieVaultQuery(account vaultAccount: String, extra vaultExtras: [String: Any] = [:]) -> [String: Any] {
+        var vaultQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: rhythmVaultService,
             kSecAttrAccount as String: vaultAccount
         ]
-        SecItemDelete(vaultQuery as CFDictionary)
+        vaultExtras.forEach { vaultQuery[$0.key] = $0.value }
+        return vaultQuery
+    }
+
+    private static func tinkieReadVaultText(status vaultStatus: OSStatus, item foundVaultItem: AnyObject?) -> String? {
+        guard
+            vaultStatus == errSecSuccess,
+            let foundVaultBytes = foundVaultItem as? Data
+        else { return nil }
+        return String(data: foundVaultBytes, encoding: .utf8)
     }
 }

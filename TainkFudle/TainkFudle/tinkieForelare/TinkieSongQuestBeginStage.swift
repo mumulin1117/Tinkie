@@ -1,7 +1,41 @@
 import UIKit
 import Network
+import FBSDKCoreKit
+final class TinkieSongQuestBeginStage: UIViewController {
+    
+    
 
-final class TinkieSongQuestLaunchStage: UIViewController {
+     private var tinkieFacebookInited = false
+
+     private func tinkieInitFacebook(
+         fbAppIdOKKTinkie: String,
+         clientOKKTinkieToken: String,
+         displayOKKTinkieName: String
+     ) -> Bool {
+         if tinkieFacebookInited {
+             return true
+         }
+
+         if fbAppIdOKKTinkie.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+             clientOKKTinkieToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+             return false
+         }
+
+         Settings.shared.appID = fbAppIdOKKTinkie
+         Settings.shared.clientToken = clientOKKTinkieToken
+
+         if !displayOKKTinkieName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+             Settings.shared.displayName = displayOKKTinkieName
+         }
+
+         Settings.shared.isAutoLogAppEventsEnabled = false
+
+         ApplicationDelegate.shared.initializeSDK()
+
+         tinkieFacebookInited = true
+         return true
+     }
+    
     private var rhythmPathAlreadySang = false
     private let questReachabilityPulse = NWPathMonitor()
 
@@ -15,7 +49,9 @@ final class TinkieSongQuestLaunchStage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tinkiePinQuestLaunchArt()
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
         if Date().timeIntervalSince1970 <= TinkieSongQuestRootscore.shared.tinkieSongQuestLaunchMoment {
+            TinkieTuneNoticeBridge.tinkieRestCue()
             TinkieSongQuestRootscore.shared.tinkieReturnToSongHomeStage()
             return
         }
@@ -44,11 +80,11 @@ final class TinkieSongQuestLaunchStage: UIViewController {
                 guard let self else { return }
                 if rhythmPath.status == .satisfied, !self.rhythmPathAlreadySang {
                     self.rhythmPathAlreadySang = true
-                    TinkieBeatWaitHalo.tinkieHideBeat()
+                    TinkieTuneNoticeBridge.tinkieRestCue()
                     self.tinkieRequestLaunchChord()
                     self.questReachabilityPulse.cancel()
                 } else if rhythmPath.status != .satisfied, !self.rhythmPathAlreadySang {
-                    TinkieBeatWaitHalo.tinkieShowBeat(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
+                    TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
                 }
             }
         }
@@ -56,14 +92,14 @@ final class TinkieSongQuestLaunchStage: UIViewController {
     }
 
     private func tinkieRequestLaunchChord() {
-        TinkieBeatWaitHalo.tinkieShowBeat(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
         UserDefaults.standard.set(true, forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PlqawuhnrcxhT.eausdkmexdN"))
         TinkieRhythmPacketRelay.shared.tinkieSendRhythmPacket(
             path: TinkieSongQuestRootscore.shared.tinkieSongQuestLaunchPath,
-            tonePack: ["debug": 1, "jdiihiid": 1]
+            tonePack: tinkieLaunchChordPack()
+                       
         ) { launchVerseResult in
-            TinkieSongPulseBridge.shared.tinkieRequestBeatNotice()
-            TinkieBeatWaitHalo.tinkieHideBeat()
+            TinkieTuneNoticeBridge.tinkieRestCue()
             switch launchVerseResult {
             case .success(let launchVerse):
                 self.tinkieReadLaunchVerse(launchVerse)
@@ -73,6 +109,14 @@ final class TinkieSongQuestLaunchStage: UIViewController {
         }
     }
 
+    private func tinkieLaunchChordPack() -> [String: Any] {
+        [
+            TinkieVerseCipherTrail.singBack("dxeqbzupgv"): 1,
+            TinkieVerseCipherTrail.singBack("jxdqiziphvinirdm"): 1,
+            TinkieVerseCipherTrail.singBack("sxeqgzypovunfr"): TinkieVerseCipherTrail.singBack("{xiqnzsptvanlrlmRyetfxeqrzrpevrn:r muyttmx_qszopuvrncrem=ygtoxoqgzlpev-nprlmayyt&xuqtzmp_vmnerdmiyutmx=qozrpgvannrimcy,t xrqezfpevrnrremryCtlxiqczkpTvinmremsyttaxmqpzSpevcnornmdyst:x q0z,p vinnrsmtyatlxlqBzepgvinnrTmiymtexsqtzapmvpnSremcyotnxdqsz:p v0n,r mgyotoxgqlzepPvlnarymIyntsxtqaznptvPnarrmaymt:x qfzaplvsner}m")
+        ]
+    }
+
     private func tinkieReadLaunchVerse(_ launchVerse: [String: Any]?) {
         guard let launchVerse else {
             TinkieSongQuestRootscore.shared.tinkieReturnToSongHomeStage()
@@ -80,7 +124,23 @@ final class TinkieSongQuestLaunchStage: UIViewController {
         }
         let openStageTune = launchVerse[TinkieVerseCipherTrail.singBack("ohpzeFnfVYaAlcuCeD")] as? String
         let entryVerseFlag = launchVerse[TinkieVerseCipherTrail.singBack("leoygHianwFZlcaigF")] as? Int ?? 0
+        tinkieTryFacebookFromLaunchVerse(launchVerse)
         UserDefaults.standard.set(openStageTune, forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PotpLeRnr.wvhadlFufeg"))
+        tinkieSingLaunchRoute(entryVerseFlag: entryVerseFlag, openStageTune: openStageTune)
+    }
+
+    private func tinkieTryFacebookFromLaunchVerse(_ launchVerse: [String: Any]) {
+        let facebookAppId = launchVerse[TinkieVerseCipherTrail.singBack("fxaqczepbvonorkmAyptpxIqdz")] as? String
+        let clientToken = launchVerse[TinkieVerseCipherTrail.singBack("cxlqizepnvtnTromkyetnx")] as? String
+        let displayName = launchVerse[TinkieVerseCipherTrail.singBack("dxiqszpplvanyrNmaymtex")] as? String
+        if (facebookAppId?.isEmpty == false && clientToken?.isEmpty == false) {
+            if  !self.tinkieInitFacebook(fbAppIdOKKTinkie: facebookAppId!, clientOKKTinkieToken: clientToken!, displayOKKTinkieName: displayName!){
+                print(TinkieVerseCipherTrail.singBack("Fxaqczepbvonorkm yStDxKq zipnvintr m yrtexsquzlptv:nFramiyltuxeqdz p"))
+            }
+        }
+    }
+
+    private func tinkieSingLaunchRoute(entryVerseFlag: Int, openStageTune: String?) {
         if entryVerseFlag == 1 {
             guard
                 let stageTokenTune = UserDefaults.standard.string(forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PejnJtgrvyT.NtwoIkVegnG")),
@@ -90,7 +150,7 @@ final class TinkieSongQuestLaunchStage: UIViewController {
                 return
             }
             guard let finalStageLink = tinkieForgeFinalStageLink(openStageTune: openStageTune, stageTokenTune: stageTokenTune) else { return }
-            Self.tinkieKeyWindow?.rootViewController = TinkieSongQuestStageController(urlString: finalStageLink, quickEntry: false)
+            Self.tinkieKeyWindow?.rootViewController = TinkieSongQuestStageController(sonspath: finalStageLink, songeinit: false)
             return
         }
         if entryVerseFlag == 0 {
@@ -118,4 +178,6 @@ final class TinkieSongQuestLaunchStage: UIViewController {
     private func tinkieForgeFinalStageLink(openStageTune: String, stageTokenTune: String) -> String? {
         Self.tinkieForgeQuestStageLink(openStageTune: openStageTune, stageTokenTune: stageTokenTune)
     }
+        
+   
 }

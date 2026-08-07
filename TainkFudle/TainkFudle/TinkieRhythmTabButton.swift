@@ -328,6 +328,159 @@ extension UIViewController {
     }
 }
 
+enum TinkieTuneNoticeBridge {
+    private static var tuneWaitWindow: UIWindow?
+
+    static func tinkieSpinCue(_ lyricLine: String) {
+        tinkieRestCue()
+        let waitWindow: UIWindow
+        if let tuneScene = tinkieTuneWindowScene() {
+            waitWindow = UIWindow(windowScene: tuneScene)
+            waitWindow.frame = tuneScene.coordinateSpace.bounds
+        } else {
+            waitWindow = UIWindow(frame: UIScreen.main.bounds)
+        }
+        waitWindow.windowLevel = .alert + 1
+        waitWindow.backgroundColor = .clear
+        waitWindow.rootViewController = TinkieTuneWaitViewController(lyricLine: lyricLine)
+        waitWindow.makeKeyAndVisible()
+        waitWindow.isHidden = false
+        tuneWaitWindow = waitWindow
+    }
+
+    static func tinkieRestCue() {
+        tuneWaitWindow?.isHidden = true
+        tuneWaitWindow = nil
+    }
+
+    static func tinkiePlainCue(_ lyricLine: String) {
+        tinkieRestCue()
+        tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("HjixnZt"), detail: lyricLine)
+    }
+
+    static func tinkieBrightCue(_ lyricLine: String) {
+        tinkieRestCue()
+        tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("DyoAnYe"), detail: lyricLine)
+    }
+
+    private static func tinkiePresentNotice(title tuneTitle: String, detail lyricLine: String) {
+        guard let hostStage = tinkieTopTuneHost() else { return }
+        let cueNotice = TinkieTuneNoticeViewController(
+            title: tuneTitle,
+            detail: lyricLine,
+            primaryTitle: TinkieVerseCipherTrail.singBack("OsKX"),
+            secondaryTitle: nil
+        )
+        cueNotice.modalPresentationStyle = .overFullScreen
+        hostStage.present(cueNotice, animated: false)
+    }
+
+    private static func tinkieTopTuneHost() -> UIViewController? {
+        let sceneWindows = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+        guard var topStage = (sceneWindows.first(where: \.isKeyWindow) ?? sceneWindows.first)?.rootViewController else {
+            return nil
+        }
+        while let nextStage = topStage.presentedViewController {
+            topStage = nextStage
+        }
+        if let navStage = topStage as? UINavigationController {
+            return navStage.visibleViewController ?? navStage
+        }
+        if let tabStage = topStage as? UITabBarController {
+            return tabStage.selectedViewController ?? tabStage
+        }
+        return topStage
+    }
+
+    private static func tinkieTuneWindowScene() -> UIWindowScene? {
+        let sceneDeck = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        if let activeScene = sceneDeck.first(where: { $0.activationState == .foregroundActive && $0.windows.contains(where: \.isKeyWindow) }) {
+            return activeScene
+        }
+        return sceneDeck.first(where: { $0.activationState == .foregroundActive }) ?? sceneDeck.first
+    }
+}
+
+private final class TinkieTuneWaitViewController: UIViewController {
+    private let lyricLine: String
+    private let shadeView = UIView()
+    private let cardView = UIView()
+    private let tuneSpinner = UIActivityIndicatorView(style: .large)
+    private let lyricLabel = UILabel()
+
+    init(lyricLine: String) {
+        self.lyricLine = lyricLine
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tinkieLayWaitCard()
+    }
+
+    private func tinkieLayWaitCard() {
+        view.backgroundColor = .clear
+        shadeView.backgroundColor = UIColor.black.withAlphaComponent(0.32)
+        shadeView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shadeView)
+
+        cardView.backgroundColor = .white
+        cardView.layer.cornerRadius = 24
+        cardView.layer.masksToBounds = true
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cardView)
+
+        let glowView = TinkieNoticeGlowView()
+        glowView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(glowView)
+
+        tuneSpinner.color = UIColor(red: 0.84, green: 0.06, blue: 0.62, alpha: 1)
+        tuneSpinner.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(tuneSpinner)
+        tuneSpinner.startAnimating()
+
+        lyricLabel.text = lyricLine
+        lyricLabel.textAlignment = .center
+        lyricLabel.textColor = UIColor.black.withAlphaComponent(0.72)
+        lyricLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        lyricLabel.numberOfLines = 2
+        lyricLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(lyricLabel)
+
+        NSLayoutConstraint.activate([
+            shadeView.topAnchor.constraint(equalTo: view.topAnchor),
+            shadeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            shadeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            shadeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            cardView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            cardView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            cardView.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
+            cardView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 44),
+            cardView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -44),
+
+            glowView.topAnchor.constraint(equalTo: cardView.topAnchor),
+            glowView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
+            glowView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+            glowView.heightAnchor.constraint(equalToConstant: 88),
+
+            tuneSpinner.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 28),
+            tuneSpinner.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+
+            lyricLabel.topAnchor.constraint(equalTo: tuneSpinner.bottomAnchor, constant: 18),
+            lyricLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 22),
+            lyricLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -22),
+            lyricLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -28)
+        ])
+    }
+}
+
 final class TinkieTuneNoticeViewController: UIViewController {
     var onPrimary: (() -> Void)?
     var onSecondary: (() -> Void)?

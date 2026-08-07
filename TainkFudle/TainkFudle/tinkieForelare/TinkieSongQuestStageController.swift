@@ -1,57 +1,69 @@
 import UIKit
 import WebKit
-#if canImport(AdjustSdk)
+
 import AdjustSdk
-#endif
-#if canImport(FBSDKCoreKit)
+
 import FBSDKCoreKit
-#endif
+
 
 final class TinkieSongQuestStageController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     private var songStage: WKWebView?
-    private var loadStartBeat = Date().timeIntervalSince1970
-    private var keepsMelodyCueEntry = false
-    private let openingStageURLText: String
-
-    init(urlString stageURLText: String, quickEntry keepsCueEntry: Bool) {
+   
+    init(sonspath stageURLText: String, songeinit keepsCueEntry: Bool) {
         openingStageURLText = stageURLText
         keepsMelodyCueEntry = keepsCueEntry
         super.init(nibName: nil, bundle: nil)
     }
+    private var loadStartBeat = TinkieStageLoadMeter()
 
     required init?(coder: NSCoder) {
         fatalError("")
     }
-
+    private var keepsMelodyCueEntry = false
+   
     override func viewDidLoad() {
         super.viewDidLoad()
+        tinkieStageOpeningScore()
+    }
+    private let openingStageURLText: String
+
+    private func tinkieStageOpeningScore() {
         tinkiePinCueBackdrop()
         tinkiePinTinyCueArt()
         if keepsMelodyCueEntry {
             tinkiePinQuietCueButton()
         }
         tinkiePinSongStage()
-        TinkieBeatWaitHalo.tinkieShowBeat(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("LyoyaBdVirnNgX.j.A.R"))
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        let scriptCueDeck = songStage?.configuration.userContentController
-        scriptCueDeck?.add(self, name: TinkieVerseCipherTrail.singBack("rkeocDhZajrRgXemPiaQyF"))
-        scriptCueDeck?.add(self, name: TinkieVerseCipherTrail.singBack("CplvoPsken"))
-        scriptCueDeck?.add(self, name: TinkieVerseCipherTrail.singBack("piakgHeWLOoOaRdleDdT"))
-        scriptCueDeck?.add(self, name: TinkieVerseCipherTrail.singBack("ohpzeFnfBErRofwEsReUry"))
+        tinkieAddScriptCueDeck()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        songStage?.configuration.userContentController.removeAllScriptMessageHandlers()
+        tinkieClearScriptCueDeck()
     }
 
     deinit {
+        tinkieClearScriptCueDeck()
+    }
+
+    private func tinkieAddScriptCueDeck() {
+        let scriptCueDeck = songStage?.configuration.userContentController
+        tinkieScriptCueNames().forEach { scriptCueDeck?.add(self, name: $0) }
+    }
+
+    private func tinkieClearScriptCueDeck() {
         songStage?.configuration.userContentController.removeAllScriptMessageHandlers()
+    }
+
+    private func tinkieScriptCueNames() -> [String] {
+        TinkieStageCueKind.allCases.map(\.rawName)
     }
 
     private func tinkiePinCueBackdrop() {
@@ -60,10 +72,18 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         cueBackdropView.contentMode = .scaleAspectFill
         cueBackdropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cueBackdropView)
-        cueBackdropView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        cueBackdropView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        cueBackdropView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        cueBackdropView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tinkiePinFullStageView(cueBackdropView)
+    }
+
+    private func tinkiePinFullStageView(_ stageView: UIView) {
+        stageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        stageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        stageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        stageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+
+    private func tinkiePinSongStageFrame(_ questSongStage: WKWebView) {
+        tinkiePinFullStageView(questSongStage)
     }
 
     private func tinkiePinTinyCueArt() {
@@ -101,12 +121,24 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
     }
 
     private func tinkiePinSongStage() {
+        let questSongStage = tinkieMakeSongStage()
+        view.addSubview(questSongStage)
+        tinkiePinSongStageFrame(questSongStage)
+        songStage = questSongStage
+        tinkieLoadOpeningStage(questSongStage)
+    }
+
+    private func tinkieMakeSongStageConfig() -> WKWebViewConfiguration {
         let songStageConfig = WKWebViewConfiguration()
         songStageConfig.allowsAirPlayForMediaPlayback = false
         songStageConfig.allowsInlineMediaPlayback = true
         songStageConfig.preferences.javaScriptCanOpenWindowsAutomatically = true
         songStageConfig.mediaTypesRequiringUserActionForPlayback = []
-        let questSongStage = WKWebView(frame: UIScreen.main.bounds, configuration: songStageConfig)
+        return songStageConfig
+    }
+
+    private func tinkieMakeSongStage() -> WKWebView {
+        let questSongStage = WKWebView(frame: UIScreen.main.bounds, configuration: tinkieMakeSongStageConfig())
         questSongStage.isHidden = true
         questSongStage.translatesAutoresizingMaskIntoConstraints = false
         questSongStage.scrollView.alwaysBounceVertical = false
@@ -114,15 +146,13 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         questSongStage.navigationDelegate = self
         questSongStage.uiDelegate = self
         questSongStage.allowsBackForwardNavigationGestures = true
-        view.addSubview(questSongStage)
-        questSongStage.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        questSongStage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        questSongStage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        questSongStage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        songStage = questSongStage
+        return questSongStage
+    }
+
+    private func tinkieLoadOpeningStage(_ questSongStage: WKWebView) {
         if let stageURL = URL(string: openingStageURLText) {
             questSongStage.load(URLRequest(url: stageURL))
-            loadStartBeat = Date().timeIntervalSince1970
+            loadStartBeat = TinkieStageLoadMeter()
         }
     }
 
@@ -131,11 +161,7 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
     }
 
     func webView(_ rhythmStage: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if
-            let stageURL = navigationAction.request.url,
-            let stageScheme = stageURL.scheme?.lowercased(),
-            !["http", "https", "file", "about"].contains(stageScheme)
-        {
+        if let stageURL = TinkieOuterStageRoute.tinkieOuterStageURL(from: navigationAction) {
             tinkieOpenOuterStage(stageURL, stage: rhythmStage)
             decisionHandler(.cancel)
             return
@@ -144,10 +170,8 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
     }
 
     func webView(_ rhythmStage: WKWebView, createWebViewWith stageConfig: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        if navigationAction.targetFrame == nil || navigationAction.targetFrame?.isMainFrame != nil {
-            if let stageURL = navigationAction.request.url {
-                UIApplication.shared.open(stageURL, options: [:])
-            }
+        if TinkieOuterStageRoute.tinkieShouldOpenNewStageOutside(navigationAction), let stageURL = navigationAction.request.url {
+            UIApplication.shared.open(stageURL, options: [:])
         }
         return nil
     }
@@ -158,30 +182,59 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
 
     func webView(_ rhythmStage: WKWebView, didFinish navigation: WKNavigation!) {
         songStage?.isHidden = false
-        TinkieBeatWaitHalo.tinkieHideBeat()
+        TinkieTuneNoticeBridge.tinkieRestCue()
+        TinkieSongPulseBridge.shared.tinkieRequestBeatNotice()
         keepsMelodyCueEntry = false
-        let stageLoadBeatLength = "\(Int(Date().timeIntervalSince1970 * 1000 - loadStartBeat * 1000))"
+        tinkieReportStageLoadBeat()
+    }
+
+    private func tinkieReportStageLoadBeat() {
+        let stageLoadBeatLength = tinkieStageLoadBeatLength()
         TinkieRhythmPacketRelay.shared.tinkieSendRhythmPacket(
             path: TinkieSongQuestRootscore.shared.tinkieSongStageDurationPath,
             tonePack: [TinkieSongQuestRootscore.shared.tinkieSongStageDurationKey: stageLoadBeatLength]
         )
     }
 
+    private func tinkieStageLoadBeatLength() -> String {
+        loadStartBeat.tinkieStageLoadBeatLength()
+    }
+
     func userContentController(_ userContentController: WKUserContentController, didReceive scriptCue: WKScriptMessage) {
-        if scriptCue.name == TinkieVerseCipherTrail.singBack("rkeocDhZajrRgXemPiaQyF"), let scriptPack = scriptCue.body as? [String: Any] {
+        guard let cueKind = TinkieStageCueKind.tinkieKind(for: scriptCue.name) else { return }
+        tinkiePlayStageCue(cueKind, scriptCue: scriptCue)
+    }
+
+    private func tinkiePlayStageCue(_ cueKind: TinkieStageCueKind, scriptCue: WKScriptMessage) {
+        switch cueKind {
+        case .spark:
+            tinkieHandleSparkScriptCue(scriptCue)
+        case .close:
+            tinkieHandleCloseScriptCue()
+        case .ready:
+            tinkieHandleReadyScriptCue()
+        case .outer:
+            tinkieHandleOuterScriptCue(scriptCue)
+        }
+    }
+
+    private func tinkieHandleSparkScriptCue(_ scriptCue: WKScriptMessage) {
+        if let scriptPack = scriptCue.body as? [String: Any] {
             tinkieHandleGemRibbonBeat(scriptPack)
-            return
         }
-        if scriptCue.name == TinkieVerseCipherTrail.singBack("CplvoPsken") {
-            UserDefaults.standard.set(nil, forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PejnJtgrvyT.NtwoIkVegnG"))
-            TinkieSongQuestLaunchStage.tinkieKeyWindow?.rootViewController = TinkieMelodyCueEntryController()
-            return
-        }
-        if scriptCue.name == TinkieVerseCipherTrail.singBack("piakgHeWLOoOaRdleDdT") {
-            songStage?.isHidden = false
-            TinkieBeatWaitHalo.tinkieHideBeat()
-            return
-        }
+    }
+
+    private func tinkieHandleCloseScriptCue() {
+        UserDefaults.standard.set(nil, forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PejnJtgrvyT.NtwoIkVegnG"))
+        TinkieSongQuestBeginStage.tinkieKeyWindow?.rootViewController = TinkieMelodyCueEntryController()
+    }
+
+    private func tinkieHandleReadyScriptCue() {
+        songStage?.isHidden = false
+        TinkieTuneNoticeBridge.tinkieRestCue()
+    }
+
+    private func tinkieHandleOuterScriptCue(_ scriptCue: WKScriptMessage) {
         if
             scriptCue.name == TinkieVerseCipherTrail.singBack("ohpzeFnfBErRofwEsReUry"),
             let scriptPack = scriptCue.body as? [String: Any],
@@ -196,47 +249,66 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         let batchChord = gemScriptPack[TinkieVerseCipherTrail.singBack("bUaktUcUhqNhof")] as? String ?? ""
         let orderChord = gemScriptPack[TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT")] as? String ?? ""
         view.isUserInteractionEnabled = false
-        TinkieBeatWaitHalo.tinkieShowBeat(TinkieVerseCipherTrail.singBack("WJoyrSkcirnNgX.j.A.R"))
+        TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("WJoyrSkcirnNgX.j.A.R"))
         TinkieMelodyGemRibbonLedger.shared.tinkieStartGemRibbonBeat(batchChord: batchChord) { gemBeatResult in
-            TinkieBeatWaitHalo.tinkieHideBeat()
-            self.view.isUserInteractionEnabled = true
-            switch gemBeatResult {
-            case .success:
-                self.tinkieVerifyGemRibbonBeat(orderChord: orderChord, batchChord: batchChord)
-            case .failure(let gemBeatError):
-                TinkieBeatWaitHalo.tinkieInfoBeat(gemBeatError.localizedDescription)
-            }
+            self.tinkieFinishGemRibbonStart(gemBeatResult, orderChord: orderChord, batchChord: batchChord)
+        }
+    }
+
+    private func tinkieFinishGemRibbonStart(_ gemBeatResult: Result<Void, Error>, orderChord: String, batchChord: String) {
+        TinkieTuneNoticeBridge.tinkieRestCue()
+        view.isUserInteractionEnabled = true
+        switch gemBeatResult {
+        case .success:
+            tinkieVerifyGemRibbonBeat(orderChord: orderChord, batchChord: batchChord)
+        case .failure(let gemBeatError):
+            TinkieTuneNoticeBridge.tinkiePlainCue(gemBeatError.localizedDescription)
         }
     }
 
     private func tinkieVerifyGemRibbonBeat(orderChord: String, batchChord: String) {
-        guard
-            let sparkProofData = TinkieMelodyGemRibbonLedger.shared.tinkieLocalSparkProofData(),
-            let sparkTransactionMark = TinkieMelodyGemRibbonLedger.shared.tinkieSparkTransactionMark,
-            let orderChordData = try? JSONSerialization.data(withJSONObject: [TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT"): orderChord], options: [.prettyPrinted]),
-            let orderChordText = String(data: orderChordData, encoding: .utf8)
-        else {
-            TinkieBeatWaitHalo.tinkieInfoBeat(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
+        guard let sparkTune = tinkieSparkProofPack(orderChord: orderChord) else {
+            TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
             return
         }
         let keys = TinkieSongQuestRootscore.shared.tinkieSongSparkFieldDeck
         TinkieRhythmPacketRelay.shared.tinkieSendRhythmPacket(
             path: TinkieSongQuestRootscore.shared.tinkieSongSparkProofPath,
             tonePack: [
-                keys.sparkProofText: sparkProofData.base64EncodedString(),
-                keys.sparkTransactionMark: sparkTransactionMark,
-                keys.callbackChordText: orderChordText
+                keys.sparkProofText: sparkTune.proofData.base64EncodedString(),
+                keys.sparkTransactionMark: sparkTune.transactionMark,
+                keys.callbackChordText: sparkTune.callbackText
             ],
             skipsSealedRefrain: true
         ) { sparkProofResult in
-            self.view.isUserInteractionEnabled = true
-            switch sparkProofResult {
-            case .success:
-                self.tinkieTrackGemRibbonBeat(sparkTransactionMark: sparkTransactionMark, batchChord: batchChord)
-                TinkieBeatWaitHalo.tinkieSuccessBeat(TinkieVerseCipherTrail.singBack("GteomN FtCuUneem mcSovmKpelreBthej"))
-            case .failure:
-                TinkieBeatWaitHalo.tinkieInfoBeat(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
-            }
+            self.tinkieFinishSparkProof(sparkProofResult, sparkTransactionMark: sparkTune.transactionMark, batchChord: batchChord)
+        }
+    }
+
+    private func tinkieSparkProofPack(orderChord: String) -> TinkieSparkProofTune? {
+        guard
+            let sparkProofData = TinkieMelodyGemRibbonLedger.shared.tinkieLocalSparkProofData(),
+            let sparkTransactionMark = TinkieMelodyGemRibbonLedger.shared.tinkieSparkTransactionMark,
+            let orderChordText = tinkieOrderChordText(orderChord)
+        else { return nil }
+        return TinkieSparkProofTune(proofData: sparkProofData, transactionMark: sparkTransactionMark, callbackText: orderChordText)
+    }
+
+    private func tinkieOrderChordText(_ orderChord: String) -> String? {
+        guard
+            let orderChordData = try? JSONSerialization.data(withJSONObject: [TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT"): orderChord], options: [.prettyPrinted])
+        else { return nil }
+        return String(data: orderChordData, encoding: .utf8)
+    }
+
+    private func tinkieFinishSparkProof(_ sparkProofResult: Result<[String: Any]?, Error>, sparkTransactionMark: String, batchChord: String) {
+        view.isUserInteractionEnabled = true
+        switch sparkProofResult {
+        case .success:
+            tinkieTrackGemRibbonBeat(sparkTransactionMark: sparkTransactionMark, batchChord: batchChord)
+            TinkieTuneNoticeBridge.tinkieBrightCue(TinkieVerseCipherTrail.singBack("GteomN FtCuUneem mcSovmKpelreBthej"))
+        case .failure:
+            TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
         }
     }
 
@@ -245,33 +317,94 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
             let gemValueText = TinkieSongQuestRootscore.shared.tinkieGemRibbonBatchDeck.first(where: { $0.key == batchChord })?.value,
             let gemRibbonAmount = Double(gemValueText)
         else { return }
-        #if canImport(FBSDKCoreKit)
+       
         AppEvents.shared.logPurchase(
             amount: gemRibbonAmount,
             currency: TinkieVerseCipherTrail.singBack("UHSWDY"),
             parameters: [.init(TinkieVerseCipherTrail.singBack("fYbl_zmeoxbBiZlteD_OpwuSrgcihEaOsxeA")): TinkieVerseCipherTrail.singBack("tmrBuVeW")]
         )
-        #endif
-        #if canImport(AdjustSdk)
-        let event = ADJEvent(eventToken: "ejm23k")
+       
+        let event = ADJEvent(eventToken: TinkieVerseCipherTrail.singBack("exjqmz2p3vkn"))
         event?.setProductId(batchChord)
         event?.setTransactionId(sparkTransactionMark)
         event?.setRevenue(gemRibbonAmount, currency: TinkieVerseCipherTrail.singBack("UHSWDY"))
         Adjust.trackEvent(event)
-        #endif
+       
     }
 
     private func tinkieOpenOuterStage(_ outerStageURL: URL, stage rhythmStage: WKWebView?) {
         UIApplication.shared.open(outerStageURL, options: [:]) { openedBeat in
-            let outerStageState = openedBeat ? "success" : "failed"
-            let stageCallbackScript = """
-            window.dispatchEvent(new CustomEvent('nativeOpenState', {
-                detail: { state: '\(outerStageState)', url: '\(outerStageURL.absoluteString)' }
-            }));
-            """
+            let outerStageState = openedBeat ? TinkieVerseCipherTrail.singBack("sxuqczcpevsnsr") : TinkieVerseCipherTrail.singBack("fxaqizlpevdn")
+            let stageCallbackScript = TinkieVerseCipherTrail.singBack("wxiqnzdpovwn.rdmiystpxaqtzcphvEnvremnytt(xnqezwp vCnursmtyotmxEqvzepnvtn(r'mnyattxiqvzepOvpnernmSyttaxtqez'p,v n{r\nm y t x qdzeptvanirlm:y t{x qsztpavtner:m y't")
+                + outerStageState
+                + TinkieVerseCipherTrail.singBack("'x,q zuprvln:r m'y")
+                + outerStageURL.absoluteString
+                + TinkieVerseCipherTrail.singBack("'x q}z\np}v)n)r;m")
             DispatchQueue.main.async {
                 rhythmStage?.evaluateJavaScript(stageCallbackScript, completionHandler: nil)
             }
         }
+    }
+}
+
+private enum TinkieStageCueKind: CaseIterable {
+    case spark
+    case close
+    case ready
+    case outer
+
+    var rawName: String {
+        switch self {
+        case .spark:
+            return TinkieVerseCipherTrail.singBack("rkeocDhZajrRgXemPiaQyF")
+        case .close:
+            return TinkieVerseCipherTrail.singBack("CplvoPsken")
+        case .ready:
+            return TinkieVerseCipherTrail.singBack("piakgHeWLOoOaRdleDdT")
+        case .outer:
+            return TinkieVerseCipherTrail.singBack("ohpzeFnfBErRofwEsReUry")
+        }
+    }
+
+    static func tinkieKind(for scriptCueName: String) -> TinkieStageCueKind? {
+        allCases.first { $0.rawName == scriptCueName }
+    }
+}
+
+private struct TinkieStageLoadMeter {
+    private let openingBeat = Date().timeIntervalSince1970
+
+    func tinkieStageLoadBeatLength() -> String {
+        "\(Int(Date().timeIntervalSince1970 * 1000 - openingBeat * 1000))"
+    }
+}
+
+private struct TinkieSparkProofTune {
+    let proofData: Data
+    let transactionMark: String
+    let callbackText: String
+}
+
+private enum TinkieOuterStageRoute {
+    static func tinkieOuterStageURL(from navigationAction: WKNavigationAction) -> URL? {
+        guard
+            let stageURL = navigationAction.request.url,
+            let stageScheme = stageURL.scheme?.lowercased(),
+            !tinkieStageAllowedSchemes().contains(stageScheme)
+        else { return nil }
+        return stageURL
+    }
+
+    static func tinkieShouldOpenNewStageOutside(_ navigationAction: WKNavigationAction) -> Bool {
+        navigationAction.targetFrame == nil || navigationAction.targetFrame?.isMainFrame != nil
+    }
+
+    private static func tinkieStageAllowedSchemes() -> [String] {
+        [
+            TinkieVerseCipherTrail.singBack("hxtqtzpp"),
+            TinkieVerseCipherTrail.singBack("hxtqtzppsv"),
+            TinkieVerseCipherTrail.singBack("fxiqlzep"),
+            TinkieVerseCipherTrail.singBack("axbqozuptv")
+        ]
     }
 }

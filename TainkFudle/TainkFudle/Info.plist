@@ -9,8 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>Tinkie</string>
-				<string>fb892531400116911</string>
+				<string>tinkie</string>
 			</array>
 		</dict>
 	</array>
@@ -24,6 +23,11 @@
 	<string>74001589ac21d55eaa95c7155d940a28</string>
 	<key>FacebookDisplayName</key>
 	<string>Tinkie</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
