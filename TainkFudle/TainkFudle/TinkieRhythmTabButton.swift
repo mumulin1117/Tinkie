@@ -330,6 +330,7 @@ extension UIViewController {
 
 enum TinkieTuneNoticeBridge {
     private static var tuneWaitWindow: UIWindow?
+    private static var tuneSoftWindow: UIWindow?
 
     static func tinkieSpinCue(_ lyricLine: String) {
         tinkieRestCue()
@@ -353,14 +354,39 @@ enum TinkieTuneNoticeBridge {
         tuneWaitWindow = nil
     }
 
+    static func tinkieSoftCue(_ lyricLine: String) {
+        tinkieRestCue()
+        tinkieRestSoftCue()
+        let softWindow: UIWindow
+        if let tuneScene = tinkieTuneWindowScene() {
+            softWindow = UIWindow(windowScene: tuneScene)
+            softWindow.frame = tuneScene.coordinateSpace.bounds
+        } else {
+            softWindow = UIWindow(frame: UIScreen.main.bounds)
+        }
+        softWindow.windowLevel = .alert + 2
+        softWindow.backgroundColor = .clear
+        softWindow.rootViewController = TinkieTuneSoftCueViewController(lyricLine: lyricLine)
+        softWindow.makeKeyAndVisible()
+        softWindow.isHidden = false
+        tuneSoftWindow = softWindow
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            tinkieRestSoftCue()
+        }
+    }
+
     static func tinkiePlainCue(_ lyricLine: String) {
         tinkieRestCue()
         tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("HjixnZt"), detail: lyricLine)
     }
 
     static func tinkieBrightCue(_ lyricLine: String) {
-        tinkieRestCue()
-        tinkiePresentNotice(title: TinkieVerseCipherTrail.singBack("DyoAnYe"), detail: lyricLine, autoRestBeat: 2)
+        tinkieSoftCue(lyricLine)
+    }
+
+    private static func tinkieRestSoftCue() {
+        tuneSoftWindow?.isHidden = true
+        tuneSoftWindow = nil
     }
 
     private static func tinkiePresentNotice(title tuneTitle: String, detail lyricLine: String, autoRestBeat: TimeInterval? = nil) {
@@ -405,6 +431,55 @@ enum TinkieTuneNoticeBridge {
             return activeScene
         }
         return sceneDeck.first(where: { $0.activationState == .foregroundActive }) ?? sceneDeck.first
+    }
+}
+
+private final class TinkieTuneSoftCueViewController: UIViewController {
+    private let lyricLine: String
+    private let softPanelView = UIView()
+    private let softLyricLabel = UILabel()
+
+    init(lyricLine: String) {
+        self.lyricLine = lyricLine
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tinkiePutSoftCueTogether()
+    }
+
+    private func tinkiePutSoftCueTogether() {
+        view.backgroundColor = .clear
+        softPanelView.backgroundColor = UIColor.black.withAlphaComponent(0.82)
+        softPanelView.layer.cornerRadius = 18
+        softPanelView.layer.masksToBounds = true
+        softPanelView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(softPanelView)
+
+        softLyricLabel.text = lyricLine
+        softLyricLabel.textColor = .white
+        softLyricLabel.textAlignment = .center
+        softLyricLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        softLyricLabel.numberOfLines = 2
+        softLyricLabel.translatesAutoresizingMaskIntoConstraints = false
+        softPanelView.addSubview(softLyricLabel)
+
+        NSLayoutConstraint.activate([
+            softPanelView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            softPanelView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            softPanelView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 42),
+            softPanelView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -42),
+
+            softLyricLabel.topAnchor.constraint(equalTo: softPanelView.topAnchor, constant: 14),
+            softLyricLabel.leadingAnchor.constraint(equalTo: softPanelView.leadingAnchor, constant: 20),
+            softLyricLabel.trailingAnchor.constraint(equalTo: softPanelView.trailingAnchor, constant: -20),
+            softLyricLabel.bottomAnchor.constraint(equalTo: softPanelView.bottomAnchor, constant: -14)
+        ])
     }
 }
 

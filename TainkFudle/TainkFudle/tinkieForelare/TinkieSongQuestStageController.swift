@@ -247,28 +247,28 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
 
     private func tinkieHandleGemRibbonBeat(_ gemScriptPack: [String: Any]) {
         let batchChord = gemScriptPack[TinkieVerseCipherTrail.singBack("bUaktUcUhqNhof")] as? String ?? ""
-        let orderChord = gemScriptPack[TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT")] as? String ?? ""
+        let orderCode = gemScriptPack[TinkieVerseCipherTrail.singBack("ohrBdEeWrPCQosdJeD")] as? String ?? ""
         view.isUserInteractionEnabled = false
         TinkieTuneNoticeBridge.tinkieSpinCue(TinkieVerseCipherTrail.singBack("Pxaqyzipnvgn"))
         TinkieMelodyGemRibbonLedger.shared.tinkieStartGemRibbonBeat(batchChord: batchChord) { gemBeatResult in
-            self.tinkieFinishGemRibbonStart(gemBeatResult, orderChord: orderChord, batchChord: batchChord)
+            self.tinkieFinishGemRibbonStart(gemBeatResult, orderCode: orderCode, batchChord: batchChord)
         }
     }
 
-    private func tinkieFinishGemRibbonStart(_ gemBeatResult: Result<Void, Error>, orderChord: String, batchChord: String) {
+    private func tinkieFinishGemRibbonStart(_ gemBeatResult: Result<Void, Error>, orderCode: String, batchChord: String) {
         TinkieTuneNoticeBridge.tinkieRestCue()
         view.isUserInteractionEnabled = true
         switch gemBeatResult {
         case .success:
-            tinkieVerifyGemRibbonBeat(orderChord: orderChord, batchChord: batchChord)
+            tinkieVerifyGemRibbonBeat(orderCode: orderCode, batchChord: batchChord)
         case .failure(let gemBeatError):
-            TinkieTuneNoticeBridge.tinkiePlainCue(gemBeatError.localizedDescription)
+            TinkieTuneNoticeBridge.tinkieSoftCue(gemBeatError.localizedDescription)
         }
     }
 
-    private func tinkieVerifyGemRibbonBeat(orderChord: String, batchChord: String) {
-        guard let sparkTune = tinkieSparkProofPack(orderChord: orderChord) else {
-            TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
+    private func tinkieVerifyGemRibbonBeat(orderCode: String, batchChord: String) {
+        guard let sparkTune = tinkieSparkProofPack(orderCode: orderCode) else {
+            TinkieTuneNoticeBridge.tinkieSoftCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
             return
         }
         let keys = TinkieSongQuestRootscore.shared.tinkieSongSparkFieldDeck
@@ -285,20 +285,20 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
         }
     }
 
-    private func tinkieSparkProofPack(orderChord: String) -> TinkieSparkProofTune? {
+    private func tinkieSparkProofPack(orderCode: String) -> TinkieSparkProofTune? {
         guard
             let sparkProofData = TinkieMelodyGemRibbonLedger.shared.tinkieLocalSparkProofData(),
             let sparkTransactionMark = TinkieMelodyGemRibbonLedger.shared.tinkieSparkTransactionMark,
-            let orderChordText = tinkieOrderChordText(orderChord)
+            let orderCodeText = tinkieOrderCodeText(orderCode)
         else { return nil }
-        return TinkieSparkProofTune(proofData: sparkProofData, transactionMark: sparkTransactionMark, callbackText: orderChordText)
+        return TinkieSparkProofTune(proofData: sparkProofData, transactionMark: sparkTransactionMark, callbackText: orderCodeText)
     }
 
-    private func tinkieOrderChordText(_ orderChord: String) -> String? {
+    private func tinkieOrderCodeText(_ orderCode: String) -> String? {
         guard
-            let orderChordData = try? JSONSerialization.data(withJSONObject: [TinkieVerseCipherTrail.singBack("ohrBdEeWrACWhYowrQdT"): orderChord], options: [.prettyPrinted])
+            let orderCodeData = try? JSONSerialization.data(withJSONObject: [TinkieVerseCipherTrail.singBack("ohrBdEeWrPCQosdJeD"): orderCode], options: [.prettyPrinted])
         else { return nil }
-        return String(data: orderChordData, encoding: .utf8)
+        return String(data: orderCodeData, encoding: .utf8)
     }
 
     private func tinkieFinishSparkProof(_ sparkProofResult: Result<[String: Any]?, Error>, sparkTransactionMark: String, batchChord: String) {
@@ -308,7 +308,7 @@ final class TinkieSongQuestStageController: UIViewController, WKNavigationDelega
             tinkieTrackGemRibbonBeat(sparkTransactionMark: sparkTransactionMark, batchChord: batchChord)
             TinkieTuneNoticeBridge.tinkieBrightCue(TinkieVerseCipherTrail.singBack("Pxaqyz psvuncrcmexsqszfpuvln"))
         case .failure:
-            TinkieTuneNoticeBridge.tinkiePlainCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
+            TinkieTuneNoticeBridge.tinkieSoftCue(TinkieVerseCipherTrail.singBack("AncmtUiaoxnN EfnaziYlseCdS"))
         }
     }
 
