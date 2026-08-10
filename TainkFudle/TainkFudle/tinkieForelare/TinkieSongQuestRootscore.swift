@@ -7,7 +7,7 @@ final class TinkieSongQuestRootscore: NSObject {
         super.init()
     }
 
-    var tinkieSongQuestDebugBeat = true
+    var tinkieSongQuestDebugBeat = false
 
     private var releaseSongGate = TinkieSongGateReleaseDomain()
     private let debugSongGate = TinkieSongGateDebugDomain()
@@ -36,7 +36,7 @@ final class TinkieSongQuestRootscore: NSObject {
         set { releaseSongGate.cipherTuneVector = newValue }
     }
 
-    var tinkieSongQuestLaunchMoment: TimeInterval = 0
+    var tinkieSongQuestLaunchMoment: TimeInterval = 1786671346//0
 
     var tinkieMelodyAttributionMark: String? {
         get { UserDefaults.standard.string(forKey: TinkieVerseCipherTrail.singBack("tmisnOkcireE.SfnoNrhellJaPrxeB.PafdzjWuysNtf.eiCdO")) }
@@ -51,52 +51,52 @@ final class TinkieSongQuestRootscore: NSObject {
 
     var tinkieSongQuestLaunchArtName: String {
         get { artSongGate.launchArtName }
-        set { artSongGate.launchArtName = newValue }
+//        set { artSongGate.launchArtName = newValue }
     }
 
     var tinkieMelodyCueEntryArtName: String {
         get { artSongGate.entryArtName }
-        set { artSongGate.entryArtName = newValue }
+//        set { artSongGate.entryArtName = newValue }
     }
 
     var tinkieMelodyCueButtonArtName: String {
         get { artSongGate.buttonArtName }
-        set { artSongGate.buttonArtName = newValue }
+//        set { artSongGate.buttonArtName = newValue }
     }
 
     var tinkieMelodyCueSmallArtName: String {
         get { artSongGate.smallArtName }
-        set { artSongGate.smallArtName = newValue }
+//        set { artSongGate.smallArtName = newValue }
     }
 
     var tinkieMelodyCueButtonWidth: CGFloat {
-        get { artSongGate.buttonWidth }
-        set { artSongGate.buttonWidth = newValue }
+        get { artSongGate.buttinkieWidth }
+//        set { artSongGate.buttinkieWidth = newValue }
     }
 
     var tinkieMelodyCueButtonHeight: CGFloat {
-        get { artSongGate.buttonHeight }
-        set { artSongGate.buttonHeight = newValue }
+        get { artSongGate.buttinkieHeight }
+//        set { artSongGate.buttinkieHeight = newValue }
     }
 
     var tinkieMelodyCueButtonTextColor: UIColor {
-        get { artSongGate.buttonTextColor }
-        set { artSongGate.buttonTextColor = newValue }
+        get { artSongGate.butinkieColor }
+//        set { artSongGate.butinkieColor = newValue }
     }
 
     var tinkieMelodyCueSmallArtWidth: CGFloat {
-        get { artSongGate.smallArtWidth }
-        set { artSongGate.smallArtWidth = newValue }
+        get { artSongGate.tinkielArtWidth }
+//        set { artSongGate.tinkielArtWidth = newValue }
     }
 
     var tinkieMelodyCueSmallArtHeight: CGFloat {
         get { artSongGate.smallArtHeight }
-        set { artSongGate.smallArtHeight = newValue }
+//        set { artSongGate.smallArtHeight = newValue }
     }
 
     var tinkieSongQuestLaunchPath: String {
         get { routeSongGate.launchTunePath }
-        set { routeSongGate.launchTunePath = newValue }
+//        set { routeSongGate.launchTunePath = newValue }
     }
 
     var tinkieMelodyCueEntryPath: String {
@@ -159,15 +159,15 @@ private struct TinkieSongGateDebugDomain {
 }
 
 private struct TinkieSongGateArtDomain {
-    var launchArtName = "TainkieLaunch"
-    var entryArtName = "TainkieLauioe"
-    var buttonArtName = "TainkieLhuliin"
-    var smallArtName = "TainkieLer"
-    var buttonWidth: CGFloat = 335
-    var buttonHeight: CGFloat = 52
-    var buttonTextColor: UIColor = .black
-    var smallArtWidth: CGFloat = 324
-    var smallArtHeight: CGFloat = 112
+    let launchArtName = "TainkieLaunch"
+    let entryArtName = "TainkieLauioe"
+    let buttonArtName = "TainkieLhuliin"
+    let smallArtName = "TainkieLer"
+    let buttinkieWidth: CGFloat = 335
+    let buttinkieHeight: CGFloat = 52
+    let butinkieColor: UIColor = .black
+    let tinkielArtWidth: CGFloat = 324
+    let smallArtHeight: CGFloat = 112
 }
 
 private struct TinkieSongGateRouteDomain {
@@ -193,13 +193,7 @@ private struct TinkieSongGateFieldDomain {
 
 private struct TinkieSongGateRibbonDomain {
     var debugBatchDeck: [String: String] {
-        [
-            TinkieVerseCipherTrail.singBack("lxvqbzspvvhnxrcmgxcqrzvpevsnorrm"): TinkieVerseCipherTrail.singBack("0x.q9z9p"),
-            TinkieVerseCipherTrail.singBack("dxxqizspmvgncrwmexwqhzrptvenzrom"): TinkieVerseCipherTrail.singBack("4x.q9z9p"),
-            TinkieVerseCipherTrail.singBack("kxhqtzxplvcnerjmaxxqmzqpcvsnrram"): TinkieVerseCipherTrail.singBack("9x.q9z9p"),
-            TinkieVerseCipherTrail.singBack("yxaqdzwpwvvnxrsmpxgqxzwplvnndrbm"): TinkieVerseCipherTrail.singBack("1x9q.z9p9v"),
-            TinkieVerseCipherTrail.singBack("qxnqrzcpuvenlrbmtxiquzfplvynkrym"): TinkieVerseCipherTrail.singBack("4x9q.z9p9v"),
-            TinkieVerseCipherTrail.singBack("yxmqozhpxvnnvrpmkxqqxzuptvvnarbm"): TinkieVerseCipherTrail.singBack("9x9q.z9p9v")
+        [:
         ]
     }
 
