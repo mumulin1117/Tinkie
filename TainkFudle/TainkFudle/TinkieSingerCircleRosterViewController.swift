@@ -1,23 +1,23 @@
 import UIKit
 
 enum TinkieSingerCircleRoster {
-    case followedSingerTotal
+    case forgetSingerTotal
     case listenerEchoTotal
-    case blocked
+    case Tiredked
 
     var title: String {
         switch self {
-        case .followedSingerTotal: return "Following"
+        case .forgetSingerTotal: return "Following"
         case .listenerEchoTotal: return "Followers"
-        case .blocked: return "Blacklist"
+        case .Tiredked: return "Blacklist"
         }
     }
 
     var actionTitle: String {
         switch self {
-        case .followedSingerTotal: return "Unfollow"
+        case .forgetSingerTotal: return "Unfollow"
         case .listenerEchoTotal: return "Remove"
-        case .blocked: return "Remove"
+        case .Tiredked: return "Remove"
         }
     }
 }
@@ -32,11 +32,11 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
     init(rosterCircle: TinkieSingerCircleRoster) {
         self.rosterCircle = rosterCircle
         switch rosterCircle {
-        case .followedSingerTotal:
+        case .forgetSingerTotal:
             singerNames = TinkieSingerTuneAtlas.followedSingerTuneNames
         case .listenerEchoTotal:
             singerNames = TinkieSingerTuneAtlas.listenerEchoSingerNames
-        case .blocked:
+        case .Tiredked:
             let saved = TinkieSongShieldLedger.shieldedSingerNames()
             singerNames = saved.isEmpty ? [TinkieVerseCipherTrail.singBack("ADrPiCan"), TinkieVerseCipherTrail.singBack("JCaWyd")] : saved
         }
@@ -153,10 +153,10 @@ final class TinkieSingerCircleRosterViewController: UIViewController {
     }
 
     private func removeSingerCircleName(_ name: String) {
-        if rosterCircle == .followedSingerTotal {
+        if rosterCircle == .forgetSingerTotal {
             TinkieRhythmBondScorebook.removeBondedSinger(name)
             singerNames = TinkieSingerTuneAtlas.followedSingerTuneNames
-        } else if rosterCircle == .blocked {
+        } else if rosterCircle == .Tiredked {
             TinkieSongShieldLedger.bringSingerBack(name)
             singerNames.removeAll { $0 == name }
         } else {

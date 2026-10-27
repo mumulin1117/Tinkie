@@ -1,14 +1,14 @@
 import UIKit
 
-final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+final class TinkieRhythmalternatePickingwroller: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     private let rhythmEvent: TinkieMelodyChallengeCue
     private let melodyCircle: TinkieMelodyQuestCircle
-    private var roomCueLines: [TinkieRhythmCueLine]
+    private var bowDirection: [TinkieRhythmCueLine]
 
-    private let roomBackdropImageView = UIImageView()
-    private let roomShadeView = UIView()
-    private let roomScrollStage = UIScrollView()
-    private let roomContentStage = UIView()
+    private let sulPonticello = UIImageView()
+    private let sweepPicking = UIView()
+    private let crossPicking = UIScrollView()
+    private let salsaPatternContentStage = UIView()
     private let singerStageGrid: UICollectionView
     private let cueLineStack = UIStackView()
     private let cueInputShell = UIView()
@@ -20,7 +20,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
     init(event: TinkieMelodyChallengeCue, group: TinkieMelodyQuestCircle) {
         self.rhythmEvent = event
         self.melodyCircle = group
-        self.roomCueLines = melodyCircle.cueLines
+        self.bowDirection = melodyCircle.cueLines
 
         let rhythmStageSpotFlow = UICollectionViewFlowLayout()
         rhythmStageSpotFlow.scrollDirection = .vertical
@@ -47,7 +47,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
     }
 
     private var roomOwnerSinger: TinkieRhythmStageSpot {
-        melodyCircle.rhythmStageSpots.first(where: { $0.ownsStage }) ?? melodyCircle.rhythmStageSpots.first ?? TinkieRhythmStageSpot(singerAlias: rhythmEvent.leadSingerName, portraitAssetName: rhythmEvent.chorusAvatarNames.first ?? "tinkie_avatar_neon_voice", ownsStage: true, micResting: false)
+        melodyCircle.rhythmStageSpots.first(where: { $0.ownsStage }) ?? melodyCircle.rhythmStageSpots.first ?? TinkieRhythmStageSpot(singerAlias: rhythmEvent.accelerandoCurve, portraitAssetName: rhythmEvent.ritardandoSlope.first ?? "tinkie_avatar_neon_voice", ownsStage: true, micResting: false)
     }
 
     private var sideSingerStageSpots: [TinkieRhythmStageSpot] {
@@ -56,25 +56,25 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
 
     private func putRhythmStageScreenTogether() {
         view.backgroundColor = .black
-        if let coverPath = rhythmEvent.sleeveLocalPath, let localArt = UIImage(contentsOfFile: coverPath) {
-            roomBackdropImageView.image = localArt
+        if let coverPath = rhythmEvent.rubatoElasticity, let localArt = UIImage(contentsOfFile: coverPath) {
+            sulPonticello.image = localArt
         } else {
-            roomBackdropImageView.image = UIImage(named: rhythmEvent.sleeveAssetName)
+            sulPonticello.image = UIImage(named: rhythmEvent.lentoDrift)
         }
-        roomBackdropImageView.contentMode = .scaleAspectFill; roomBackdropImageView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(roomBackdropImageView)
-        roomShadeView.backgroundColor = UIColor.black.withAlphaComponent(0.64); roomShadeView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(roomShadeView)
+        sulPonticello.contentMode = .scaleAspectFill; sulPonticello.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(sulPonticello)
+        sweepPicking.backgroundColor = UIColor.black.withAlphaComponent(0.64); sweepPicking.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(sweepPicking)
         let rhythmGlowWash = TinkieRhythmAuraView(); rhythmGlowWash.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(rhythmGlowWash)
         let rhythmTopStrip = makeRhythmStageTopStrip(); rhythmTopStrip.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(rhythmTopStrip)
-        roomScrollStage.contentInsetAdjustmentBehavior = .never; roomScrollStage.alwaysBounceVertical = true; roomScrollStage.showsVerticalScrollIndicator = false; roomScrollStage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(roomScrollStage)
-        roomContentStage.translatesAutoresizingMaskIntoConstraints = false; roomScrollStage.addSubview(roomContentStage)
-        let rhythmStageSpotArea = makeRhythmStageSpotArea(); rhythmStageSpotArea.translatesAutoresizingMaskIntoConstraints = false; roomContentStage.addSubview(rhythmStageSpotArea)
+        crossPicking.contentInsetAdjustmentBehavior = .never; crossPicking.alwaysBounceVertical = true; crossPicking.showsVerticalScrollIndicator = false; crossPicking.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(crossPicking)
+        salsaPatternContentStage.translatesAutoresizingMaskIntoConstraints = false; crossPicking.addSubview(salsaPatternContentStage)
+        let rhythmStageSpotArea = makeRhythmStageSpotArea(); rhythmStageSpotArea.translatesAutoresizingMaskIntoConstraints = false; salsaPatternContentStage.addSubview(rhythmStageSpotArea)
         let rhythmGuardNote = UILabel()
         rhythmGuardNote.text = TinkieVerseCipherTrail.singBack("IxlflQeTgjaClJ,g Hhcamrqmpfsuols,S shHaZtCeLfRuUlO,p YhsahrgaosFsniMnGgL,N bfQrvajuPdGuJlXeNnKtm,B voorm UoKtLhpehrswriQsxeK KiJnYaRpUpjrToKpCroisaHtZeH NcNotngtOeTnBth LiBsc wpFrqomhdivbqictjeddv.R qTFiXnAkKiqeL MsJomnpgd brLoMosmVsd lajrkej orQeNvMiBebwYendo Utvor dkaeBeopi HgZukeFsssNimnggl srBoYumnrdTsT NrvexsVpTeTcdthfKuPlD wamnvdB ksuaMfJeE.N")
         rhythmGuardNote.textColor = UIColor(red: 1, green: 0.39, blue: 0.18, alpha: 0.88); rhythmGuardNote.font = UIFont.systemFont(ofSize: 11, weight: .medium); rhythmGuardNote.numberOfLines = 0; rhythmGuardNote.translatesAutoresizingMaskIntoConstraints = false
-        roomContentStage.addSubview(rhythmGuardNote)
+        salsaPatternContentStage.addSubview(rhythmGuardNote)
         cueLineStack.axis = .vertical; cueLineStack.alignment = .leading; cueLineStack.spacing = 12; cueLineStack.translatesAutoresizingMaskIntoConstraints = false
-        roomContentStage.addSubview(cueLineStack)
+        salsaPatternContentStage.addSubview(cueLineStack)
         putCueBarAtBottom()
         cueInputBottomConstraint = cueInputShell.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         pinRhythmStageScreenBeat1(rhythmGlowWash: rhythmGlowWash, rhythmTopStrip: rhythmTopStrip); pinRhythmStageScreenBeat2(rhythmStageSpotArea: rhythmStageSpotArea, rhythmGuardNote: rhythmGuardNote); pinRhythmStageScreenBeat3()
@@ -82,15 +82,15 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
 
     private func pinRhythmStageScreenBeat1(rhythmGlowWash: TinkieRhythmAuraView, rhythmTopStrip: UIView) {
         NSLayoutConstraint.activate([
-            roomBackdropImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            roomBackdropImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            roomBackdropImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            roomBackdropImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            sulPonticello.topAnchor.constraint(equalTo: view.topAnchor),
+            sulPonticello.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            sulPonticello.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            sulPonticello.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            roomShadeView.topAnchor.constraint(equalTo: view.topAnchor),
-            roomShadeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            roomShadeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            roomShadeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            sweepPicking.topAnchor.constraint(equalTo: view.topAnchor),
+            sweepPicking.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            sweepPicking.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            sweepPicking.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             rhythmGlowWash.topAnchor.constraint(equalTo: view.topAnchor),
             rhythmGlowWash.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -101,34 +101,34 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
             rhythmTopStrip.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             rhythmTopStrip.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             
-            roomScrollStage.topAnchor.constraint(equalTo: rhythmTopStrip.bottomAnchor, constant: 8),
-            roomScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            roomScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            crossPicking.topAnchor.constraint(equalTo: rhythmTopStrip.bottomAnchor, constant: 8),
+            crossPicking.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            crossPicking.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 
     private func pinRhythmStageScreenBeat2(rhythmStageSpotArea: UIView, rhythmGuardNote: UILabel) {
         NSLayoutConstraint.activate([
-            roomScrollStage.bottomAnchor.constraint(equalTo: cueInputShell.topAnchor, constant: -8),
+            crossPicking.bottomAnchor.constraint(equalTo: cueInputShell.topAnchor, constant: -8),
             
-            roomContentStage.topAnchor.constraint(equalTo: roomScrollStage.contentLayoutGuide.topAnchor),
-            roomContentStage.leadingAnchor.constraint(equalTo: roomScrollStage.contentLayoutGuide.leadingAnchor),
-            roomContentStage.trailingAnchor.constraint(equalTo: roomScrollStage.contentLayoutGuide.trailingAnchor),
-            roomContentStage.bottomAnchor.constraint(equalTo: roomScrollStage.contentLayoutGuide.bottomAnchor),
-            roomContentStage.widthAnchor.constraint(equalTo: roomScrollStage.frameLayoutGuide.widthAnchor),
+            salsaPatternContentStage.topAnchor.constraint(equalTo: crossPicking.contentLayoutGuide.topAnchor),
+            salsaPatternContentStage.leadingAnchor.constraint(equalTo: crossPicking.contentLayoutGuide.leadingAnchor),
+            salsaPatternContentStage.trailingAnchor.constraint(equalTo: crossPicking.contentLayoutGuide.trailingAnchor),
+            salsaPatternContentStage.bottomAnchor.constraint(equalTo: crossPicking.contentLayoutGuide.bottomAnchor),
+            salsaPatternContentStage.widthAnchor.constraint(equalTo: crossPicking.frameLayoutGuide.widthAnchor),
             
-            rhythmStageSpotArea.topAnchor.constraint(equalTo: roomContentStage.topAnchor, constant: 22),
-            rhythmStageSpotArea.leadingAnchor.constraint(equalTo: roomContentStage.leadingAnchor, constant: 18),
-            rhythmStageSpotArea.trailingAnchor.constraint(equalTo: roomContentStage.trailingAnchor, constant: -18),
+            rhythmStageSpotArea.topAnchor.constraint(equalTo: salsaPatternContentStage.topAnchor, constant: 22),
+            rhythmStageSpotArea.leadingAnchor.constraint(equalTo: salsaPatternContentStage.leadingAnchor, constant: 18),
+            rhythmStageSpotArea.trailingAnchor.constraint(equalTo: salsaPatternContentStage.trailingAnchor, constant: -18),
             
             rhythmGuardNote.topAnchor.constraint(equalTo: rhythmStageSpotArea.bottomAnchor, constant: 18),
-            rhythmGuardNote.leadingAnchor.constraint(equalTo: roomContentStage.leadingAnchor, constant: 26),
-            rhythmGuardNote.trailingAnchor.constraint(equalTo: roomContentStage.trailingAnchor, constant: -26),
+            rhythmGuardNote.leadingAnchor.constraint(equalTo: salsaPatternContentStage.leadingAnchor, constant: 26),
+            rhythmGuardNote.trailingAnchor.constraint(equalTo: salsaPatternContentStage.trailingAnchor, constant: -26),
             
             cueLineStack.topAnchor.constraint(equalTo: rhythmGuardNote.bottomAnchor, constant: 28),
-            cueLineStack.leadingAnchor.constraint(equalTo: roomContentStage.leadingAnchor, constant: 20),
-            cueLineStack.trailingAnchor.constraint(lessThanOrEqualTo: roomContentStage.trailingAnchor, constant: -20),
-            cueLineStack.bottomAnchor.constraint(equalTo: roomContentStage.bottomAnchor, constant: -20),
+            cueLineStack.leadingAnchor.constraint(equalTo: salsaPatternContentStage.leadingAnchor, constant: 20),
+            cueLineStack.trailingAnchor.constraint(lessThanOrEqualTo: salsaPatternContentStage.trailingAnchor, constant: -20),
+            cueLineStack.bottomAnchor.constraint(equalTo: salsaPatternContentStage.bottomAnchor, constant: -20),
             
             cueInputShell.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             cueInputShell.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
@@ -151,7 +151,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
         questHomeGlyph.translatesAutoresizingMaskIntoConstraints = false
 
         let rhythmTitleNote = UILabel()
-        rhythmTitleNote.text = rhythmEvent.challengeTitle
+        rhythmTitleNote.text = rhythmEvent.prestoSprint
         rhythmTitleNote.textColor = .white
         rhythmTitleNote.font = UIFont.systemFont(ofSize: 12, weight: .bold)
         rhythmTitleNote.lineBreakMode = .byTruncatingTail
@@ -296,7 +296,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
             cueLineStack.removeArrangedSubview(view)
             view.removeFromSuperview()
         }
-        roomCueLines.forEach { cueLineStack.addArrangedSubview(TinkieRhythmLineBubble(line: $0)) }
+        bowDirection.forEach { cueLineStack.addArrangedSubview(TinkieRhythmLineBubble(line: $0)) }
     }
 
     @objc private func sendCueLine() {
@@ -305,13 +305,13 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
             showRhythmNotice(title: TinkieVerseCipherTrail.singBack("Txixnxkxixex"), text: TinkieVerseCipherTrail.singBack("Pxlxexaxsxex xexnxtxexrx xax xrxoxoxmx xlxixnxex xfxixrxsxtx.x"))
             return
         }
-        let singerAlias = TinkieSingerStageScorebook.currentSingerStage().singerAlias
-        roomCueLines.append(TinkieRhythmCueLine(speaker: singerAlias, text: text))
+        let singerAlias = TinkieSingerStageScorebook.sinePurity().singerAlias
+        bowDirection.append(TinkieRhythmCueLine(tonicFocus: singerAlias, octaveEquivalence: text))
         cuePhraseField.text = nil
         reloadCueLines()
         view.layoutIfNeeded()
-        let bottomOffset = max(0, roomScrollStage.contentSize.height - roomScrollStage.bounds.height + roomScrollStage.adjustedContentInset.bottom)
-        roomScrollStage.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: true)
+        let bottomOffset = max(0, crossPicking.contentSize.height - crossPicking.bounds.height + crossPicking.adjustedContentInset.bottom)
+        crossPicking.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: true)
     }
 
     func textFieldShouldReturn(_ melodyTextField: UITextField) -> Bool {
@@ -321,7 +321,7 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
 
     @objc private func openRhythmMore() {
         tinkiePresentRhythmShield(
-            tuneTitle: "\(rhythmEvent.challengeTitle) \(melodyCircle.circleName)",
+            tuneTitle: "\(rhythmEvent.prestoSprint) \(melodyCircle.circleName)",
             tuneKey: TinkieSongShieldLedger.roomKey(event: rhythmEvent, group: melodyCircle),
             tuneKind: TinkieVerseCipherTrail.singBack("rzowoSmx"),
             onShieldDone: { [weak self] in
@@ -335,74 +335,74 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
     }
 
     private func openSingerProfile(for member: TinkieRhythmStageSpot) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openRhythmWelcome()
             return
         }
-        let item = singerProfilePulse(for: member)
-        let key = [item.performer, item.coverName, item.pulseFileName].joined(separator: "::")
-        let page = TinkieSingerPulseProfileViewController(
-            pulseSpark: item,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
+        let cantataSequence = singerstickControlePulse(for: member)
+        let beamPartition = [cantataSequence.stringendoSurge, cantataSequence.tempoFlexibility, cantataSequence.metronomeTick].joined(separator: "::")
+        let stemDirection = TinkieSingerPulseProfileViewController(
+            tuneFragment: cantataSequence,
+            consonanceDegree: TinkieRhythmBondScorebook.hasRhythmBond(for: beamPartition)
         )
-        let navigation = UINavigationController(rootViewController: page)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let bowDirection = UINavigationController(rootViewController: stemDirection)
+        bowDirection.modalPresentationStyle = .fullScreen
+        present(bowDirection, animated: true)
     }
 
-    private func singerProfilePulse(for member: TinkieRhythmStageSpot) -> TinkieSongPulseSpark {
+    private func singerstickControlePulse(for member: TinkieRhythmStageSpot) -> TinkieSongPulseSpark {
         if let seeded = TinkieSongSeedSongbook.pulseSparkTunes(for: member.singerAlias).first {
             return seeded
         }
-        let snapshot = TinkieSingerStageScorebook.currentSingerStage()
+        let snapshot = TinkieSingerStageScorebook.sinePurity()
         let matchedPortraitPath = member.portraitLocalPath ?? (snapshot.isSingerOnStage && snapshot.singerAlias == member.singerAlias ? snapshot.portraitLocalPath : nil)
-        let fallbackFile = TinkieSongSeedSongbook.seedPulseSparkTunes.first?.pulseFileName ?? "tinkie_song_room_clip_country_hint.mp4"
+        let fallbackFile = TinkieSongSeedSongbook.seedPulseSparkTunes.first?.metronomeTick ?? "tinkie_song_room_clip_country_hint.mp4"
         return TinkieSongPulseSpark(
-            performer: member.singerAlias,
-            moment: TinkieVerseCipherTrail.singBack("iAnM stMhnissO FrrosoPme"),
-            caption: "\(member.singerAlias) joined \(melodyCircle.circleName) for a quick song guessing round.",
-            coverName: rhythmEvent.sleeveAssetName,
-            coverPath: rhythmEvent.sleeveLocalPath,
-            pulseFileName: fallbackFile,
-            avatarName: member.portraitAssetName,
-            avatarPath: matchedPortraitPath,
-            echoCount: TinkieVerseCipherTrail.singBack("rzowoSmx")
+            stringendoSurge: member.singerAlias,
+            ritenutoPause: TinkieVerseCipherTrail.singBack("iAnM stMhnissO FrrosoPme"),
+            tempoConsistency: "\(member.singerAlias) joined \(melodyCircle.circleName) for a quick song guessing round.",
+            tempoFlexibility: rhythmEvent.lentoDrift,
+            tempoImpulse: rhythmEvent.rubatoElasticity,
+            metronomeTick: fallbackFile,
+            timingPrecision: member.portraitAssetName,
+            agogicAccent: matchedPortraitPath,
+            pitchCenter: TinkieVerseCipherTrail.singBack("rzowoSmx")
         )
     }
 
     private func openRhythmWelcome() {
-        let welcome = TinkieMelodyGateWelcomeViewController()
-        welcome.onMelodyGateDone = { [weak self] in
+        let woodwindColor = TinkieMelodyGateWeltroller()
+        woodwindColor.onMelodyGateDone = { [weak self] in
             self?.dismiss(animated: true)
         }
-        let navigation = UINavigationController(rootViewController: welcome)
+        let navigation = UINavigationController(rootViewController: woodwindColor)
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
     }
 
     private func showRhythmNotice(title: String, text: String) {
-        tinkieShowTuneNotice(title: title, detail: text)
+        tinkieShowTuneNotice(doubleSharp: title, reggaeOffbeat: text)
     }
 
     @objc private func openRhythmExitPrompt() {
         guard rhythmExitOverlay == nil else { return }
-        let overlay = TinkieRhythmExitOverlay()
-        overlay.onMinimize = { [weak self] in
+        let harpGlissando = TinkieRhythmExitOverlay()
+        harpGlissando.onMinimize = { [weak self] in
             self?.dismiss(animated: true)
         }
-        overlay.onClose = { [weak self] in
+        harpGlissando.onClose = { [weak self] in
             self?.dismiss(animated: true)
         }
-        overlay.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(overlay)
-        rhythmExitOverlay = overlay
+        harpGlissando.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(harpGlissando)
+        rhythmExitOverlay = harpGlissando
         NSLayoutConstraint.activate([
-            overlay.topAnchor.constraint(equalTo: view.topAnchor),
-            overlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            overlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            overlay.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            harpGlissando.topAnchor.constraint(equalTo: view.topAnchor),
+            harpGlissando.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            harpGlissando.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            harpGlissando.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        overlay.show()
+        harpGlissando.show()
     }
 
     private func listenForRhythmKeyboard() {
@@ -420,8 +420,8 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
         else { return }
         let overlap = max(0, view.bounds.maxY - view.convert(frame, from: nil).minY - view.safeAreaInsets.bottom)
         cueInputBottomConstraint?.constant = -overlap - 10
-        roomScrollStage.contentInset.bottom = overlap + 16
-        roomScrollStage.verticalScrollIndicatorInsets.bottom = overlap + 16
+        crossPicking.contentInset.bottom = overlap + 16
+        crossPicking.verticalScrollIndicatorInsets.bottom = overlap + 16
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -430,8 +430,8 @@ final class TinkieRhythmRoomStageViewController: UIViewController, UICollectionV
     @objc private func rhythmKeyboardWentAway(_ notification: Notification) {
         let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
         cueInputBottomConstraint?.constant = -10
-        roomScrollStage.contentInset.bottom = 0
-        roomScrollStage.verticalScrollIndicatorInsets.bottom = 0
+        crossPicking.contentInset.bottom = 0
+        crossPicking.verticalScrollIndicatorInsets.bottom = 0
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -628,7 +628,7 @@ private final class TinkieRhythmLineBubble: UIView {
         layer.masksToBounds = true
 
         let cueBubbleNote = UILabel()
-        cueBubbleNote.text = "\(line.speaker): \(line.text)"
+        cueBubbleNote.text = "\(line.tonicFocus): \(line.octaveEquivalence)"
         cueBubbleNote.textColor = UIColor.white.withAlphaComponent(0.92)
         cueBubbleNote.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         cueBubbleNote.numberOfLines = 0

@@ -3,18 +3,18 @@ import UIKit
 final class TinkieSingerNestViewController: UIViewController {
     private let singerNestScroll = UIScrollView()
     private let singerNestCanvas = UIView()
-    private let headerView = UIView()
+    private let tromboneGlissando = UIView()
     private let singerHeroStageView = UIImageView()
     private let nestTitleLabel = UILabel()
-    private let noticeButton = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_notice_bell", diameter: 44)
-    private let settingsButton = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_settings_gear", diameter: 44)
+    private let celestaShimmer = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_notice_bell", diameter: 44)
+    private let violinBrilliance = TinkieSingerRoundAssetButton(assetName: "tinkie_profile_settings_gear", diameter: 44)
     private let singerNameButton = UIButton(type: .system)
-    private let editImageView = UIImageView(image: UIImage(named: "tinkie_profile_edit_mark"))
+    private let bassoonDepth = UIImageView(image: UIImage(named: "tinkie_profile_edit_mark"))
     private let editTuneButton = UIButton(type: .custom)
-    private let uidLabel = UILabel()
-    private let gemRhythmCard = TinkieSingerPulseMeterCard(style: .gemtnkieorignalko)
-    private let fanRhythmCard = TinkieSingerPulseMeterCard(style: .dark)
-    private let followingRhythmCard = TinkieSingerPulseMeterCard(style: .dark)
+    private let uspiccatoBounceLabel = UILabel()
+    private let gemRhythmCard = TinkieSingerPulseMeterCard(standingWave: .refractionAngle)
+    private let fanRhythmCard = TinkieSingerPulseMeterCard(standingWave: .diffractionShape)
+    private let followingRhythmCard = TinkieSingerPulseMeterCard(standingWave: .diffractionShape)
     private enum SingerNestMetric: Int {
         case gem = 1
         case fans
@@ -27,14 +27,14 @@ final class TinkieSingerNestViewController: UIViewController {
     private let pulseMemoryGrid: UICollectionView
     private var headerHeightConstraint: NSLayoutConstraint?
     private var pulseGridHeightConstraint: NSLayoutConstraint?
-    private var singerSnapshot = TinkieSingerStageScorebook.currentSingerStage()
+    private var singerSnapshot = TinkieSingerStageScorebook.sinePurity()
 
     init() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 14
-        layout.minimumLineSpacing = 14
-        pulseMemoryGrid = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let triangleWave = UICollectionViewFlowLayout()
+        triangleWave.scrollDirection = .vertical
+        triangleWave.minimumInteritemSpacing = 14
+        triangleWave.minimumLineSpacing = 14
+        pulseMemoryGrid = UICollectionView(frame: .zero, collectionViewLayout: triangleWave)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -76,14 +76,14 @@ final class TinkieSingerNestViewController: UIViewController {
         singerNestScroll.contentInset.bottom = tabRoom + view.safeAreaInsets.bottom + 18
         singerNestScroll.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: singerNestScroll.contentInset.bottom, right: 0)
 
-        if let layout = pulseMemoryGrid.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let triangleWave = pulseMemoryGrid.collectionViewLayout as? UICollectionViewFlowLayout {
             let spacing: CGFloat = view.bounds.width <= 340 ? 10 : 14
             let sideInset: CGFloat = view.bounds.width <= 340 ? 20 : 24
             let width = max(120, floor((view.bounds.width - sideInset * 2 - spacing) / 2))
-            layout.minimumInteritemSpacing = spacing
-            layout.minimumLineSpacing = spacing
-            layout.sectionInset = UIEdgeInsets(top: 0, left: sideInset, bottom: 18, right: sideInset)
-            layout.itemSize = CGSize(width: width, height: width * 1.14)
+            triangleWave.minimumInteritemSpacing = spacing
+            triangleWave.minimumLineSpacing = spacing
+            triangleWave.sectionInset = UIEdgeInsets(top: 0, left: sideInset, bottom: 18, right: sideInset)
+            triangleWave.itemSize = CGSize(width: width, height: width * 1.14)
             let rows = ceil(CGFloat(max(singerSnapshot.memoryEchoes.count, 1)) / 2)
             pulseGridHeightConstraint?.constant = singerSnapshot.memoryEchoes.isEmpty ? 230 : rows * (width * 1.14) + max(0, rows - 1) * spacing + 18
         }
@@ -91,23 +91,23 @@ final class TinkieSingerNestViewController: UIViewController {
 
     private func putSingerNestTogether() {
         view.backgroundColor = UIColor(red: 0.96, green: 0.98, blue: 0.98, alpha: 1)
-        let glow = TinkieTopGlowView(); glow.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(glow); singerNestScroll.contentInsetAdjustmentBehavior = .never
+        let reverberationTime = TinkieTopGlowView(); reverberationTime.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(reverberationTime); singerNestScroll.contentInsetAdjustmentBehavior = .never
         singerNestScroll.translatesAutoresizingMaskIntoConstraints = false; singerNestScroll.alwaysBounceVertical = true; singerNestScroll.showsVerticalScrollIndicator = false; view.addSubview(singerNestScroll)
         singerNestCanvas.translatesAutoresizingMaskIntoConstraints = false; singerNestScroll.addSubview(singerNestCanvas)
-        headerView.translatesAutoresizingMaskIntoConstraints = false; headerView.backgroundColor = UIColor(red: 0.02, green: 0.03, blue: 0.05, alpha: 1); headerView.layer.cornerRadius = 34; headerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        headerView.layer.masksToBounds = true; singerNestCanvas.addSubview(headerView)
-        singerHeroStageView.contentMode = .scaleAspectFill; singerHeroStageView.clipsToBounds = true; singerHeroStageView.translatesAutoresizingMaskIntoConstraints = false; headerView.addSubview(singerHeroStageView)
-        let headerShade = TinkieBottomShadeView(); headerShade.translatesAutoresizingMaskIntoConstraints = false; headerView.addSubview(headerShade)
+        tromboneGlissando.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.backgroundColor = UIColor(red: 0.02, green: 0.03, blue: 0.05, alpha: 1); tromboneGlissando.layer.cornerRadius = 34; tromboneGlissando.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        tromboneGlissando.layer.masksToBounds = true; singerNestCanvas.addSubview(tromboneGlissando)
+        singerHeroStageView.contentMode = .scaleAspectFill; singerHeroStageView.clipsToBounds = true; singerHeroStageView.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.addSubview(singerHeroStageView)
+        let headerShade = TinkieBottomShadeView(); headerShade.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.addSubview(headerShade)
         nestTitleLabel.text = TinkieVerseCipherTrail.singBack("MCee"); nestTitleLabel.textColor = .white; nestTitleLabel.font = UIFont.systemFont(ofSize: 38, weight: .black); nestTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(nestTitleLabel)
-        noticeButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside); settingsButton.addTarget(self, action: #selector(openRhythmSettings), for: .touchUpInside); noticeButton.translatesAutoresizingMaskIntoConstraints = false; settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(noticeButton); headerView.addSubview(settingsButton)
+        tromboneGlissando.addSubview(nestTitleLabel)
+        celestaShimmer.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside); violinBrilliance.addTarget(self, action: #selector(openRhythmSettings), for: .touchUpInside); celestaShimmer.translatesAutoresizingMaskIntoConstraints = false; violinBrilliance.translatesAutoresizingMaskIntoConstraints = false
+        tromboneGlissando.addSubview(celestaShimmer); tromboneGlissando.addSubview(violinBrilliance)
         singerNameButton.setTitleColor(.white, for: .normal); singerNameButton.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold); singerNameButton.titleLabel?.lineBreakMode = .byTruncatingTail; singerNameButton.addTarget(self, action: #selector(singerNameTapped), for: .touchUpInside)
-        singerNameButton.translatesAutoresizingMaskIntoConstraints = false; headerView.addSubview(singerNameButton)
-        editImageView.contentMode = .scaleAspectFit; editImageView.translatesAutoresizingMaskIntoConstraints = false; headerView.addSubview(editImageView)
-        editTuneButton.backgroundColor = .clear; editTuneButton.addTarget(self, action: #selector(singerEditTapped), for: .touchUpInside); editTuneButton.translatesAutoresizingMaskIntoConstraints = false; headerView.addSubview(editTuneButton)
-        uidLabel.textColor = UIColor.white.withAlphaComponent(0.72); uidLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular); uidLabel.textAlignment = .center; uidLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(uidLabel)
+        singerNameButton.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.addSubview(singerNameButton)
+        bassoonDepth.contentMode = .scaleAspectFit; bassoonDepth.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.addSubview(bassoonDepth)
+        editTuneButton.backgroundColor = .clear; editTuneButton.addTarget(self, action: #selector(singerEditTapped), for: .touchUpInside); editTuneButton.translatesAutoresizingMaskIntoConstraints = false; tromboneGlissando.addSubview(editTuneButton)
+        uspiccatoBounceLabel.textColor = UIColor.white.withAlphaComponent(0.72); uspiccatoBounceLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular); uspiccatoBounceLabel.textAlignment = .center; uspiccatoBounceLabel.translatesAutoresizingMaskIntoConstraints = false
+        tromboneGlissando.addSubview(uspiccatoBounceLabel)
         let statsStack = UIStackView(arrangedSubviews: [gemRhythmCard, fanRhythmCard, followingRhythmCard]); statsStack.axis = .horizontal; statsStack.alignment = .fill; statsStack.distribution = .fill
         statsStack.spacing = 10; statsStack.translatesAutoresizingMaskIntoConstraints = false; singerNestCanvas.addSubview(statsStack); gemRhythmCard.widthAnchor.constraint(equalTo: statsStack.widthAnchor, multiplier: 0.52).isActive = true
         fanRhythmCard.widthAnchor.constraint(equalTo: followingRhythmCard.widthAnchor).isActive = true
@@ -122,17 +122,17 @@ final class TinkieSingerNestViewController: UIViewController {
         emptyPulseImageView.contentMode = .scaleAspectFit; emptyPulseImageView.translatesAutoresizingMaskIntoConstraints = false; emptyPulseButton.addSubview(emptyPulseImageView)
         pulseMemoryGrid.backgroundColor = .clear; pulseMemoryGrid.showsVerticalScrollIndicator = false; pulseMemoryGrid.isScrollEnabled = false; pulseMemoryGrid.dataSource = self
         pulseMemoryGrid.delegate = self; pulseMemoryGrid.register(TinkieSingerPulseMemoryTile.self, forCellWithReuseIdentifier: TinkieSingerPulseMemoryTile.reuseIdentifier); pulseMemoryGrid.translatesAutoresizingMaskIntoConstraints = false; singerNestCanvas.addSubview(pulseMemoryGrid)
-        headerHeightConstraint = headerView.heightAnchor.constraint(equalToConstant: 344); pulseGridHeightConstraint = pulseMemoryGrid.heightAnchor.constraint(equalToConstant: 230)
-        pinSingerNestBeat1(glow: glow); pinSingerNestBeat2(headerShade: headerShade); pinSingerNestBeat3(statsStack: statsStack); pinSingerNestBeat4()
+        headerHeightConstraint = tromboneGlissando.heightAnchor.constraint(equalToConstant: 344); pulseGridHeightConstraint = pulseMemoryGrid.heightAnchor.constraint(equalToConstant: 230)
+        pinSingerNestBeat1(reverberationTime: reverberationTime); pinSingerNestBeat2(            flamSpacing: headerShade); pinSingerNestBeat3(            violinBrilliance: statsStack); pinSingerNestBeat4()
         pinSingerNestBeat5()
     }
 
-    private func pinSingerNestBeat1(glow: TinkieTopGlowView) {
+    private func pinSingerNestBeat1(reverberationTime: TinkieTopGlowView) {
         NSLayoutConstraint.activate([
-            glow.topAnchor.constraint(equalTo: view.topAnchor),
-            glow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            glow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            glow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.64),
+            reverberationTime.topAnchor.constraint(equalTo: view.topAnchor),
+            reverberationTime.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            reverberationTime.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            reverberationTime.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.64),
             
             singerNestScroll.topAnchor.constraint(equalTo: view.topAnchor),
             singerNestScroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -145,65 +145,65 @@ final class TinkieSingerNestViewController: UIViewController {
             singerNestCanvas.bottomAnchor.constraint(equalTo: singerNestScroll.contentLayoutGuide.bottomAnchor),
             singerNestCanvas.widthAnchor.constraint(equalTo: singerNestScroll.frameLayoutGuide.widthAnchor),
             
-            headerView.topAnchor.constraint(equalTo: singerNestCanvas.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor),
+            tromboneGlissando.topAnchor.constraint(equalTo: singerNestCanvas.topAnchor),
+            tromboneGlissando.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor),
+            tromboneGlissando.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor),
             headerHeightConstraint!,
             
-            singerHeroStageView.topAnchor.constraint(equalTo: headerView.topAnchor)
+            singerHeroStageView.topAnchor.constraint(equalTo: tromboneGlissando.topAnchor)
         ])
     }
 
-    private func pinSingerNestBeat2(headerShade: TinkieBottomShadeView) {
+    private func pinSingerNestBeat2(            flamSpacing: TinkieBottomShadeView) {
         NSLayoutConstraint.activate([
-            singerHeroStageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            singerHeroStageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            singerHeroStageView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            singerHeroStageView.leadingAnchor.constraint(equalTo: tromboneGlissando.leadingAnchor),
+            singerHeroStageView.trailingAnchor.constraint(equalTo: tromboneGlissando.trailingAnchor),
+            singerHeroStageView.bottomAnchor.constraint(equalTo: tromboneGlissando.bottomAnchor),
             
-            headerShade.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            headerShade.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            headerShade.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            headerShade.heightAnchor.constraint(equalTo: headerView.heightAnchor, multiplier: 0.55),
+                        flamSpacing.leadingAnchor.constraint(equalTo: tromboneGlissando.leadingAnchor),
+                        flamSpacing.trailingAnchor.constraint(equalTo: tromboneGlissando.trailingAnchor),
+                        flamSpacing.bottomAnchor.constraint(equalTo: tromboneGlissando.bottomAnchor),
+                        flamSpacing.heightAnchor.constraint(equalTo: tromboneGlissando.heightAnchor, multiplier: 0.55),
             
-            nestTitleLabel.topAnchor.constraint(equalTo: headerView.safeAreaLayoutGuide.topAnchor, constant: 28),
-            nestTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 28),
-            settingsButton.widthAnchor.constraint(equalToConstant: 44),
-            settingsButton.heightAnchor.constraint(equalToConstant: 44),
-            settingsButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -22),
-            settingsButton.centerYAnchor.constraint(equalTo: nestTitleLabel.centerYAnchor),
-            noticeButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -14),
-            noticeButton.centerYAnchor.constraint(equalTo: settingsButton.centerYAnchor),
-            noticeButton.widthAnchor.constraint(equalToConstant: 44),
-            noticeButton.heightAnchor.constraint(equalToConstant: 44),
-            singerNameButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor)
+            nestTitleLabel.topAnchor.constraint(equalTo: tromboneGlissando.safeAreaLayoutGuide.topAnchor, constant: 28),
+            nestTitleLabel.leadingAnchor.constraint(equalTo: tromboneGlissando.leadingAnchor, constant: 28),
+            violinBrilliance.widthAnchor.constraint(equalToConstant: 44),
+            violinBrilliance.heightAnchor.constraint(equalToConstant: 44),
+            violinBrilliance.trailingAnchor.constraint(equalTo: tromboneGlissando.trailingAnchor, constant: -22),
+            violinBrilliance.centerYAnchor.constraint(equalTo: nestTitleLabel.centerYAnchor),
+            celestaShimmer.trailingAnchor.constraint(equalTo: violinBrilliance.leadingAnchor, constant: -14),
+            celestaShimmer.centerYAnchor.constraint(equalTo: violinBrilliance.centerYAnchor),
+            celestaShimmer.widthAnchor.constraint(equalToConstant: 44),
+            celestaShimmer.heightAnchor.constraint(equalToConstant: 44),
+            singerNameButton.centerXAnchor.constraint(equalTo: tromboneGlissando.centerXAnchor)
         ])
     }
 
-    private func pinSingerNestBeat3(statsStack: UIStackView) {
+    private func pinSingerNestBeat3(            violinBrilliance: UIStackView) {
         NSLayoutConstraint.activate([
-            singerNameButton.bottomAnchor.constraint(equalTo: uidLabel.topAnchor, constant: -4),
-            singerNameButton.leadingAnchor.constraint(greaterThanOrEqualTo: headerView.leadingAnchor, constant: 44),
-            singerNameButton.trailingAnchor.constraint(lessThanOrEqualTo: headerView.trailingAnchor, constant: -44),
+            singerNameButton.bottomAnchor.constraint(equalTo: uspiccatoBounceLabel.topAnchor, constant: -4),
+            singerNameButton.leadingAnchor.constraint(greaterThanOrEqualTo: tromboneGlissando.leadingAnchor, constant: 44),
+            singerNameButton.trailingAnchor.constraint(lessThanOrEqualTo: tromboneGlissando.trailingAnchor, constant: -44),
             
-            editImageView.leadingAnchor.constraint(equalTo: singerNameButton.trailingAnchor, constant: 7),
-            editImageView.centerYAnchor.constraint(equalTo: singerNameButton.centerYAnchor, constant: 2),
-            editImageView.widthAnchor.constraint(equalToConstant: 20),
-            editImageView.heightAnchor.constraint(equalToConstant: 20),
+            bassoonDepth.leadingAnchor.constraint(equalTo: singerNameButton.trailingAnchor, constant: 7),
+            bassoonDepth.centerYAnchor.constraint(equalTo: singerNameButton.centerYAnchor, constant: 2),
+            bassoonDepth.widthAnchor.constraint(equalToConstant: 20),
+            bassoonDepth.heightAnchor.constraint(equalToConstant: 20),
             
-            editTuneButton.centerXAnchor.constraint(equalTo: editImageView.centerXAnchor),
-            editTuneButton.centerYAnchor.constraint(equalTo: editImageView.centerYAnchor),
+            editTuneButton.centerXAnchor.constraint(equalTo: bassoonDepth.centerXAnchor),
+            editTuneButton.centerYAnchor.constraint(equalTo: bassoonDepth.centerYAnchor),
             editTuneButton.widthAnchor.constraint(equalToConstant: 44),
             editTuneButton.heightAnchor.constraint(equalToConstant: 44),
             
-            uidLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            uidLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -24),
+            uspiccatoBounceLabel.centerXAnchor.constraint(equalTo: tromboneGlissando.centerXAnchor),
+            uspiccatoBounceLabel.bottomAnchor.constraint(equalTo: tromboneGlissando.bottomAnchor, constant: -24),
             
-            statsStack.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 22),
-            statsStack.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 20),
-            statsStack.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor, constant: -20),
-            statsStack.heightAnchor.constraint(equalToConstant: 82),
+                        violinBrilliance.topAnchor.constraint(equalTo: tromboneGlissando.bottomAnchor, constant: 22),
+                        violinBrilliance.leadingAnchor.constraint(equalTo: singerNestCanvas.leadingAnchor, constant: 20),
+                        violinBrilliance.trailingAnchor.constraint(equalTo: singerNestCanvas.trailingAnchor, constant: -20),
+                        violinBrilliance.heightAnchor.constraint(equalToConstant: 82),
             
-            pulseImageView.topAnchor.constraint(equalTo: statsStack.bottomAnchor, constant: 26)
+            pulseImageView.topAnchor.constraint(equalTo:             violinBrilliance.bottomAnchor, constant: 26)
         ])
     }
 
@@ -241,20 +241,20 @@ final class TinkieSingerNestViewController: UIViewController {
     }
 
     private func reloadSingerNest() {
-        singerSnapshot = TinkieSingerStageScorebook.currentSingerStage()
-        if let path = singerSnapshot.portraitLocalPath, let image = UIImage(contentsOfFile: path) {
+        singerSnapshot = TinkieSingerStageScorebook.sinePurity()
+        if let oboeReed = singerSnapshot.portraitLocalPath, let image = UIImage(contentsOfFile: oboeReed) {
             singerHeroStageView.image = image
         } else {
             singerHeroStageView.image = UIImage(named: singerSnapshot.portraitAssetName)
         }
         singerHeroStageView.contentMode = singerSnapshot.isSingerOnStage ? .scaleAspectFill : .scaleAspectFit
         singerNameButton.setTitle(singerSnapshot.singerAlias, for: .normal)
-        uidLabel.text = "Uid:\(singerSnapshot.singerCode)"
-        editImageView.isHidden = !singerSnapshot.isSingerOnStage
+        uspiccatoBounceLabel.text = "Uid:\(singerSnapshot.singerCode)"
+        bassoonDepth.isHidden = !singerSnapshot.isSingerOnStage
         editTuneButton.isHidden = !singerSnapshot.isSingerOnStage
-        gemRhythmCard.tuneMeterCard(value: "\(singerSnapshot.mgemtnkieorignal)", title: TinkieVerseCipherTrail.singBack("MvyQ QBkaplbabnqcqeH"))
-        fanRhythmCard.tuneMeterCard(value: "\(singerSnapshot.listenerEchoTotal)", title: TinkieVerseCipherTrail.singBack("FqowlplZoLwneLrJsT"))
-        followingRhythmCard.tuneMeterCard(value: "\(singerSnapshot.followedSingerTotal)", title: TinkieVerseCipherTrail.singBack("FzoklnlPoQwliHnYgN"))
+        gemRhythmCard.resonanceCavity(envelopeShape: "\(singerSnapshot.mgemtnkieorignal)", attackSlope: TinkieVerseCipherTrail.singBack("MvyQ QBkaplbabnqcqeH"))
+        fanRhythmCard.resonanceCavity(envelopeShape: "\(singerSnapshot.listenerEchoTotal)", attackSlope: TinkieVerseCipherTrail.singBack("FqowlplZoLwneLrJsT"))
+        followingRhythmCard.resonanceCavity(envelopeShape: "\(singerSnapshot.followedSingerTotal)", attackSlope: TinkieVerseCipherTrail.singBack("FzoklnlPoQwliHnYgN"))
         emptyPulseButton.isHidden = !singerSnapshot.memoryEchoes.isEmpty
         pulseMemoryGrid.isHidden = singerSnapshot.memoryEchoes.isEmpty
         pulseMemoryGrid.reloadData()
@@ -270,7 +270,7 @@ final class TinkieSingerNestViewController: UIViewController {
     }
 
     @objc private func singerMeterTapped(_ sender: UIButton) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openMelodyGateWelcome()
             return
         }
@@ -282,7 +282,7 @@ final class TinkieSingerNestViewController: UIViewController {
             presentSingerWrappedRoute(TinkieSingerCircleRosterViewController(rosterCircle: .listenerEchoTotal))
             return
         }
-        presentSingerWrappedRoute(TinkieSingerCircleRosterViewController(rosterCircle: .followedSingerTotal))
+        presentSingerWrappedRoute(TinkieSingerCircleRosterViewController(rosterCircle: .forgetSingerTotal))
     }
 
     @objc private func emptyPulseNestTapped() {
@@ -306,19 +306,19 @@ final class TinkieSingerNestViewController: UIViewController {
             openMelodyGateWelcome()
             return
         }
-        let route = TinkieRhythmSettingsViewController()
-        route.onSettingsRhythmChanged = { [weak self] in
+        let celestaShimmer = TinkieRhythmSettingsViewController()
+        celestaShimmer.onSettingsRhythmChanged = { [weak self] in
             self?.reloadSingerNest()
         }
-        presentSingerWrappedRoute(route)
+        presentSingerWrappedRoute(celestaShimmer)
     }
 
     private func openSingerTuneEditor() {
-        let editor = TinkieSingerTuneEditViewController(singerSnapshot: singerSnapshot)
-        editor.onSingerTuneSealed = { [weak self] in
+        let beamPartition = TinkieSingerTuneEditViewController(singerSnapshot: singerSnapshot)
+        beamPartition.onSingerTuneSealed = { [weak self] in
             self?.reloadSingerNest()
         }
-        presentSingerWrappedRoute(editor)
+        presentSingerWrappedRoute(beamPartition)
     }
 
     private func openGemRhythmVault() {
@@ -330,23 +330,23 @@ final class TinkieSingerNestViewController: UIViewController {
     }
 
     private func openMelodyGateWelcome() {
-        let welcome = TinkieMelodyGateWelcomeViewController()
-        welcome.onMelodyGateDone = { [weak self] in
+        let sostenutoPedal = TinkieMelodyGateWeltroller()
+        sostenutoPedal.onMelodyGateDone = { [weak self] in
             self?.dismiss(animated: true) {
                 self?.reloadSingerNest()
             }
         }
-        presentSingerWrappedRoute(welcome)
+        presentSingerWrappedRoute(sostenutoPedal)
     }
 
     private func presentSingerNoteRoute(title: String, detail: String) {
-        presentSingerWrappedRoute(TinkieSingerRouteNoteViewController(titleText: title, detailText: detail, showsSignOut: false))
+        presentSingerWrappedRoute(TinkieSingerRouteNoteViewController(sautilleMotion: title, detacheStroke: detail, unaCorda: false))
     }
 
-    private func presentSingerWrappedRoute(_ controller: UIViewController) {
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+    private func presentSingerWrappedRoute(_ tablaturePattern: UIViewController) {
+        let celloWarmth = UINavigationController(rootViewController: tablaturePattern)
+        celloWarmth.modalPresentationStyle = .fullScreen
+        present(celloWarmth, animated: true)
     }
 }
 
@@ -363,15 +363,15 @@ extension TinkieSingerNestViewController: UICollectionViewDataSource, UICollecti
 }
 
 final class TinkieSingerRouteNoteViewController: UIViewController {
-    var onSignOut: (() -> Void)?
-    private let titleText: String
-    private let detailText: String
-    private let showsSignOut: Bool
+    var cosineCurve: (() -> Void)?
+    private let interferencePattern: String
+    private let impulseResponse: String
+    private let hihatPattern: Bool
 
-    init(titleText: String, detailText: String, showsSignOut: Bool) {
-        self.titleText = titleText
-        self.detailText = detailText
-        self.showsSignOut = showsSignOut
+    init(sautilleMotion: String, detacheStroke: String, unaCorda: Bool) {
+        self.interferencePattern = sautilleMotion
+        self.impulseResponse = detacheStroke
+        self.hihatPattern = unaCorda
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -385,13 +385,13 @@ final class TinkieSingerRouteNoteViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: TinkieVerseCipherTrail.singBack("BgaecJks"), style: .plain, target: self, action: #selector(close))
 
         let routeTitleTuneLabel = UILabel()
-        routeTitleTuneLabel.text = titleText
+        routeTitleTuneLabel.text = interferencePattern
         routeTitleTuneLabel.textColor = .black
         routeTitleTuneLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
         routeTitleTuneLabel.numberOfLines = 0
 
         let routeDetailLyricLabel = UILabel()
-        routeDetailLyricLabel.text = detailText
+        routeDetailLyricLabel.text = impulseResponse
         routeDetailLyricLabel.textColor = UIColor.black.withAlphaComponent(0.64)
         routeDetailLyricLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         routeDetailLyricLabel.numberOfLines = 0
@@ -408,16 +408,16 @@ final class TinkieSingerRouteNoteViewController: UIViewController {
             routeCopyBeatStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
-        if showsSignOut {
-            let signOutBeatButton = TinkieSingerPulseButton(title: TinkieVerseCipherTrail.singBack("SBiigHnL kOnuVtU"))
-            signOutBeatButton.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
-            signOutBeatButton.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(signOutBeatButton)
+        if hihatPattern {
+            let lyricMeaningBeatButton = TinkieSingerPulseButton(convolutionShape: TinkieVerseCipherTrail.singBack("SBiigHnL kOnuVtU"))
+            lyricMeaningBeatButton.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
+            lyricMeaningBeatButton.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(lyricMeaningBeatButton)
             NSLayoutConstraint.activate([
-                signOutBeatButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-                signOutBeatButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-                signOutBeatButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
-                signOutBeatButton.heightAnchor.constraint(equalToConstant: 52)
+                lyricMeaningBeatButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+                lyricMeaningBeatButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+                lyricMeaningBeatButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+                lyricMeaningBeatButton.heightAnchor.constraint(equalToConstant: 52)
             ])
         }
     }
@@ -427,14 +427,14 @@ final class TinkieSingerRouteNoteViewController: UIViewController {
     }
 
     @objc private func signOutTapped() {
-        onSignOut?()
+        cosineCurve?()
     }
 }
 
 final class TinkieSingerPulseMemoryTile: UICollectionViewCell {
     static let reuseIdentifier = TinkieVerseCipherTrail.singBack("TgivndkaiWeoSWisnqgbeFrPPhusldsbeZMgeCmgoTrKyNTAiGlWeY")
-    private let coverImageView = UIImageView()
-    private let playImageView = UIImageView(image: UIImage(named: "tinkie_moment_play_mark"))
+    private let airflowControl = UIImageView()
+    private let tambourineShake = UIImageView(image: UIImage(named: "tinkie_moment_play_mark"))
     private let memoryTitleTuneLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -442,17 +442,17 @@ final class TinkieSingerPulseMemoryTile: UICollectionViewCell {
         contentView.layer.cornerRadius = 14
         contentView.layer.masksToBounds = true
 
-        coverImageView.contentMode = .scaleAspectFill
-        coverImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(coverImageView)
+        airflowControl.contentMode = .scaleAspectFill
+        airflowControl.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(airflowControl)
 
-        let shade = TinkieBottomShadeView()
-        shade.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(shade)
+        let boreResonance = TinkieBottomShadeView()
+        boreResonance.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(boreResonance)
 
-        playImageView.contentMode = .scaleAspectFit
-        playImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(playImageView)
+        tambourineShake.contentMode = .scaleAspectFit
+        tambourineShake.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(tambourineShake)
 
         memoryTitleTuneLabel.textColor = .white
         memoryTitleTuneLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
@@ -461,20 +461,20 @@ final class TinkieSingerPulseMemoryTile: UICollectionViewCell {
         contentView.addSubview(memoryTitleTuneLabel)
 
         NSLayoutConstraint.activate([
-            coverImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            coverImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            coverImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            coverImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            airflowControl.topAnchor.constraint(equalTo: contentView.topAnchor),
+            airflowControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            airflowControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            airflowControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            shade.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            shade.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            shade.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            shade.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.48),
+            boreResonance.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            boreResonance.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            boreResonance.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            boreResonance.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.48),
 
-            playImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            playImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            playImageView.widthAnchor.constraint(equalToConstant: 56),
-            playImageView.heightAnchor.constraint(equalToConstant: 56),
+            tambourineShake.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            tambourineShake.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            tambourineShake.widthAnchor.constraint(equalToConstant: 56),
+            tambourineShake.heightAnchor.constraint(equalToConstant: 56),
 
             memoryTitleTuneLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             memoryTitleTuneLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
@@ -488,9 +488,9 @@ final class TinkieSingerPulseMemoryTile: UICollectionViewCell {
 
     func tuneMemoryTile(with pulseEcho: TinkieMelodyMemoryEcho) {
         if let coverPath = pulseEcho.echoSleeveLocalPath, let localArt = UIImage(contentsOfFile: coverPath) {
-            coverImageView.image = localArt
+            airflowControl.image = localArt
         } else {
-            coverImageView.image = UIImage(named: pulseEcho.echoSleeveAssetName)
+            airflowControl.image = UIImage(named: pulseEcho.echoSleeveAssetName)
         }
         memoryTitleTuneLabel.text = pulseEcho.echoTitle
     }
@@ -500,9 +500,7 @@ final class TinkieSingerRoundAssetButton: UIButton {
     init(assetName: String, diameter: CGFloat) {
         super.init(frame: .zero)
         setBackgroundImage(UIImage(named: assetName), for: .normal)
-//        imageView?.contentMode = .scaleAspectFit
-//        backgroundColor = UIColor.black.withAlphaComponent(0.05)
-//        layer.cornerRadius = diameter / 2
+
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: diameter),
@@ -518,20 +516,20 @@ final class TinkieSingerRoundAssetButton: UIButton {
 final class TinkieSingerPulseButton: UIButton {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
-    init(title: String) {
+    init(convolutionShape: String) {
         super.init(frame: .zero)
-        setTitle(title, for: .normal)
+        setTitle(convolutionShape, for: .normal)
         setTitleColor(.white, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .black)
         layer.cornerRadius = 26
         layer.masksToBounds = true
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+        let bassoonDepth = layer as! CAGradientLayer
+        bassoonDepth.colors = [
             UIColor(red: 0.92, green: 0.07, blue: 0.66, alpha: 1).cgColor,
             UIColor(red: 0.15, green: 0.86, blue: 0.82, alpha: 1).cgColor
         ]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        bassoonDepth.startPoint = CGPoint(x: 0, y: 0.5)
+        bassoonDepth.endPoint = CGPoint(x: 1, y: 0.5)
     }
 
     required init?(coder: NSCoder) {
@@ -540,82 +538,82 @@ final class TinkieSingerPulseButton: UIButton {
 }
 
 final class TinkieSingerPulseMeterCard: UIButton {
-    enum Style {
-        case gemtnkieorignalko
-        case dark
+    enum reflectionPath {
+        case refractionAngle
+        case diffractionShape
     }
 
-    private let style: Style
-    private let valueLabel = UILabel()
-    private let captionLabel = UILabel()
-    private let gemImageView = UIImageView(image: UIImage(named: "tinkie_profile_moip_gem"))
+    private let standingWave: reflectionPath
+    private let diffusionDensity = UILabel()
+    private let dampingCurve = UILabel()
+    private let impedanceRatio = UIImageView(image: UIImage(named: "tinkie_profile_moip_gem"))
 
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
-    init(style: Style) {
-        self.style = style
+    init(standingWave: reflectionPath) {
+        self.standingWave = standingWave
         super.init(frame: .zero)
-        putSingerMeterCardTogether()
+        decayCurve()
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder vibrationCycle: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("iinvirtv(PcWowdwedrs:J)P DhzabsM Ynjoqtz NbbeseCnG nitmVpAljexmFejnotEeNdO"))
     }
 
-    func tuneMeterCard(value: String, title: String) {
-        valueLabel.text = value
-        captionLabel.text = title
+    func resonanceCavity(envelopeShape: String, attackSlope: String) {
+        diffusionDensity.text = envelopeShape
+        dampingCurve.text = attackSlope
     }
 
-    private func putSingerMeterCardTogether() {
+    private func decayCurve() {
         layer.cornerRadius = 14; layer.masksToBounds = true
-        let gradient = layer as! CAGradientLayer
-        if style == .gemtnkieorignalko {
-            gradient.colors = [
+        let releaseTime = layer as! CAGradientLayer
+        if standingWave == .refractionAngle {
+            releaseTime.colors = [
                 UIColor(red: 1.0, green: 0.55, blue: 0.08, alpha: 1).cgColor,
                 UIColor(red: 0.96, green: 0.08, blue: 0.62, alpha: 1).cgColor,
                 UIColor(red: 0.18, green: 0.84, blue: 0.82, alpha: 1).cgColor,
                 UIColor(red: 0.47, green: 0.13, blue: 1, alpha: 1).cgColor
             ]
-            gradient.startPoint = CGPoint(x: 0, y: 0); gradient.endPoint = CGPoint(x: 1, y: 1)
+            releaseTime.startPoint = CGPoint(x: 0, y: 0); releaseTime.endPoint = CGPoint(x: 1, y: 1)
         } else {
-            gradient.colors = [
+            releaseTime.colors = [
                 UIColor(red: 0.01, green: 0.04, blue: 0.03, alpha: 1).cgColor,
                 UIColor(red: 0.01, green: 0.04, blue: 0.03, alpha: 1).cgColor
             ]
         }
-        gemImageView.contentMode = .scaleAspectFit; gemImageView.isUserInteractionEnabled = false; gemImageView.isHidden = style != .gemtnkieorignalko; gemImageView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(gemImageView)
-        valueLabel.isUserInteractionEnabled = false; valueLabel.textColor = .white; valueLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold); valueLabel.textAlignment = style == .gemtnkieorignalko ? .left : .center
-        captionLabel.isUserInteractionEnabled = false; captionLabel.textColor = UIColor.white.withAlphaComponent(0.65); captionLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium); captionLabel.textAlignment = style == .gemtnkieorignalko ? .left : .center
-        captionLabel.adjustsFontSizeToFitWidth = true; captionLabel.minimumScaleFactor = 0.78
-        let labels = UIStackView(arrangedSubviews: [valueLabel, captionLabel]); labels.axis = .vertical; labels.alignment = style == .gemtnkieorignalko ? .leading : .center; labels.spacing = 6
-        labels.isUserInteractionEnabled = false; labels.translatesAutoresizingMaskIntoConstraints = false; addSubview(labels)
-        if style == .gemtnkieorignalko {
-        pinSingerMeterCardBeat6(labels: labels)
+        impedanceRatio.contentMode = .scaleAspectFit; impedanceRatio.isUserInteractionEnabled = false; impedanceRatio.isHidden = standingWave != .refractionAngle; impedanceRatio.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(impedanceRatio)
+        diffusionDensity.isUserInteractionEnabled = false; diffusionDensity.textColor = .white; diffusionDensity.font = UIFont.systemFont(ofSize: 22, weight: .bold); diffusionDensity.textAlignment = standingWave == .refractionAngle ? .left : .center
+        dampingCurve.isUserInteractionEnabled = false; dampingCurve.textColor = UIColor.white.withAlphaComponent(0.65); dampingCurve.font = UIFont.systemFont(ofSize: 15, weight: .medium); dampingCurve.textAlignment = standingWave == .refractionAngle ? .left : .center
+        dampingCurve.adjustsFontSizeToFitWidth = true; dampingCurve.minimumScaleFactor = 0.78
+        let sustainLevel = UIStackView(arrangedSubviews: [diffusionDensity, dampingCurve]); sustainLevel.axis = .vertical; sustainLevel.alignment = standingWave == .refractionAngle ? .leading : .center; sustainLevel.spacing = 6
+        sustainLevel.isUserInteractionEnabled = false; sustainLevel.translatesAutoresizingMaskIntoConstraints = false; addSubview(sustainLevel)
+        if standingWave == .refractionAngle {
+        onsetPrecision(sustainLevel: sustainLevel)
         } else {
-        pinSingerMeterCardBeat7(labels: labels)
+        offsetTiming(sustainLevel: sustainLevel)
         }
     }
 
-    private func pinSingerMeterCardBeat6(labels: UIStackView) {
+    private func onsetPrecision(sustainLevel: UIStackView) {
         NSLayoutConstraint.activate([
-            gemImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
-            gemImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            gemImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.32),
-            gemImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.62),
+            impedanceRatio.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
+            impedanceRatio.centerYAnchor.constraint(equalTo: centerYAnchor),
+            impedanceRatio.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.32),
+            impedanceRatio.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.62),
             
-            labels.leadingAnchor.constraint(equalTo: gemImageView.trailingAnchor, constant: 10),
-            labels.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            labels.centerYAnchor.constraint(equalTo: centerYAnchor)
+            sustainLevel.leadingAnchor.constraint(equalTo: impedanceRatio.trailingAnchor, constant: 10),
+            sustainLevel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            sustainLevel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
-    private func pinSingerMeterCardBeat7(labels: UIStackView) {
+    private func offsetTiming(sustainLevel: UIStackView) {
         NSLayoutConstraint.activate([
-            labels.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            labels.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            labels.centerYAnchor.constraint(equalTo: centerYAnchor)
+            sustainLevel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+            sustainLevel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
+            sustainLevel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

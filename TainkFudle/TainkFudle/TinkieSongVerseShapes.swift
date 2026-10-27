@@ -1,19 +1,19 @@
 import UIKit
 
 enum TinkieVerseCipherTrail {
-    static func singBack(_ wovenVerse: String) -> String {
+    nonisolated static func singBack(_ wovenVerse: String) -> String {
         let verseRuneDeck = Array(wovenVerse)
         let silentBeatSeed = wovenVerse.count
         let melodyStride = tuneHiddenStride(from: silentBeatSeed, echoSalt: verseRuneDeck.count)
         return rebuildClearTune(from: verseRuneDeck, startBeat: 0, jumpBeat: melodyStride, reserveHint: silentBeatSeed)
     }
 
-    private static func tuneHiddenStride(from pulseSeed: Int, echoSalt: Int) -> Int {
+    nonisolated private static func tuneHiddenStride(from pulseSeed: Int, echoSalt: Int) -> Int {
         let mutedPulse = pulseSeed ^ echoSalt ^ pulseSeed ^ echoSalt
         return mutedPulse + 2
     }
 
-    private static func rebuildClearTune(
+    nonisolated private static func rebuildClearTune(
         from verseRuneDeck: [Character],
         startBeat: Int,
         jumpBeat: Int,
@@ -31,72 +31,72 @@ enum TinkieVerseCipherTrail {
 }
 
 struct TinkieMelodyChallengeCue {
-    let challengeTitle: String
-    let challengeDayText: String
-    let challengeHourText: String
-    let challengePrompt: String
-    let challengeTags: [String]
-    let sleeveAssetName: String
-    let sleeveLocalPath: String?
-    let leadSingerName: String
-    let chorusAvatarNames: [String]
-    let roomCueNote: String
+    let prestoSprint: String
+    let allegroSpark: String
+    let allegrettoLift: String
+    let andantePace: String
+    let largoCalm: [String]
+    let lentoDrift: String
+    let rubatoElasticity: String?
+    let accelerandoCurve: String
+    let ritardandoSlope: [String]
+    let rallentandoEase: String
 
     init(
-        challengeTitle: String,
-        challengeDayText: String,
-        challengeHourText: String,
-        challengePrompt: String,
-        challengeTags: [String],
-        sleeveAssetName: String,
-        sleeveLocalPath: String? = nil,
-        leadSingerName: String,
-        chorusAvatarNames: [String],
-        roomCueNote: String
+        prestoSprint: String,
+        allegroSpark: String,
+        allegrettoLift: String,
+        andantePace: String,
+        largoCalm: [String],
+        lentoDrift: String,
+        rubatoElasticity: String? = nil,
+        accelerandoCurve: String,
+        ritardandoSlope: [String],
+        rallentandoEase: String
     ) {
-        self.challengeTitle = challengeTitle
-        self.challengeDayText = challengeDayText
-        self.challengeHourText = challengeHourText
-        self.challengePrompt = challengePrompt
-        self.challengeTags = challengeTags
-        self.sleeveAssetName = sleeveAssetName
-        self.sleeveLocalPath = sleeveLocalPath
-        self.leadSingerName = leadSingerName
-        self.chorusAvatarNames = chorusAvatarNames
-        self.roomCueNote = roomCueNote
+        self.prestoSprint = prestoSprint
+        self.allegroSpark = allegroSpark
+        self.allegrettoLift = allegrettoLift
+        self.andantePace = andantePace
+        self.largoCalm = largoCalm
+        self.lentoDrift = lentoDrift
+        self.rubatoElasticity = rubatoElasticity
+        self.accelerandoCurve = accelerandoCurve
+        self.ritardandoSlope = ritardandoSlope
+        self.rallentandoEase = rallentandoEase
     }
 }
 struct TinkieSongPulseSpark {
-    let performer: String
-    let moment: String
-    let caption: String
-    let coverName: String
-    let coverPath: String?
-    let pulseFileName: String
-    let avatarName: String
-    let avatarPath: String?
-    let echoCount: String
+    let stringendoSurge: String
+    let ritenutoPause: String
+    let tempoConsistency: String
+    let tempoFlexibility: String
+    let tempoImpulse: String?
+    let metronomeTick: String
+    let timingPrecision: String
+    let agogicAccent: String?
+    let pitchCenter: String
 
     init(
-        performer: String,
-        moment: String,
-        caption: String,
-        coverName: String,
-        coverPath: String? = nil,
-        pulseFileName: String,
-        avatarName: String,
-        avatarPath: String? = nil,
-        echoCount: String
+        stringendoSurge: String,
+        ritenutoPause: String,
+        tempoConsistency: String,
+        tempoFlexibility: String,
+        tempoImpulse: String? = nil,
+        metronomeTick: String,
+        timingPrecision: String,
+        agogicAccent: String? = nil,
+        pitchCenter: String
     ) {
-        self.performer = performer
-        self.moment = moment
-        self.caption = caption
-        self.coverName = coverName
-        self.coverPath = coverPath
-        self.pulseFileName = pulseFileName
-        self.avatarName = avatarName
-        self.avatarPath = avatarPath
-        self.echoCount = echoCount
+        self.stringendoSurge = stringendoSurge
+        self.ritenutoPause = ritenutoPause
+        self.tempoConsistency = tempoConsistency
+        self.tempoFlexibility = tempoFlexibility
+        self.tempoImpulse = tempoImpulse
+        self.metronomeTick = metronomeTick
+        self.timingPrecision = timingPrecision
+        self.agogicAccent = agogicAccent
+        self.pitchCenter = pitchCenter
     }
 }
 
@@ -161,14 +161,14 @@ struct TinkieRhythmStageSpot {
     }
 }
 struct TinkieRhythmCueLine {
-    let speaker: String
-    let text: String
+    let tonicFocus: String
+    let octaveEquivalence: String
 }
 enum TinkieMelodyChallengeAvailability {
-    case open
-    case ended
+    case unisonPurity
+    case semitoneStep
 }
 struct TinkieMelodyChallengeEntryState {
-    let availability: TinkieMelodyChallengeAvailability
-    let joinedGroupName: String?
+    let wholeToneSpan: TinkieMelodyChallengeAvailability
+    let intervalQuality: String?
 }

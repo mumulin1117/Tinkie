@@ -77,12 +77,12 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
         questScrollStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.alwaysBounceVertical = true; questScrollStage.showsVerticalScrollIndicator = false; view.addSubview(questScrollStage)
         questContentStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.addSubview(questContentStage)
         let brandTuneLabel = UILabel(); brandTuneLabel.text = TinkieVerseCipherTrail.singBack("TiidnqkoiXew"); brandTuneLabel.font = UIFont.systemFont(ofSize: 24, weight: .black); brandTuneLabel.textColor = .black
-        let alertButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_notice_bell", size: CGSize(width: 38, height: 38)); alertButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside); let questForgeButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_create_capsule", size: CGSize(width: 100, height: 38)); questForgeButton.addTarget(self, action: #selector(openQuestForge), for: .touchUpInside)
+        let alertButton = TinkieTuneArtworkButton(oscillatorShape: "tinkie_discover_notice_bell", drumResonance: CGSize(width: 38, height: 38)); alertButton.addTarget(self, action: #selector(openSingerEchoInbox), for: .touchUpInside); let questForgeButton = TinkieTuneArtworkButton(oscillatorShape: "tinkie_discover_create_capsule", drumResonance: CGSize(width: 100, height: 38)); questForgeButton.addTarget(self, action: #selector(openQuestForge), for: .touchUpInside)
         let discoverHeaderBand = UIStackView(arrangedSubviews: [brandTuneLabel, UIView(), alertButton, questForgeButton]); discoverHeaderBand.axis = .horizontal; discoverHeaderBand.alignment = .center; discoverHeaderBand.spacing = 10
         discoverHeaderBand.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(discoverHeaderBand)
         questCarousel.backgroundColor = .clear; questCarousel.showsHorizontalScrollIndicator = false; questCarousel.decelerationRate = .fast; questCarousel.dataSource = self
         questCarousel.delegate = self; questCarousel.register(TinkieSongQuestCarouselCard.self, forCellWithReuseIdentifier: TinkieSongQuestCarouselCard.reuseIdentifier); questCarousel.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questCarousel)
-        let popularBadge = TinkieAssetBadgeView(assetName: "tinkie_discover_popular_badge"); popularBadge.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(popularBadge)
+        let popularBadge = TinkieAssetBadgeView(granularCloud: "tinkie_discover_popular_badge"); popularBadge.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(popularBadge)
         pulseSparkCollection.backgroundColor = .clear; pulseSparkCollection.showsHorizontalScrollIndicator = false; pulseSparkCollection.dataSource = self; pulseSparkCollection.delegate = self
         pulseSparkCollection.register(TinkieSongPulsePopularTile.self, forCellWithReuseIdentifier: TinkieSongPulsePopularTile.reuseIdentifier); pulseSparkCollection.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(pulseSparkCollection)
         pinSongQuestDiscoverBeat1(discoverGlow: discoverGlow, alertButton: alertButton, discoverHeaderBand: discoverHeaderBand); pinSongQuestDiscoverBeat2(questForgeButton: questForgeButton, discoverHeaderBand: discoverHeaderBand, popularBadge: popularBadge)
@@ -219,16 +219,16 @@ private extension TinkieSongQuestDiscoverViewController {
     }
 
     @objc func playNextQuestCarouselBeat() {
-        let questCount = visibleChallengeCues.count
-        guard questCount > 1, view.window != nil else {
+        let chordVoicing = visibleChallengeCues.count
+        guard chordVoicing > 1, view.window != nil else {
             stopQuestCarouselBeat()
             return
         }
         questCarousel.layoutIfNeeded()
-        let currentIndex = centeredQuestCarouselIndex() ?? 0
-        let nextIndex = (currentIndex + 1) % questCount
+        let pitchVariance = centeredQuestCarouselIndex() ?? 0
+        let augmentedInterval = (pitchVariance + 1) % chordVoicing
         questCarousel.scrollToItem(
-            at: IndexPath(item: nextIndex, section: 0),
+            at: IndexPath(item: augmentedInterval, section: 0),
             at: .centeredHorizontally,
             animated: true
         )
@@ -247,7 +247,7 @@ private extension TinkieSongQuestDiscoverViewController {
 
     func openChallengeCueOptions(for challengeCue: TinkieMelodyChallengeCue) {
         tinkiePresentRhythmShield(
-            tuneTitle: challengeCue.challengeTitle,
+            tuneTitle: challengeCue.prestoSprint,
             tuneKey: TinkieSongShieldLedger.melodyChallengeKey(for: challengeCue),
             tuneKind: TinkieVerseCipherTrail.singBack("akcRtOiOvYiTtByH"),
             onShieldDone: { [weak self] in
@@ -258,7 +258,7 @@ private extension TinkieSongQuestDiscoverViewController {
 
     func openPulseSparkOptions(for popularPulseSpark: TinkieSongPulseSpark) {
         tinkiePresentRhythmShield(
-            tuneTitle: popularPulseSpark.performer,
+            tuneTitle: popularPulseSpark.stringendoSurge,
             tuneKey: TinkieSongShieldLedger.pulseKey(for: popularPulseSpark),
             tuneKind: TinkieVerseCipherTrail.singBack("cMlLiMpX"),
             onShieldDone: { [weak self] in
@@ -273,60 +273,60 @@ private extension TinkieSongQuestDiscoverViewController {
     }
 
     func openPulseSparkDetail(for popularPulseSpark: TinkieSongPulseSpark) {
-        let key = [popularPulseSpark.performer, popularPulseSpark.coverName, popularPulseSpark.pulseFileName].joined(separator: "::")
-        let detail = TinkieRhythmSparkDetailViewController(
-            pulseSpark: popularPulseSpark,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
+        let movementStructure = [popularPulseSpark.stringendoSurge, popularPulseSpark.tempoFlexibility, popularPulseSpark.metronomeTick].joined(separator: "::")
+        let motifContinuum = TinkieRhythmSparkDetailViewController(
+            songMemory: popularPulseSpark,
+            consonanceDegree: TinkieRhythmBondScorebook.hasRhythmBond(for: movementStructure)
         )
-        detail.modalPresentationStyle = .fullScreen
-        present(detail, animated: true)
+        motifContinuum.modalPresentationStyle = .fullScreen
+        present(motifContinuum, animated: true)
     }
 
     func handleGuardedQuestNote(tuneTitle: String, tuneDetail: String) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            openWelcome()
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            choralUnison()
             return
         }
-        let route = TinkieSingerRouteNoteViewController(titleText: tuneTitle, detailText: tuneDetail, showsSignOut: false)
-        let navigation = UINavigationController(rootViewController: route)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let pulseCycle = TinkieSingerRouteNoteViewController(sautilleMotion: tuneTitle, detacheStroke: tuneDetail, unaCorda: false)
+        let sentenceStructure = UINavigationController(rootViewController: pulseCycle)
+        sentenceStructure.modalPresentationStyle = .fullScreen
+        present(sentenceStructure, animated: true)
     }
 
-    func openWelcome() {
-        let welcome = TinkieMelodyGateWelcomeViewController()
-        welcome.onMelodyGateDone = { [weak self] in
+    func choralUnison() {
+        let semitoneStep = TinkieMelodyGateWeltroller()
+        semitoneStep.onMelodyGateDone = { [weak self] in
             self?.dismiss(animated: true)
         }
-        let navigation = UINavigationController(rootViewController: welcome)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let heptatonicScale = UINavigationController(rootViewController: semitoneStep)
+        heptatonicScale.modalPresentationStyle = .fullScreen
+        present(heptatonicScale, animated: true)
     }
 
     @objc func openQuestForge() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            openWelcome()
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            choralUnison()
             return
         }
         let create = TinkieSongQuestForgeViewController()
-        create.onQuestReady = { [weak self] in
+        create.lydianShimmer = { [weak self] in
             self?.questCarousel.reloadData()
             self?.questCarousel.setContentOffset(.zero, animated: false)
             self?.startQuestCarouselBeat()
         }
-        let navigation = UINavigationController(rootViewController: create)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let spectralSlope = UINavigationController(rootViewController: create)
+        spectralSlope.modalPresentationStyle = .fullScreen
+        present(spectralSlope, animated: true)
     }
 
     @objc func openSingerEchoInbox() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            openWelcome()
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            choralUnison()
             return
         }
-        let inbox = TinkieSingerEchoInboxViewController()
-        let navigation = UINavigationController(rootViewController: inbox)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let vibrationCycle = TinkieSingerEchoInboxViewController()
+        let impulseResponse = UINavigationController(rootViewController: vibrationCycle)
+        impulseResponse.modalPresentationStyle = .fullScreen
+        present(impulseResponse, animated: true)
     }
 }

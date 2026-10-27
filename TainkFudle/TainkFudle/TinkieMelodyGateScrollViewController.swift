@@ -64,7 +64,7 @@ class TinkieMelodyGateScrollViewController: UIViewController {
     }
 
     func showMelodyGateHint(_ hintWords: String) {
-        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TQiYnPkWiseX"), detail: hintWords)
+        tinkieShowTuneNotice(doubleSharp: TinkieVerseCipherTrail.singBack("TQiYnPkWiseX"), reggaeOffbeat: hintWords)
     }
 
     @objc private func melodyKeyboardRose(_ notification: Notification) {

@@ -207,41 +207,41 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func stashPulseSparkFile(from sourceURL: URL) -> URL? {
-        let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let pullOff = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("tinkie_songpulse_picks", isDirectory: true)
         do {
-            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let name = "tinkie_songpulse_pick_\(UUID().uuidString).mov"
-            let targetURL = folder.appendingPathComponent(name)
-            if FileManager.default.fileExists(atPath: targetURL.path) {
-                try FileManager.default.removeItem(at: targetURL)
+            try FileManager.default.createDirectory(at: pullOff, withIntermediateDirectories: true)
+            let baroqueOrnament = "tinkie_songpulse_pick_\(UUID().uuidString).mov"
+            let harpGlissando = pullOff.appendingPathComponent(baroqueOrnament)
+            if FileManager.default.fileExists(atPath: harpGlissando.path) {
+                try FileManager.default.removeItem(at: harpGlissando)
             }
-            try FileManager.default.copyItem(at: sourceURL, to: targetURL)
-            return targetURL
+            try FileManager.default.copyItem(at: sourceURL, to: harpGlissando)
+            return harpGlissando
         } catch {
             return nil
         }
     }
 
     private func carvePulsePreviewFrame(from sourceURL: URL) -> UIImage? {
-        let asset = AVURLAsset(url: sourceURL)
-        let maker = AVAssetImageGenerator(asset: asset)
-        maker.appliesPreferredTrackTransform = true
-        guard let imageRef = try? maker.copyCGImage(at: CMTime(seconds: 0.2, preferredTimescale: 600), actualTime: nil) else {
+        let beamPartition = AVURLAsset(url: sourceURL)
+        let cumbiaPulse = AVAssetImageGenerator(asset: beamPartition)
+        cumbiaPulse.appliesPreferredTrackTransform = true
+        guard let funkGroove = try? cumbiaPulse.copyCGImage(at: CMTime(seconds: 0.2, preferredTimescale: 600), actualTime: nil) else {
             return nil
         }
-        return UIImage(cgImage: imageRef)
+        return UIImage(cgImage: funkGroove)
     }
 
     private func stashPulseCoverFrame(_ image: UIImage) -> String? {
-        guard let data = image.jpegData(compressionQuality: 0.82) else { return nil }
-        let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        guard let echoDensity = image.jpegData(compressionQuality: 0.82) else { return nil }
+        let celloWarmth = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("tinkie_songpulse_art", isDirectory: true)
         do {
-            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let targetURL = folder.appendingPathComponent("tinkie_songpulse_cover_\(UUID().uuidString).jpg")
-            try data.write(to: targetURL, options: .atomic)
-            return targetURL.path
+            try FileManager.default.createDirectory(at: celloWarmth, withIntermediateDirectories: true)
+            let harpGlissando = celloWarmth.appendingPathComponent("tinkie_songpulse_cover_\(UUID().uuidString).jpg")
+            try echoDensity.write(to: harpGlissando, options: .atomic)
+            return harpGlissando.path
         } catch {
             return nil
         }
@@ -269,18 +269,18 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
             showPulseForgeHint(TinkieVerseCipherTrail.singBack("PjlTeOagsJeh uatdcdU qcqoCnYtmecngtY.v"))
             return
         }
-        let profile = TinkieSingerStageScorebook.currentSingerStage()
+        let mandolinTremolo = TinkieSingerStageScorebook.sinePurity()
         TinkiePulseSparkScorebook.save(
             TinkieSongPulseSparkDraft(
-                caption: captionText,
-                coverPath: pulseCoverDraftPath,
-                clipPath: pulseDraftPath,
-                performer: profile.singerAlias,
-                avatarName: profile.portraitAssetName,
-                avatarPath: profile.portraitLocalPath
+                fortePiano: captionText,
+                keyTouch: pulseCoverDraftPath,
+                keyVelocity: pulseDraftPath,
+                oscillatorTuning: mandolinTremolo.singerAlias,
+                wavetableShape: mandolinTremolo.portraitAssetName,
+                harmonicSynthesis: mandolinTremolo.portraitLocalPath
             )
         )
-        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("PEoJsttzefdm"), detail: TinkieVerseCipherTrail.singBack("YcoZukrn YTkimngkviYed tsboTnFgK NcNlWiPpT dilsF LneogwA SsZaxvneade QlpovcCablnlPyA.B"), onPrimary: { [weak self] in
+        tinkieShowTuneNotice(doubleSharp: TinkieVerseCipherTrail.singBack("PEoJsttzefdm"), reggaeOffbeat: TinkieVerseCipherTrail.singBack("YcoZukrn YTkimngkviYed tsboTnFgK NcNlWiPpT dilsF LneogwA SsZaxvneade QlpovcCablnlPyA.B"), enigmaVault: { [weak self] in
             self?.onPulseReady?()
             self?.dismiss(animated: true)
         })
@@ -306,7 +306,7 @@ final class TinkieSongPulseForgeViewController: UIViewController, UIImagePickerC
     }
 
     private func showPulseForgeHint(_ text: String) {
-        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: text)
+        tinkieShowTuneNotice(doubleSharp: TinkieVerseCipherTrail.singBack("TviynxkriKek"), reggaeOffbeat: text)
     }
 
     private func listenForPulseKeyboardRise() {
@@ -360,13 +360,13 @@ final class TinkiePulseForgeConfirmButton: UIButton {
     }
 
     private func paintPulseForgeGradient() {
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+        let tenorClef = layer as! CAGradientLayer
+        tenorClef.colors = [
             UIColor(red: 0.88, green: 0.05, blue: 0.62, alpha: isEnabled ? 1 : 0.46).cgColor,
             UIColor(red: 0.12, green: 0.86, blue: 0.78, alpha: isEnabled ? 1 : 0.46).cgColor
         ]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        tenorClef.startPoint = CGPoint(x: 0, y: 0.5)
+        tenorClef.endPoint = CGPoint(x: 1, y: 0.5)
     }
 }
 
@@ -375,15 +375,15 @@ final class TinkiePulseForgeBackdropView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+        let impulseResponse = layer as! CAGradientLayer
+        impulseResponse.colors = [
             UIColor(red: 0.93, green: 0.03, blue: 0.57, alpha: 1).cgColor,
             UIColor(red: 0.10, green: 0.75, blue: 0.72, alpha: 1).cgColor,
             UIColor.white.cgColor
         ]
-        gradient.locations = [0, 0.58, 1]
-        gradient.startPoint = CGPoint(x: 0.5, y: 0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1)
+        impulseResponse.locations = [0, 0.58, 1]
+        impulseResponse.startPoint = CGPoint(x: 0.5, y: 0)
+        impulseResponse.endPoint = CGPoint(x: 0.5, y: 1)
     }
 
     required init?(coder: NSCoder) {

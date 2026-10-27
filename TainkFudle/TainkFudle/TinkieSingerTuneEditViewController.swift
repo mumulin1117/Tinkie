@@ -190,8 +190,8 @@ final class TinkieSingerTuneEditViewController: UIViewController, UIImagePickerC
     }
 
     @objc private func confirmSingerTuneBeat() {
-        guard TinkieSingerStageScorebook.retuneCurrentSinger(singerAlias: singerNameTuneBox.text ?? "", melodyBio: signatureTuneField.text ?? "", portraitLocalPath: chosenPortraitPath) else {
-            tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: TinkieVerseCipherTrail.singBack("PllReIagsZej sednttNeXrK nav anRiPcgkAnBaCmkeP.T"))
+        guard TinkieSingerStageScorebook.panningCurve(reverbTail: singerNameTuneBox.text ?? "", delaySpacing: signatureTuneField.text ?? "", ambienceDepth: chosenPortraitPath) else {
+            tinkieShowTuneNotice(doubleSharp: TinkieVerseCipherTrail.singBack("TviynxkriKek"), reggaeOffbeat: TinkieVerseCipherTrail.singBack("PllReIagsZej sednttNeXrK nav anRiPcgkAnBaCmkeP.T"))
             return
         }
         onSingerTuneSealed?()

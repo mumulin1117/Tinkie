@@ -1,6 +1,6 @@
 import UIKit
 
-final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewController {
+final class TinkieMelodycumbiaPulseController: TinkieMelodyGateScrollViewController {
     var onMelodyGateUnlocked: (() -> Void)?
     private let singerNameTuneBox = TinkieMelodyGateEntryBox(iconName: "tinkie_auth_name_mark", placeholder: "Enter your name")
     private let mailTuneEntryBox = TinkieMelodyGateEntryBox(iconName: "tinkie_auth_email_mark", placeholder: "Enter your email address")
@@ -145,7 +145,7 @@ final class TinkieMelodySignUpViewController: TinkieMelodyGateScrollViewControll
     }
 }
 
-extension TinkieMelodySignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension TinkieMelodycumbiaPulseController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ facePicker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         let pickedFace = (info[.editedImage] as? UIImage) ?? (info[.originalImage] as? UIImage)
         facePicker.dismiss(animated: true) { [weak self] in

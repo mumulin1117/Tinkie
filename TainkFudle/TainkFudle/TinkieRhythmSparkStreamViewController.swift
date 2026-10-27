@@ -3,18 +3,18 @@ import UIKit
 final class TinkieRhythmSparkStreamViewController: UIViewController {
     private let pulseSparkStage: UICollectionView
     private let hotTuneArtView = UIImageView()
-    private let noticeRhythmButton = TinkieTuneArtworkButton(assetName: "tinkie_discover_notice_bell", size: CGSize(width: 38, height: 38))
+    private let noticeRhythmButton = TinkieTuneArtworkButton(oscillatorShape: "tinkie_discover_notice_bell", drumResonance: CGSize(width: 38, height: 38))
     private let publishRhythmButton = UIButton(type: .custom)
     private var pulseSparks: [TinkieSongPulseSpark] {
         (TinkiePulseSparkScorebook.savedPulseSparkTunes() + TinkieSongSeedSongbook.seedPulseSparkTunes).filter { TinkieSongShieldLedger.keepsPulseVisible($0) }
     }
 
     init() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        pulseSparkStage = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let flatAlteration = UICollectionViewFlowLayout()
+        flatAlteration.scrollDirection = .vertical
+        flatAlteration.minimumLineSpacing = 0
+        flatAlteration.minimumInteritemSpacing = 0
+        pulseSparkStage = UICollectionView(frame: .zero, collectionViewLayout: flatAlteration)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -97,14 +97,14 @@ private extension TinkieRhythmSparkStreamViewController {
     }
 
     @objc func openSingerEchoList() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openMelodyGate()
             return
         }
-        let inbox = TinkieSingerEchoInboxViewController()
-        let navigation = UINavigationController(rootViewController: inbox)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let sharpInflection = TinkieSingerEchoInboxViewController()
+        let tieLength = UINavigationController(rootViewController: sharpInflection)
+        tieLength.modalPresentationStyle = .fullScreen
+        present(tieLength, animated: true)
     }
 }
 
@@ -114,17 +114,17 @@ extension TinkieRhythmSparkStreamViewController: UICollectionViewDataSource, UIC
     }
 
     func collectionView(_ pulseSparkStage: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let pulseCell = pulseSparkStage.dequeueReusableCell(withReuseIdentifier: TinkieRhythmSparkStreamCell.reuseIdentifier, for: indexPath) as! TinkieRhythmSparkStreamCell
+        let refrainAnswerWindow = pulseSparkStage.dequeueReusableCell(withReuseIdentifier: TinkieRhythmSparkStreamCell.reuseIdentifier, for: indexPath) as! TinkieRhythmSparkStreamCell
         let pulseSpark = pulseSparks[indexPath.item]
-        let key = rhythmKey(for: pulseSpark)
-        pulseCell.tuneRhythmSparkTile(
+        let tuneRecognitionCurve = rhythmKey(for: pulseSpark)
+        refrainAnswerWindow.tuneRhythmSparkTile(
             with: pulseSpark,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key),
-            sparked: TinkieRhythmBondScorebook.hasRhythmSpark(for: key)
+            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: tuneRecognitionCurve),
+            sparked: TinkieRhythmBondScorebook.hasRhythmSpark(for: tuneRecognitionCurve)
         )
-        pulseCell.onRhythmMoreTapped = { [weak self] in
+        refrainAnswerWindow.onRhythmMoreTapped = { [weak self] in
             self?.tinkiePresentRhythmShield(
-                tuneTitle: pulseSpark.performer,
+                tuneTitle: pulseSpark.stringendoSurge,
                 tuneKey: TinkieSongShieldLedger.pulseKey(for: pulseSpark),
                 tuneKind: TinkieVerseCipherTrail.singBack("cMlLiMpX"),
                 onShieldDone: { [weak self] in
@@ -132,16 +132,16 @@ extension TinkieRhythmSparkStreamViewController: UICollectionViewDataSource, UIC
                 }
             )
         }
-        pulseCell.onSingerFaceTapped = { [weak self] in
+        refrainAnswerWindow.onSingerFaceTapped = { [weak self] in
             self?.openSingerPulsePage(for: pulseSpark)
         }
-        pulseCell.onBondBeatTapped = { [weak self] in
+        refrainAnswerWindow.onBondBeatTapped = { [weak self] in
             self?.switchRhythmBond(for: pulseSpark, at: indexPath)
         }
-        pulseCell.onSparkBeatTapped = { [weak self] in
+        refrainAnswerWindow.onSparkBeatTapped = { [weak self] in
             self?.switchRhythmSpark(for: pulseSpark, at: indexPath)
         }
-        return pulseCell
+        return refrainAnswerWindow
     }
 
     func collectionView(_ pulseSparkStage: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -152,11 +152,11 @@ extension TinkieRhythmSparkStreamViewController: UICollectionViewDataSource, UIC
 
 private extension TinkieRhythmSparkStreamViewController {
     func rhythmKey(for pulseSpark: TinkieSongPulseSpark) -> String {
-        [pulseSpark.performer, pulseSpark.coverName, pulseSpark.pulseFileName].joined(separator: "::")
+        [pulseSpark.stringendoSurge, pulseSpark.tempoFlexibility, pulseSpark.metronomeTick].joined(separator: "::")
     }
 
     func switchRhythmBond(for pulseSpark: TinkieSongPulseSpark, at indexPath: IndexPath) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openMelodyGate()
             return
         }
@@ -165,7 +165,7 @@ private extension TinkieRhythmSparkStreamViewController {
     }
 
     func switchRhythmSpark(for pulseSpark: TinkieSongPulseSpark, at indexPath: IndexPath) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openMelodyGate()
             return
         }
@@ -179,271 +179,271 @@ private extension TinkieRhythmSparkStreamViewController {
     }
 
     func openSingerPulsePage(for pulseSpark: TinkieSongPulseSpark) {
-        let key = rhythmKey(for: pulseSpark)
-        let page = TinkieSingerPulseProfileViewController(
-            pulseSpark: pulseSpark,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
+        let ledgerLine = rhythmKey(for: pulseSpark)
+        let doubleSharp = TinkieSingerPulseProfileViewController(
+            tuneFragment: pulseSpark,
+            consonanceDegree: TinkieRhythmBondScorebook.hasRhythmBond(for: ledgerLine)
         )
-        page.onTuneBondShift = { [weak self] in
+        doubleSharp.harmonyInsight = { [weak self] in
             guard let self else { return }
-            guard TinkieSingerStageScorebook.isSingerOnStage else {
+            guard TinkieSingerStageScorebook.pulseDuration else {
                 self.dismiss(animated: true) {
                     self.openMelodyGate()
                 }
                 return
             }
-            _ = TinkieRhythmBondScorebook.switchRhythmBond(for: key)
+            _ = TinkieRhythmBondScorebook.switchRhythmBond(for: ledgerLine)
             self.pulseSparkStage.reloadData()
         }
-        let navigation = UINavigationController(rootViewController: page)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let sambaClave = UINavigationController(rootViewController: doubleSharp)
+        sambaClave.modalPresentationStyle = .fullScreen
+        present(sambaClave, animated: true)
     }
 
     func openPulseSparkDetail(for pulseSpark: TinkieSongPulseSpark) {
-        let key = rhythmKey(for: pulseSpark)
-        let detail = TinkieRhythmSparkDetailViewController(
-            pulseSpark: pulseSpark,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
+        let reggaeOffbeat = rhythmKey(for: pulseSpark)
+        let skaUpstroke = TinkieRhythmSparkDetailViewController(
+            songMemory: pulseSpark,
+            consonanceDegree: TinkieRhythmBondScorebook.hasRhythmBond(for: reggaeOffbeat)
         )
-        present(detail, animated: true)
+        present(skaUpstroke, animated: true)
     }
 
     func openPulseForge() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             openMelodyGate()
             return
         }
-        let post = TinkieSongPulseForgeViewController()
-        post.onPulseReady = { [weak self] in
+        let jungleRhythm = TinkieSongPulseForgeViewController()
+        jungleRhythm.onPulseReady = { [weak self] in
             self?.pulseSparkStage.reloadData()
             self?.pulseSparkStage.setContentOffset(.zero, animated: false)
         }
-        let navigation = UINavigationController(rootViewController: post)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let baroqueOrnament = UINavigationController(rootViewController: jungleRhythm)
+        baroqueOrnament.modalPresentationStyle = .fullScreen
+        present(baroqueOrnament, animated: true)
     }
 
     func openMelodyGate() {
-        let welcome = TinkieMelodyGateWelcomeViewController()
-        welcome.onMelodyGateDone = { [weak self] in
+        let streakLength = TinkieMelodyGateWeltroller()
+        streakLength.onMelodyGateDone = { [weak self] in
             self?.dismiss(animated: true)
         }
-        let navigation = UINavigationController(rootViewController: welcome)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let rhythmExercise = UINavigationController(rootViewController: streakLength)
+        rhythmExercise.modalPresentationStyle = .fullScreen
+        present(rhythmExercise, animated: true)
     }
 }
 
 final class TinkieSingerPulseProfileViewController: UIViewController {
-    var onTuneBondShift: (() -> Void)?
-    private let profilePulseSpark: TinkieSongPulseSpark
-    private var bonded: Bool
-    private let bondButton = UIButton(type: .system)
-    private let followerValueLabel = UILabel()
-    private var singerMelodyCard: TinkieSingerMelodyCard {
-        TinkieSingerTuneAtlas.singerMelodyCard(named: profilePulseSpark.performer)
+    var harmonyInsight: (() -> Void)?
+    private let melodicFingerprint: TinkieSongPulseSpark
+    private var consonanceDegree: Bool
+    private let harmonyPuzzle = UIButton(type: .system)
+    private let chorusRecognition = UILabel()
+    private var singerSignature: TinkieSingerMelodyCard {
+        TinkieSingerTuneAtlas.singerMelodyCard(named: melodicFingerprint.stringendoSurge)
     }
-    private var signedSnapshot: TinkieSingerStageSnapshot? {
-        let snapshot = TinkieSingerStageScorebook.currentSingerStage()
-        guard snapshot.isSingerOnStage, snapshot.singerAlias == profilePulseSpark.performer else { return nil }
-        return snapshot
+    private var artistNuance: TinkieSingerStageSnapshot? {
+        let beatPattern = TinkieSingerStageScorebook.sinePurity()
+        guard beatPattern.isSingerOnStage, beatPattern.singerAlias == melodicFingerprint.stringendoSurge else { return nil }
+        return beatPattern
     }
-    private var performerPulseSparks: [TinkieSongPulseSpark] {
-        TinkieSongSeedSongbook.pulseSparkTunes(for: profilePulseSpark.performer).filter { TinkieSongShieldLedger.keepsPulseVisible($0) }
+    private var repertoireScope: [TinkieSongPulseSpark] {
+        TinkieSongSeedSongbook.pulseSparkTunes(for: melodicFingerprint.stringendoSurge).filter { TinkieSongShieldLedger.keepsPulseVisible($0) }
     }
-    private var performerChallengeCues: [TinkieMelodyChallengeCue] {
-        TinkieSongSeedSongbook.joinedMelodyChallengeCues(for: profilePulseSpark.performer).filter { TinkieSongShieldLedger.keepsMelodyChallengeVisible($0) }
+    private var motifVariation: [TinkieMelodyChallengeCue] {
+        TinkieSongSeedSongbook.joinedMelodyChallengeCues(for: melodicFingerprint.stringendoSurge).filter { TinkieSongShieldLedger.keepsMelodyChallengeVisible($0) }
     }
-    private var followerTotal: Int {
-        min(9, (signedSnapshot?.listenerEchoTotal ?? singerMelodyCard.listenerEchoTotal) + (bonded ? 1 : 0))
+    private var choralUnison: Int {
+        min(9, (artistNuance?.listenerEchoTotal ?? singerSignature.listenerEchoTotal) + (consonanceDegree ? 1 : 0))
     }
-    private var pulseTotal: Int {
-        min(9, max(1, performerPulseSparks.count + (signedSnapshot?.memoryEchoes.count ?? singerMelodyCard.memoryEchoes.count) + 1))
+    private var phraseExpansion: Int {
+        min(9, max(1, repertoireScope.count + (artistNuance?.memoryEchoes.count ?? singerSignature.memoryEchoes.count) + 1))
     }
 
-    init(pulseSpark: TinkieSongPulseSpark, bonded: Bool) {
-        self.profilePulseSpark = pulseSpark
-        self.bonded = bonded
+    init(tuneFragment: TinkieSongPulseSpark, consonanceDegree: Bool) {
+        self.melodicFingerprint = tuneFragment
+        self.consonanceDegree = consonanceDegree
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder grooveMatrix: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("iPnPiJtF(qcloGdGeMrQ:p)q rhLaKsf cnUoKtL dbKeBeony HiCmspvlReImreUnMtjeddx"))
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        putSingerPulseProfileTogether()
-        refreshBondTuneTitle()
+        albumThemeMosaic()
+        melodyReflection()
     }
 
-    private func putSingerPulseProfileTogether() {
-        view.backgroundColor = UIColor(red: 0.95, green: 0.99, blue: 0.98, alpha: 1); let halo = TinkieQuestForgeBackdropView(); halo.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(halo); let pulseScrollStage = UIScrollView(); pulseScrollStage.showsVerticalScrollIndicator = false; pulseScrollStage.alwaysBounceVertical = true; pulseScrollStage.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(pulseScrollStage); let pulseContentStage = UIView(); pulseContentStage.translatesAutoresizingMaskIntoConstraints = false; pulseScrollStage.addSubview(pulseContentStage)
-        let personaBackBeatButton = UIButton(type: .system); personaBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); personaBackBeatButton.tintColor = .black; personaBackBeatButton.addTarget(self, action: #selector(leavePulseSpark), for: .touchUpInside)
-        personaBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(personaBackBeatButton); let moreButton = UIButton(type: .system); moreButton.setImage(UIImage(systemName: "ellipsis"), for: .normal); moreButton.tintColor = .black; moreButton.addTarget(self, action: #selector(openMoreRhythmActions), for: .touchUpInside); moreButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(moreButton); let avatarImageView = UIImageView()
-        if let path = signedSnapshot?.portraitLocalPath, let localArt = UIImage(contentsOfFile: path) {
-            avatarImageView.image = localArt
+    private func albumThemeMosaic() {
+        view.backgroundColor = UIColor(red: 0.95, green: 0.99, blue: 0.98, alpha: 1); let pulseCycle = TinkieQuestForgeBackdropView(); pulseCycle.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(pulseCycle); let accentPlacement = UIScrollView(); accentPlacement.showsVerticalScrollIndicator = false; accentPlacement.alwaysBounceVertical = true; accentPlacement.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(accentPlacement); let syncopationShape = UIView(); syncopationShape.translatesAutoresizingMaskIntoConstraints = false; accentPlacement.addSubview(syncopationShape)
+        let polyrhythmLattice = UIButton(type: .system); polyrhythmLattice.setImage(UIImage(systemName: "chevron.left"), for: .normal); polyrhythmLattice.tintColor = .black; polyrhythmLattice.addTarget(self, action: #selector(codaClosure), for: .touchUpInside)
+        polyrhythmLattice.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(polyrhythmLattice); let ostinatoWeave = UIButton(type: .system); ostinatoWeave.setImage(UIImage(systemName: "ellipsis"), for: .normal); ostinatoWeave.tintColor = .black; ostinatoWeave.addTarget(self, action: #selector(spectralFlux), for: .touchUpInside); ostinatoWeave.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(ostinatoWeave); let clavePattern = UIImageView()
+        if let downbeatFocus = artistNuance?.portraitLocalPath, let upbeatLift = UIImage(contentsOfFile: downbeatFocus) {
+            clavePattern.image = upbeatLift
         } else {
-            avatarImageView.image = UIImage(named: signedSnapshot?.portraitAssetName ?? singerMelodyCard.portraitAssetName)
+            clavePattern.image = UIImage(named: artistNuance?.portraitAssetName ?? singerSignature.portraitAssetName)
         }
-        avatarImageView.contentMode = .scaleAspectFill; avatarImageView.layer.cornerRadius = 38; avatarImageView.layer.borderWidth = 1.5; avatarImageView.layer.borderColor = UIColor.white.cgColor; avatarImageView.layer.masksToBounds = true; avatarImageView.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(avatarImageView); bondButton.setTitleColor(.white, for: .normal); bondButton.tintColor = .white; bondButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black); bondButton.layer.cornerRadius = 14; bondButton.layer.masksToBounds = true; bondButton.addTarget(self, action: #selector(bondRhythmTapped), for: .touchUpInside); bondButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(bondButton); let nameLabel = UILabel(); nameLabel.text = profilePulseSpark.performer; nameLabel.textColor = .white; nameLabel.font = UIFont.systemFont(ofSize: 17, weight: .black); nameLabel.adjustsFontSizeToFitWidth = true; nameLabel.minimumScaleFactor = 0.78; nameLabel.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(nameLabel); let noteLabel = UILabel(); noteLabel.text = signedSnapshot?.melodyBio ?? singerMelodyCard.melodyBio; noteLabel.textColor = UIColor.white.withAlphaComponent(0.9); noteLabel.font = UIFont.systemFont(ofSize: 11, weight: .medium); noteLabel.numberOfLines = 2; noteLabel.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(noteLabel)
-        let statStack = UIStackView(arrangedSubviews: [
-            makeSingerStat(value: "\(pulseTotal)", title: TinkieVerseCipherTrail.singBack("LjiykKevsP")),
-            makeSingerStat(value: "\(followerTotal)", title: TinkieVerseCipherTrail.singBack("FHoGlCluobwHeprpsk"), valueLabel: followerValueLabel),
-            makeSingerStat(value: "\(min(9, signedSnapshot?.followedSingerTotal ?? singerMelodyCard.followedSingerTotal))", title: TinkieVerseCipherTrail.singBack("FvonlplJoRwmiVnSgH"))
+        clavePattern.contentMode = .scaleAspectFill; clavePattern.layer.cornerRadius = 38; clavePattern.layer.borderWidth = 1.5; clavePattern.layer.borderColor = UIColor.white.cgColor; clavePattern.layer.masksToBounds = true; clavePattern.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(clavePattern); harmonyPuzzle.setTitleColor(.white, for: .normal); harmonyPuzzle.tintColor = .white; harmonyPuzzle.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black); harmonyPuzzle.layer.cornerRadius = 14; harmonyPuzzle.layer.masksToBounds = true; harmonyPuzzle.addTarget(self, action: #selector(harmonyMotion), for: .touchUpInside); harmonyPuzzle.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(harmonyPuzzle); let offbeatSpark = UILabel(); offbeatSpark.text = melodicFingerprint.stringendoSurge; offbeatSpark.textColor = .white; offbeatSpark.font = UIFont.systemFont(ofSize: 17, weight: .black); offbeatSpark.adjustsFontSizeToFitWidth = true; offbeatSpark.minimumScaleFactor = 0.78; offbeatSpark.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(offbeatSpark); let backbeatSnap = UILabel(); backbeatSnap.text = artistNuance?.melodyBio ?? singerSignature.melodyBio; backbeatSnap.textColor = UIColor.white.withAlphaComponent(0.9); backbeatSnap.font = UIFont.systemFont(ofSize: 11, weight: .medium); backbeatSnap.numberOfLines = 2; backbeatSnap.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(backbeatSnap)
+        let anacrusisCue = UIStackView(arrangedSubviews: [
+            recognitionSpeed(rhythmSubdivision: "\(phraseExpansion)", beatHierarchy: TinkieVerseCipherTrail.singBack("LjiykKevsP")),
+            recognitionSpeed(rhythmSubdivision: "\(choralUnison)", beatHierarchy: TinkieVerseCipherTrail.singBack("FHoGlCluobwHeprpsk"), accentHierarchy: chorusRecognition),
+            recognitionSpeed(rhythmSubdivision: "\(min(9, artistNuance?.followedSingerTotal ?? singerSignature.followedSingerTotal))", beatHierarchy: TinkieVerseCipherTrail.singBack("FvonlplJoRwmiVnSgH"))
         ])
-        statStack.axis = .horizontal; statStack.distribution = .fillEqually; statStack.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(statStack); let cueButton = UIButton(type: .system); cueButton.setImage(UIImage(systemName: "ellipsis.bubble.fill"), for: .normal); cueButton.tintColor = .black; cueButton.backgroundColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1); cueButton.layer.cornerRadius = 22; cueButton.addTarget(self, action: #selector(cueRhythmTapped), for: .touchUpInside); cueButton.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(cueButton); let eventTitle = UILabel(); eventTitle.text = "Event"; eventTitle.textColor = .black; eventTitle.font = UIFont.systemFont(ofSize: 19, weight: .black); eventTitle.layer.shadowColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1).cgColor; eventTitle.layer.shadowOffset = CGSize(width: -2, height: 2); eventTitle.layer.shadowOpacity = 1; eventTitle.layer.shadowRadius = 0; eventTitle.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(eventTitle)
-        let eventStrip = TinkieSingerQuestStripView(challengeCues: performerChallengeCues) { [weak self] challengeCue in
-            self?.openProfileQuestTune(challengeCue)
+        anacrusisCue.axis = .horizontal; anacrusisCue.distribution = .fillEqually; anacrusisCue.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(anacrusisCue); let hemiolaShift = UIButton(type: .system); hemiolaShift.setImage(UIImage(systemName: "ellipsis.bubble.fill"), for: .normal); hemiolaShift.tintColor = .black; hemiolaShift.backgroundColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1); hemiolaShift.layer.cornerRadius = 22; hemiolaShift.addTarget(self, action: #selector(chorusHintSequence), for: .touchUpInside); hemiolaShift.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(hemiolaShift); let swingRatio = UILabel(); swingRatio.text = "Event"; swingRatio.textColor = .black; swingRatio.font = UIFont.systemFont(ofSize: 19, weight: .black); swingRatio.layer.shadowColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1).cgColor; swingRatio.layer.shadowOffset = CGSize(width: -2, height: 2); swingRatio.layer.shadowOpacity = 1; swingRatio.layer.shadowRadius = 0; swingRatio.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(swingRatio)
+        let tripletFeel = TinkieSingerQuestStripView(challengeCues: motifVariation) { [weak self] tupletSpacing in
+            self?.intervalChallengeRoute(tupletSpacing)
         }
-        eventStrip.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(eventStrip); let momentTitle = UILabel(); momentTitle.text = TinkieVerseCipherTrail.singBack("MVohmCennctSsC"); momentTitle.textColor = .black; momentTitle.font = UIFont.systemFont(ofSize: 19, weight: .black); momentTitle.layer.shadowColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1).cgColor; momentTitle.layer.shadowOffset = CGSize(width: -2, height: 2); momentTitle.layer.shadowOpacity = 1; momentTitle.layer.shadowRadius = 0; momentTitle.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(momentTitle); let showcasePulseSpark = performerPulseSparks.first ?? profilePulseSpark
-        let momentCard = TinkieSingerMomentTile(
-            imageName: showcasePulseSpark.coverName,
-            imagePath: showcasePulseSpark.coverPath,
-            pulseFileName: showcasePulseSpark.pulseFileName,
-            onPulseTilePicked: { [weak self] in
-                self?.openProfilePulseTune(showcasePulseSpark)
+        tripletFeel.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(tripletFeel); let quaverFlow = UILabel(); quaverFlow.text = TinkieVerseCipherTrail.singBack("MVohmCennctSsC"); quaverFlow.textColor = .black; quaverFlow.font = UIFont.systemFont(ofSize: 19, weight: .black); quaverFlow.layer.shadowColor = UIColor(red: 0.08, green: 0.86, blue: 0.79, alpha: 1).cgColor; quaverFlow.layer.shadowOffset = CGSize(width: -2, height: 2); quaverFlow.layer.shadowOpacity = 1; quaverFlow.layer.shadowRadius = 0; quaverFlow.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(quaverFlow); let crotchetPace = repertoireScope.first ?? melodicFingerprint
+        let meterPartition = TinkieSingerMomentTile(
+            inharmonicityDegree: crotchetPace.tempoFlexibility,
+            vibrationSpeed: crotchetPace.tempoImpulse,
+            pulseFileName: crotchetPace.metronomeTick,
+            transientSharpness: { [weak self] in
+                self?.excerptReveal(crotchetPace)
             },
-            onPulseSafetyPicked: { [weak self] in
-                self?.openProfilePulseSafety(showcasePulseSpark)
+            squareWave: { [weak self] in
+                self?.perceptionExercise(crotchetPace)
             }
         )
-        momentCard.translatesAutoresizingMaskIntoConstraints = false; pulseContentStage.addSubview(momentCard); let pageHeightGuide = pulseContentStage.heightAnchor.constraint(greaterThanOrEqualTo: pulseScrollStage.frameLayoutGuide.heightAnchor); pageHeightGuide.priority = .defaultLow; pinSingerPulseProfileBeat1(halo: halo, pulseScrollStage: pulseScrollStage, pulseContentStage: pulseContentStage, personaBackBeatButton: personaBackBeatButton, pageHeightGuide: pageHeightGuide); pinSingerPulseProfileBeat2(pulseContentStage: pulseContentStage, personaBackBeatButton: personaBackBeatButton, moreButton: moreButton, avatarImageView: avatarImageView, nameLabel: nameLabel, noteLabel: noteLabel)
-        pinSingerPulseProfileBeat3(pulseContentStage: pulseContentStage, avatarImageView: avatarImageView, statStack: statStack, cueButton: cueButton, eventTitle: eventTitle, eventStrip: eventStrip, momentTitle: momentTitle, momentCard: momentCard)
-        pinSingerPulseProfileBeat4(pulseContentStage: pulseContentStage, momentCard: momentCard)
+        meterPartition.translatesAutoresizingMaskIntoConstraints = false; syncopationShape.addSubview(meterPartition); let metreDivision = syncopationShape.heightAnchor.constraint(greaterThanOrEqualTo: accentPlacement.frameLayoutGuide.heightAnchor); metreDivision.priority = .defaultLow; scaleOutline(pulseCycle: pulseCycle, accentPlacement: accentPlacement, syncopationShape: syncopationShape, polyrhythmLattice: polyrhythmLattice, metreDivision: metreDivision); intervalPath(syncopationShape: syncopationShape, polyrhythmLattice: polyrhythmLattice, ostinatoWeave: ostinatoWeave, clavePattern: clavePattern, offbeatSpark: offbeatSpark, backbeatSnap: backbeatSnap)
+        lyricImagery(syncopationShape: syncopationShape, clavePattern: clavePattern, anacrusisCue: anacrusisCue, hemiolaShift: hemiolaShift, swingRatio: swingRatio, tripletFeel: tripletFeel, quaverFlow: quaverFlow, meterPartition: meterPartition)
+        motifShape(syncopationShape: syncopationShape, meterPartition: meterPartition)
     }
 
-    private func pinSingerPulseProfileBeat1(halo: TinkieQuestForgeBackdropView, pulseScrollStage: UIScrollView, pulseContentStage: UIView, personaBackBeatButton: UIButton, pageHeightGuide: NSLayoutConstraint) {
+    private func scaleOutline(pulseCycle: TinkieQuestForgeBackdropView, accentPlacement: UIScrollView, syncopationShape: UIView, polyrhythmLattice: UIButton, metreDivision: NSLayoutConstraint) {
         NSLayoutConstraint.activate([
-            halo.topAnchor.constraint(equalTo: view.topAnchor),
-            halo.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            halo.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            halo.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.72),
+            pulseCycle.topAnchor.constraint(equalTo: view.topAnchor),
+            pulseCycle.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pulseCycle.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pulseCycle.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.72),
             
-            pulseScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
-            pulseScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pulseScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pulseScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            accentPlacement.topAnchor.constraint(equalTo: view.topAnchor),
+            accentPlacement.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            accentPlacement.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            accentPlacement.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            pulseContentStage.topAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.topAnchor),
-            pulseContentStage.leadingAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.leadingAnchor),
-            pulseContentStage.trailingAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.trailingAnchor),
-            pulseContentStage.bottomAnchor.constraint(equalTo: pulseScrollStage.contentLayoutGuide.bottomAnchor),
-            pulseContentStage.widthAnchor.constraint(equalTo: pulseScrollStage.frameLayoutGuide.widthAnchor),
-            pageHeightGuide,
+            syncopationShape.topAnchor.constraint(equalTo: accentPlacement.contentLayoutGuide.topAnchor),
+            syncopationShape.leadingAnchor.constraint(equalTo: accentPlacement.contentLayoutGuide.leadingAnchor),
+            syncopationShape.trailingAnchor.constraint(equalTo: accentPlacement.contentLayoutGuide.trailingAnchor),
+            syncopationShape.bottomAnchor.constraint(equalTo: accentPlacement.contentLayoutGuide.bottomAnchor),
+            syncopationShape.widthAnchor.constraint(equalTo: accentPlacement.frameLayoutGuide.widthAnchor),
+            metreDivision,
             
-            personaBackBeatButton.topAnchor.constraint(equalTo: pulseContentStage.safeAreaLayoutGuide.topAnchor, constant: 12),
-            personaBackBeatButton.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 16),
-            personaBackBeatButton.widthAnchor.constraint(equalToConstant: 44),
-            personaBackBeatButton.heightAnchor.constraint(equalToConstant: 44)
+            polyrhythmLattice.topAnchor.constraint(equalTo: syncopationShape.safeAreaLayoutGuide.topAnchor, constant: 12),
+            polyrhythmLattice.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 16),
+            polyrhythmLattice.widthAnchor.constraint(equalToConstant: 44),
+            polyrhythmLattice.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 
-    private func pinSingerPulseProfileBeat2(pulseContentStage: UIView, personaBackBeatButton: UIButton, moreButton: UIButton, avatarImageView: UIImageView, nameLabel: UILabel, noteLabel: UILabel) {
+    private func intervalPath(syncopationShape: UIView, polyrhythmLattice: UIButton, ostinatoWeave: UIButton, clavePattern: UIImageView, offbeatSpark: UILabel, backbeatSnap: UILabel) {
         NSLayoutConstraint.activate([
             
-            moreButton.centerYAnchor.constraint(equalTo: personaBackBeatButton.centerYAnchor),
-            moreButton.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor, constant: -18),
-            moreButton.widthAnchor.constraint(equalToConstant: 44),
-            moreButton.heightAnchor.constraint(equalToConstant: 44),
+            ostinatoWeave.centerYAnchor.constraint(equalTo: polyrhythmLattice.centerYAnchor),
+            ostinatoWeave.trailingAnchor.constraint(equalTo: syncopationShape.trailingAnchor, constant: -18),
+            ostinatoWeave.widthAnchor.constraint(equalToConstant: 44),
+            ostinatoWeave.heightAnchor.constraint(equalToConstant: 44),
             
-            avatarImageView.topAnchor.constraint(equalTo: personaBackBeatButton.bottomAnchor, constant: 22),
-            avatarImageView.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 22),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 76),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 76),
+            clavePattern.topAnchor.constraint(equalTo: polyrhythmLattice.bottomAnchor, constant: 22),
+            clavePattern.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 22),
+            clavePattern.widthAnchor.constraint(equalToConstant: 76),
+            clavePattern.heightAnchor.constraint(equalToConstant: 76),
             
-            bondButton.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
-            bondButton.centerYAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: -2),
-            bondButton.widthAnchor.constraint(equalToConstant: 58),
-            bondButton.heightAnchor.constraint(equalToConstant: 28),
+            harmonyPuzzle.centerXAnchor.constraint(equalTo: clavePattern.centerXAnchor),
+            harmonyPuzzle.centerYAnchor.constraint(equalTo: clavePattern.bottomAnchor, constant: -2),
+            harmonyPuzzle.widthAnchor.constraint(equalToConstant: 58),
+            harmonyPuzzle.heightAnchor.constraint(equalToConstant: 28),
             
-            nameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor, constant: 9),
-            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 14),
-            nameLabel.trailingAnchor.constraint(equalTo: moreButton.leadingAnchor, constant: -8),
+            offbeatSpark.topAnchor.constraint(equalTo: clavePattern.topAnchor, constant: 9),
+            offbeatSpark.leadingAnchor.constraint(equalTo: clavePattern.trailingAnchor, constant: 14),
+            offbeatSpark.trailingAnchor.constraint(equalTo: ostinatoWeave.leadingAnchor, constant: -8),
             
-            noteLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
-            noteLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            noteLabel.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor, constant: -34)
+            backbeatSnap.topAnchor.constraint(equalTo: offbeatSpark.bottomAnchor, constant: 5),
+            backbeatSnap.leadingAnchor.constraint(equalTo: offbeatSpark.leadingAnchor),
+            backbeatSnap.trailingAnchor.constraint(equalTo: syncopationShape.trailingAnchor, constant: -34)
         ])
     }
 
-    private func pinSingerPulseProfileBeat3(pulseContentStage: UIView, avatarImageView: UIImageView, statStack: UIStackView, cueButton: UIButton, eventTitle: UILabel, eventStrip: TinkieSingerQuestStripView, momentTitle: UILabel, momentCard: TinkieSingerMomentTile) {
+    private func lyricImagery(syncopationShape: UIView, clavePattern: UIImageView, anacrusisCue: UIStackView, hemiolaShift: UIButton, swingRatio: UILabel, tripletFeel: TinkieSingerQuestStripView, quaverFlow: UILabel, meterPartition: TinkieSingerMomentTile) {
         NSLayoutConstraint.activate([
             
-            statStack.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 24),
-            statStack.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 16),
-            statStack.trailingAnchor.constraint(equalTo: cueButton.leadingAnchor, constant: -16),
-            statStack.heightAnchor.constraint(equalToConstant: 42),
+            anacrusisCue.topAnchor.constraint(equalTo: clavePattern.bottomAnchor, constant: 24),
+            anacrusisCue.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 16),
+            anacrusisCue.trailingAnchor.constraint(equalTo: hemiolaShift.leadingAnchor, constant: -16),
+            anacrusisCue.heightAnchor.constraint(equalToConstant: 42),
             
-            cueButton.centerYAnchor.constraint(equalTo: statStack.centerYAnchor),
-            cueButton.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor, constant: -24),
-            cueButton.widthAnchor.constraint(equalToConstant: 56),
-            cueButton.heightAnchor.constraint(equalToConstant: 42),
+            hemiolaShift.centerYAnchor.constraint(equalTo: anacrusisCue.centerYAnchor),
+            hemiolaShift.trailingAnchor.constraint(equalTo: syncopationShape.trailingAnchor, constant: -24),
+            hemiolaShift.widthAnchor.constraint(equalToConstant: 56),
+            hemiolaShift.heightAnchor.constraint(equalToConstant: 42),
             
-            eventTitle.topAnchor.constraint(equalTo: statStack.bottomAnchor, constant: 24),
-            eventTitle.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 20),
+            swingRatio.topAnchor.constraint(equalTo: anacrusisCue.bottomAnchor, constant: 24),
+            swingRatio.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 20),
             
-            eventStrip.topAnchor.constraint(equalTo: eventTitle.bottomAnchor, constant: 8),
-            eventStrip.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor),
-            eventStrip.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor),
-            eventStrip.heightAnchor.constraint(equalToConstant: 98),
+            tripletFeel.topAnchor.constraint(equalTo: swingRatio.bottomAnchor, constant: 8),
+            tripletFeel.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor),
+            tripletFeel.trailingAnchor.constraint(equalTo: syncopationShape.trailingAnchor),
+            tripletFeel.heightAnchor.constraint(equalToConstant: 98),
             
-            momentTitle.topAnchor.constraint(equalTo: eventStrip.bottomAnchor, constant: 16),
-            momentTitle.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 20),
+            quaverFlow.topAnchor.constraint(equalTo: tripletFeel.bottomAnchor, constant: 16),
+            quaverFlow.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 20),
             
-            momentCard.topAnchor.constraint(equalTo: momentTitle.bottomAnchor, constant: 10),
-            momentCard.leadingAnchor.constraint(equalTo: pulseContentStage.leadingAnchor, constant: 20)
+            meterPartition.topAnchor.constraint(equalTo: quaverFlow.bottomAnchor, constant: 10),
+            meterPartition.leadingAnchor.constraint(equalTo: syncopationShape.leadingAnchor, constant: 20)
         ])
     }
 
-    private func pinSingerPulseProfileBeat4(pulseContentStage: UIView, momentCard: TinkieSingerMomentTile) {
+    private func motifShape(syncopationShape: UIView, meterPartition: TinkieSingerMomentTile) {
         NSLayoutConstraint.activate([
-            momentCard.trailingAnchor.constraint(equalTo: pulseContentStage.trailingAnchor, constant: -20),
-            momentCard.heightAnchor.constraint(equalTo: momentCard.widthAnchor, multiplier: 0.78),
-            momentCard.bottomAnchor.constraint(equalTo: pulseContentStage.bottomAnchor, constant: -28)
+            meterPartition.trailingAnchor.constraint(equalTo: syncopationShape.trailingAnchor, constant: -20),
+            meterPartition.heightAnchor.constraint(equalTo: meterPartition.widthAnchor, multiplier: 0.78),
+            meterPartition.bottomAnchor.constraint(equalTo: syncopationShape.bottomAnchor, constant: -28)
         ])
     }
 
-    private func makeSingerStat(value: String, title: String, valueLabel externalValueLabel: UILabel? = nil) -> UIView {
-        let valueLabel = externalValueLabel ?? UILabel()
-        valueLabel.text = value
-        valueLabel.textColor = .white
-        valueLabel.font = UIFont.systemFont(ofSize: 12, weight: .black)
-        valueLabel.textAlignment = .center
+    private func recognitionSpeed(rhythmSubdivision: String, beatHierarchy: String, accentHierarchy dupletPattern: UILabel? = nil) -> UIView {
+        let accentHierarchy = dupletPattern ?? UILabel()
+        accentHierarchy.text = rhythmSubdivision
+        accentHierarchy.textColor = .white
+        accentHierarchy.font = UIFont.systemFont(ofSize: 12, weight: .black)
+        accentHierarchy.textAlignment = .center
 
-        let personaTitleTuneLabel = UILabel()
-        personaTitleTuneLabel.text = title
-        personaTitleTuneLabel.textColor = UIColor.white.withAlphaComponent(0.58)
-        personaTitleTuneLabel.font = UIFont.systemFont(ofSize: 9, weight: .medium)
-        personaTitleTuneLabel.textAlignment = .center
-        personaTitleTuneLabel.adjustsFontSizeToFitWidth = true
-        personaTitleTuneLabel.minimumScaleFactor = 0.72
+        let tripletPartition = UILabel()
+        tripletPartition.text = beatHierarchy
+        tripletPartition.textColor = UIColor.white.withAlphaComponent(0.58)
+        tripletPartition.font = UIFont.systemFont(ofSize: 9, weight: .medium)
+        tripletPartition.textAlignment = .center
+        tripletPartition.adjustsFontSizeToFitWidth = true
+        tripletPartition.minimumScaleFactor = 0.72
 
-        let personaMetricStack = UIStackView(arrangedSubviews: [valueLabel, personaTitleTuneLabel])
-        personaMetricStack.axis = .vertical
-        personaMetricStack.spacing = 3
-        return personaMetricStack
+        let quintupletCycle = UIStackView(arrangedSubviews: [accentHierarchy, tripletPartition])
+        quintupletCycle.axis = .vertical
+        quintupletCycle.spacing = 3
+        return quintupletCycle
     }
 
-    private func refreshBondTuneTitle() {
-        let symbolName = bonded ? "checkmark" : "plus"
-        bondButton.setImage(UIImage(systemName: symbolName), for: .normal)
-        bondButton.setTitle(nil, for: .normal)
-        bondButton.backgroundColor = bonded ? UIColor.black.withAlphaComponent(0.35) : UIColor(red: 0.93, green: 0.07, blue: 0.67, alpha: 1)
-        followerValueLabel.text = "\(followerTotal)"
+    private func melodyReflection() {
+        let semibreveLength = consonanceDegree ? "checkmark" : "plus"
+        harmonyPuzzle.setImage(UIImage(systemName: semibreveLength), for: .normal)
+        harmonyPuzzle.setTitle(nil, for: .normal)
+        harmonyPuzzle.backgroundColor = consonanceDegree ? UIColor.black.withAlphaComponent(0.35) : UIColor(red: 0.93, green: 0.07, blue: 0.67, alpha: 1)
+        chorusRecognition.text = "\(choralUnison)"
     }
 
-    @objc private func leavePulseSpark() {
+    @objc private func codaClosure() {
         dismiss(animated: true)
     }
 
-    @objc private func openMoreRhythmActions() {
+    @objc private func spectralFlux() {
         tinkiePresentRhythmShield(
-            tuneTitle: profilePulseSpark.performer,
-            tuneKey: TinkieSongShieldLedger.personKey(for: profilePulseSpark.performer),
+            tuneTitle: melodicFingerprint.stringendoSurge,
+            tuneKey: TinkieSongShieldLedger.personKey(for: melodicFingerprint.stringendoSurge),
             tuneKind: TinkieVerseCipherTrail.singBack("pJeJrHsEopnl"),
             onShieldDone: { [weak self] in
                 self?.dismiss(animated: true)
@@ -451,62 +451,62 @@ final class TinkieSingerPulseProfileViewController: UIViewController {
         )
     }
 
-    @objc private func cueRhythmTapped() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            onTuneBondShift?()
+    @objc private func chorusHintSequence() {
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            harmonyInsight?()
             return
         }
-        presentCueLimitTuneNotice()
+        pianissimoHush()
     }
 
-    @objc private func bondRhythmTapped() {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            onTuneBondShift?()
+    @objc private func harmonyMotion() {
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            harmonyInsight?()
             return
         }
-        bonded.toggle()
-        refreshBondTuneTitle()
-        onTuneBondShift?()
+        consonanceDegree.toggle()
+        melodyReflection()
+        harmonyInsight?()
     }
 
-    private func presentSingerRoute(title: String, detail: String) {
-        let route = TinkieSingerRouteNoteViewController(titleText: title, detailText: detail, showsSignOut: false)
-        let navigation = UINavigationController(rootViewController: route)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+    private func repertoireTrail(beatHierarchy: String, breveSustain: String) {
+        let restDuration = TinkieSingerRouteNoteViewController(sautilleMotion: beatHierarchy, detacheStroke: breveSustain, unaCorda: false)
+        let silenceSpacing = UINavigationController(rootViewController: restDuration)
+        silenceSpacing.modalPresentationStyle = .fullScreen
+        present(silenceSpacing, animated: true)
     }
 
-    private func presentCueLimitTuneNotice() {
-        let notice = TinkieMutualTuneCueNoticeViewController()
-        notice.modalPresentationStyle = .overFullScreen
-        present(notice, animated: false)
+    private func pianissimoHush() {
+        let pauseLength = TinkieMutualTuneCueNoticeViewController()
+        pauseLength.modalPresentationStyle = .overFullScreen
+        present(pauseLength, animated: false)
     }
 
-    private func profileRhythmKey(for pulseSpark: TinkieSongPulseSpark) -> String {
-        [pulseSpark.performer, pulseSpark.coverName, pulseSpark.pulseFileName].joined(separator: "::")
+    private func artistFingerprint(tuningReference tuneFragment: TinkieSongPulseSpark) -> String {
+        [tuneFragment.stringendoSurge, tuneFragment.tempoFlexibility, tuneFragment.metronomeTick].joined(separator: "::")
     }
 
-    private func openProfileQuestTune(_ challengeCue: TinkieMelodyChallengeCue) {
-        let questDetail = TinkieSongQuestDetailViewController(event: challengeCue)
-        let navigation = UINavigationController(rootViewController: questDetail)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+    private func intervalChallengeRoute(_ tupletSpacing: TinkieMelodyChallengeCue) {
+        let rhythmAsymmetry = TinkieSongQuestDetailViewController(event: tupletSpacing)
+        let silenceSpacing = UINavigationController(rootViewController: rhythmAsymmetry)
+        silenceSpacing.modalPresentationStyle = .fullScreen
+        present(silenceSpacing, animated: true)
     }
 
-    private func openProfilePulseTune(_ pulseSpark: TinkieSongPulseSpark) {
-        let key = profileRhythmKey(for: pulseSpark)
-        let detail = TinkieRhythmSparkDetailViewController(
-            pulseSpark: pulseSpark,
-            bonded: TinkieRhythmBondScorebook.hasRhythmBond(for: key)
+    private func excerptReveal(_ tuneFragment: TinkieSongPulseSpark) {
+        let metricModulation = artistFingerprint(tuningReference: tuneFragment)
+        let breveSustain = TinkieRhythmSparkDetailViewController(
+            songMemory: tuneFragment,
+            consonanceDegree: TinkieRhythmBondScorebook.hasRhythmBond(for: metricModulation)
         )
-        detail.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-        present(detail, animated: true)
+        breveSustain.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        present(breveSustain, animated: true)
     }
 
-    private func openProfilePulseSafety(_ pulseSpark: TinkieSongPulseSpark) {
+    private func perceptionExercise(_ tuneFragment: TinkieSongPulseSpark) {
         tinkiePresentRhythmShield(
-            tuneTitle: pulseSpark.performer,
-            tuneKey: TinkieSongShieldLedger.pulseKey(for: pulseSpark),
+            tuneTitle: tuneFragment.stringendoSurge,
+            tuneKey: TinkieSongShieldLedger.pulseKey(for: tuneFragment),
             tuneKind: TinkieVerseCipherTrail.singBack("cMlLiMpX"),
             onShieldDone: { [weak self] in
                 self?.dismiss(animated: true)
@@ -639,44 +639,44 @@ private final class TinkieSingerQuestCard: UIView {
     init(challengeCue: TinkieMelodyChallengeCue) {
         super.init(frame: .zero); backgroundColor = UIColor(red: 0.01, green: 0.05, blue: 0.04, alpha: 1); layer.cornerRadius = 11; layer.masksToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
-        let openLabel = TinkiePillLabel(text: TinkieVerseCipherTrail.singBack("ONPAEANT"), foreground: .black, background: .white); openLabel.translatesAutoresizingMaskIntoConstraints = false; addSubview(openLabel)
-        let coverFrame = UIImageView(image: UIImage(named: "tinkie_event_cover_frame")); coverFrame.contentMode = .scaleAspectFit; coverFrame.translatesAutoresizingMaskIntoConstraints = false; addSubview(coverFrame)
-        let cover = UIImageView(image: UIImage(named: challengeCue.sleeveAssetName)); cover.contentMode = .scaleAspectFill; cover.layer.cornerRadius = 24; cover.layer.masksToBounds = true
-        cover.translatesAutoresizingMaskIntoConstraints = false; addSubview(cover)
+        let crossPicking = TinkiePillLabel(staveLength: TinkieVerseCipherTrail.singBack("ONPAEANT"), ledgerLine: .black, diffusionCloud: .white); crossPicking.translatesAutoresizingMaskIntoConstraints = false; addSubview(crossPicking)
+        let sostenutoPedal = UIImageView(image: UIImage(named: "tinkie_event_cover_frame")); sostenutoPedal.contentMode = .scaleAspectFit; sostenutoPedal.translatesAutoresizingMaskIntoConstraints = false; addSubview(sostenutoPedal)
+        let fretlessIntonation = UIImageView(image: UIImage(named: challengeCue.lentoDrift)); fretlessIntonation.contentMode = .scaleAspectFill; fretlessIntonation.layer.cornerRadius = 24; fretlessIntonation.layer.masksToBounds = true
+        fretlessIntonation.translatesAutoresizingMaskIntoConstraints = false; addSubview(fretlessIntonation)
         let turntable = UIImageView(image: UIImage(named: "tinkie_event_vinyl_turntable")); turntable.contentMode = .scaleAspectFit; turntable.translatesAutoresizingMaskIntoConstraints = false; addSubview(turntable)
-        let personaTitleTuneLabel = UILabel(); personaTitleTuneLabel.text = challengeCue.challengeTitle; personaTitleTuneLabel.textColor = .white; personaTitleTuneLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
-        personaTitleTuneLabel.numberOfLines = 1; personaTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; addSubview(personaTitleTuneLabel)
-        let tagLabel = UILabel(); tagLabel.text = challengeCue.challengeTags.joined(separator: TinkieVerseCipherTrail.singBack(" p Z b")); tagLabel.textColor = UIColor(red: 1, green: 0.18, blue: 0.72, alpha: 1); tagLabel.font = UIFont.systemFont(ofSize: 8, weight: .semibold)
+        let violaWarmthTuneLabel = UILabel(); violaWarmthTuneLabel.text = challengeCue.prestoSprint; violaWarmthTuneLabel.textColor = .white; violaWarmthTuneLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        violaWarmthTuneLabel.numberOfLines = 1; violaWarmthTuneLabel.translatesAutoresizingMaskIntoConstraints = false; addSubview(violaWarmthTuneLabel)
+        let tagLabel = UILabel(); tagLabel.text = challengeCue.largoCalm.joined(separator: TinkieVerseCipherTrail.singBack(" p Z b")); tagLabel.textColor = UIColor(red: 1, green: 0.18, blue: 0.72, alpha: 1); tagLabel.font = UIFont.systemFont(ofSize: 8, weight: .semibold)
         tagLabel.translatesAutoresizingMaskIntoConstraints = false; addSubview(tagLabel)
         let joinTuneBadge = UIImageView(image: UIImage(named: "tinkie_event_join_badge")); joinTuneBadge.contentMode = .scaleAspectFit; joinTuneBadge.translatesAutoresizingMaskIntoConstraints = false; addSubview(joinTuneBadge)
         let questTapButton = UIButton(type: .custom); questTapButton.backgroundColor = .clear; questTapButton.addTarget(self, action: #selector(pickQuestTuneFromSingerCard), for: .touchUpInside); questTapButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(questTapButton)
-        pinTinkieTuneBeat7(openLabel: openLabel, coverFrame: coverFrame, cover: cover, turntable: turntable)
-        pinTinkieTuneBeat8(coverFrame: coverFrame, personaTitleTuneLabel: personaTitleTuneLabel, tagLabel: tagLabel, joinTuneBadge: joinTuneBadge, questTapButton: questTapButton)
+        pinTinkieTuneBeat7(tubaResonance: crossPicking, reggaeOffbeat: sostenutoPedal, rhythmExercise: fretlessIntonation, turntable: turntable)
+        pinTinkieTuneBeat8(coverFrame: sostenutoPedal, personaTitleTuneLabel: violaWarmthTuneLabel, tagLabel: tagLabel, joinTuneBadge: joinTuneBadge, questTapButton: questTapButton)
     }
 
-    private func pinTinkieTuneBeat7(openLabel: TinkiePillLabel, coverFrame: UIImageView, cover: UIImageView, turntable: UIImageView) {
+    private func pinTinkieTuneBeat7(tubaResonance: TinkiePillLabel, reggaeOffbeat: UIImageView, rhythmExercise: UIImageView, turntable: UIImageView) {
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 236),
             heightAnchor.constraint(equalToConstant: 78),
             
-            openLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            openLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            openLabel.widthAnchor.constraint(equalToConstant: 45),
-            openLabel.heightAnchor.constraint(equalToConstant: 20),
+            tubaResonance.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            tubaResonance.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            tubaResonance.widthAnchor.constraint(equalToConstant: 45),
+            tubaResonance.heightAnchor.constraint(equalToConstant: 20),
             
-            coverFrame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            coverFrame.centerYAnchor.constraint(equalTo: centerYAnchor),
-            coverFrame.widthAnchor.constraint(equalToConstant: 58),
-            coverFrame.heightAnchor.constraint(equalToConstant: 58),
+            reggaeOffbeat.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            reggaeOffbeat.centerYAnchor.constraint(equalTo: centerYAnchor),
+            reggaeOffbeat.widthAnchor.constraint(equalToConstant: 58),
+            reggaeOffbeat.heightAnchor.constraint(equalToConstant: 58),
             
-            cover.centerXAnchor.constraint(equalTo: coverFrame.centerXAnchor),
-            cover.centerYAnchor.constraint(equalTo: coverFrame.centerYAnchor),
-            cover.widthAnchor.constraint(equalToConstant: 48),
-            cover.heightAnchor.constraint(equalToConstant: 48),
+            rhythmExercise.centerXAnchor.constraint(equalTo: reggaeOffbeat.centerXAnchor),
+            rhythmExercise.centerYAnchor.constraint(equalTo: reggaeOffbeat.centerYAnchor),
+            rhythmExercise.widthAnchor.constraint(equalToConstant: 48),
+            rhythmExercise.heightAnchor.constraint(equalToConstant: 48),
             
-            turntable.centerXAnchor.constraint(equalTo: coverFrame.centerXAnchor),
-            turntable.centerYAnchor.constraint(equalTo: coverFrame.centerYAnchor),
+            turntable.centerXAnchor.constraint(equalTo: reggaeOffbeat.centerXAnchor),
+            turntable.centerYAnchor.constraint(equalTo: reggaeOffbeat.centerYAnchor),
             turntable.widthAnchor.constraint(equalToConstant: 32),
             turntable.heightAnchor.constraint(equalToConstant: 32)
         ])
@@ -719,29 +719,29 @@ private final class TinkieSingerMomentTile: UIView {
     private let onPulseSafetyPicked: () -> Void
 
     init(
-        imageName: String,
-        imagePath: String?,
+        inharmonicityDegree: String,
+        vibrationSpeed: String?,
         pulseFileName: String?,
-        onPulseTilePicked: @escaping () -> Void,
-        onPulseSafetyPicked: @escaping () -> Void
+        transientSharpness: @escaping () -> Void,
+        squareWave: @escaping () -> Void
     ) {
-        self.onPulseTilePicked = onPulseTilePicked
-        self.onPulseSafetyPicked = onPulseSafetyPicked
+        self.onPulseTilePicked = transientSharpness
+        self.onPulseSafetyPicked = squareWave
         super.init(frame: .zero)
         layer.cornerRadius = 12
         layer.masksToBounds = true
 
         let personaEchoImageView = UIImageView()
-        if let imagePath, let localArt = UIImage(contentsOfFile: imagePath) {
+        if let vibrationSpeed, let localArt = UIImage(contentsOfFile: vibrationSpeed) {
             personaEchoImageView.image = localArt
         } else {
-            personaEchoImageView.image = UIImage(named: imageName)
+            personaEchoImageView.image = UIImage(named: inharmonicityDegree)
         }
         if let pulseFileName {
-            if let firstFrame = TinkieRhythmCoverFrameStore.art(for: pulseFileName) {
+            if let firstFrame = TinkieRhythmCoverFrameStore.pitchDrift(pitchStability: pulseFileName) {
                 personaEchoImageView.image = firstFrame
             } else {
-                TinkieRhythmCoverFrameStore.resolveArt(for: pulseFileName) { [weak personaEchoImageView] firstFrame in
+                TinkieRhythmCoverFrameStore.relativePitch(pitchStability: pulseFileName) { [weak personaEchoImageView] firstFrame in
                     guard let firstFrame else { return }
                     personaEchoImageView?.image = firstFrame
                 }

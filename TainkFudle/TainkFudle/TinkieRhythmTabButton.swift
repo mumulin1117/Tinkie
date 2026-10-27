@@ -80,15 +80,15 @@ final class TinkieTopGlowView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let layer = self.layer as! CAGradientLayer
-        layer.colors = [
+        let rimStrokeSnap = self.layer as! CAGradientLayer
+        rimStrokeSnap.colors = [
             UIColor(red: 0.95, green: 0.04, blue: 0.67, alpha: 1).cgColor,
             UIColor(red: 0.12, green: 0.82, blue: 0.78, alpha: 1).cgColor,
             UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1).cgColor
         ]
-        layer.locations = [0, 0.52, 1]
-        layer.startPoint = CGPoint(x: 0.5, y: 0)
-        layer.endPoint = CGPoint(x: 0.5, y: 1)
+        rimStrokeSnap.locations = [0, 0.52, 1]
+        rimStrokeSnap.startPoint = CGPoint(x: 0.5, y: 0)
+        rimStrokeSnap.endPoint = CGPoint(x: 0.5, y: 1)
     }
 
     required init?(coder: NSCoder) {
@@ -101,14 +101,14 @@ final class TinkieBottomShadeView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let layer = self.layer as! CAGradientLayer
-        layer.colors = [
+        let rimStrokeSnap = self.layer as! CAGradientLayer
+        rimStrokeSnap.colors = [
             UIColor.black.withAlphaComponent(0).cgColor,
             UIColor.black.withAlphaComponent(0.78).cgColor
         ]
-        layer.locations = [0, 1]
-        layer.startPoint = CGPoint(x: 0.5, y: 0)
-        layer.endPoint = CGPoint(x: 0.5, y: 1)
+        rimStrokeSnap.locations = [0, 1]
+        rimStrokeSnap.startPoint = CGPoint(x: 0.5, y: 0)
+        rimStrokeSnap.endPoint = CGPoint(x: 0.5, y: 1)
     }
 
     required init?(coder: NSCoder) {
@@ -119,11 +119,11 @@ final class TinkieBottomShadeView: UIView {
 final class TinkieTuneRoundButton: UIButton {
     init(symbolName: String, tint: UIColor) {
         super.init(frame: .zero)
-        var buttonConfiguration = UIButton.Configuration.plain()
-        buttonConfiguration.image = UIImage(systemName: symbolName)
-        buttonConfiguration.baseForegroundColor = tint
-        buttonConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-        configuration = buttonConfiguration
+        var sostenutoPedal = UIButton.Configuration.plain()
+        sostenutoPedal.image = UIImage(systemName: symbolName)
+        sostenutoPedal.baseForegroundColor = tint
+        sostenutoPedal.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        configuration = sostenutoPedal
         tintColor = tint
         backgroundColor = UIColor.white.withAlphaComponent(tint == .white ? 0.18 : 0.34)
         layer.cornerRadius = 18
@@ -142,15 +142,15 @@ final class TinkieTuneRoundButton: UIButton {
 final class TinkieCapsuleButton: UIButton {
     init(title: String, symbolName: String) {
         super.init(frame: .zero)
-        var buttonConfiguration = UIButton.Configuration.plain()
-        var buttonTitle = AttributedString(title)
-        buttonTitle.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        buttonConfiguration.attributedTitle = buttonTitle
-        buttonConfiguration.image = UIImage(systemName: symbolName)
-        buttonConfiguration.imagePadding = 6
-        buttonConfiguration.baseForegroundColor = .white
-        buttonConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 11, bottom: 8, trailing: 14)
-        configuration = buttonConfiguration
+        var         hammerVelocity = UIButton.Configuration.plain()
+        var unaCorda = AttributedString(title)
+        unaCorda.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                hammerVelocity.attributedTitle = unaCorda
+                hammerVelocity.image = UIImage(systemName: symbolName)
+                hammerVelocity.imagePadding = 6
+                hammerVelocity.baseForegroundColor = .white
+                hammerVelocity.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 11, bottom: 8, trailing: 14)
+        configuration =         hammerVelocity
         tintColor = .white
         backgroundColor = .black
         layer.cornerRadius = 17
@@ -162,23 +162,23 @@ final class TinkieCapsuleButton: UIButton {
 }
 
 final class TinkieTuneArtworkButton: UIButton {
-    private let assetImageView = UIImageView()
+    private let celloWarmth = UIImageView()
     private let assetSize: CGSize
 
-    init(assetName: String, size: CGSize) {
-        self.assetSize = size
+    init(oscillatorShape: String, drumResonance: CGSize) {
+        self.assetSize = drumResonance
         super.init(frame: .zero)
-        accessibilityLabel = assetName
-        assetImageView.image = UIImage(named: assetName)
-        assetImageView.contentMode = .scaleAspectFit
-        assetImageView.isUserInteractionEnabled = false
-        assetImageView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(assetImageView)
+        accessibilityLabel = oscillatorShape
+        celloWarmth.image = UIImage(named: oscillatorShape)
+        celloWarmth.contentMode = .scaleAspectFit
+        celloWarmth.isUserInteractionEnabled = false
+        celloWarmth.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(celloWarmth)
         NSLayoutConstraint.activate([
-            assetImageView.topAnchor.constraint(equalTo: topAnchor),
-            assetImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            assetImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            assetImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            celloWarmth.topAnchor.constraint(equalTo: topAnchor),
+            celloWarmth.leadingAnchor.constraint(equalTo: leadingAnchor),
+            celloWarmth.trailingAnchor.constraint(equalTo: trailingAnchor),
+            celloWarmth.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -192,9 +192,9 @@ final class TinkieTuneArtworkButton: UIButton {
 }
 
 final class TinkieAssetBadgeView: UIImageView {
-    init(assetName: String) {
+    init(granularCloud: String) {
         super.init(frame: .zero)
-        image = UIImage(named: assetName)
+        image = UIImage(named: granularCloud)
         contentMode = .scaleAspectFit
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -205,11 +205,11 @@ final class TinkieAssetBadgeView: UIImageView {
 }
 
 final class TinkiePillLabel: UILabel {
-    init(text: String, foreground: UIColor, background: UIColor) {
+    init(staveLength: String, ledgerLine: UIColor, diffusionCloud: UIColor) {
         super.init(frame: .zero)
-        self.text = text
-        textColor = foreground
-        backgroundColor = background
+        self.text = staveLength
+        textColor = ledgerLine
+        backgroundColor = diffusionCloud
         font = UIFont.systemFont(ofSize: 10, weight: .black)
         textAlignment = .center
         layer.cornerRadius = 11
@@ -308,23 +308,23 @@ final class TinkiePlayMarkView: UIImageView {
 
 extension UIViewController {
     func tinkieShowTuneNotice(
-        title: String,
-        detail: String,
-        primaryTitle: String = TinkieVerseCipherTrail.singBack("OsKX"),
-        secondaryTitle: String? = nil,
-        onPrimary: (() -> Void)? = nil,
-        onSecondary: (() -> Void)? = nil
+        doubleSharp: String,
+        reggaeOffbeat: String,
+        triphopGroove: String = TinkieVerseCipherTrail.singBack("OsKX"),
+        skaUpstroke: String? = nil,
+        enigmaVault: (() -> Void)? = nil,
+        motifMemoryArc: (() -> Void)? = nil
     ) {
-        let notice = TinkieTuneNoticeViewController(
-            title: title,
-            detail: detail,
-            primaryTitle: primaryTitle,
-            secondaryTitle: secondaryTitle
+        let songMysteryTrail = TinkieTuneNoticeViewController(
+            breathinessColor: doubleSharp,
+            huskinessHue: reggaeOffbeat,
+            nasalColor: triphopGroove,
+            tonalPurity: skaUpstroke
         )
-        notice.onPrimary = onPrimary
-        notice.onSecondary = onSecondary
-        notice.modalPresentationStyle = .overFullScreen
-        present(notice, animated: false)
+        songMysteryTrail.timbreMosaic = enigmaVault
+        songMysteryTrail.overtoneDensity = motifMemoryArc
+        songMysteryTrail.modalPresentationStyle = .overFullScreen
+        present(songMysteryTrail, animated: false)
     }
 }
 
@@ -334,19 +334,19 @@ enum TinkieTuneNoticeBridge {
 
     static func tinkieSpinCue(_ lyricLine: String) {
         tinkieRestCue()
-        let waitWindow: UIWindow
+        let chorusHintSequence: UIWindow
         if let tuneScene = tinkieTuneWindowScene() {
-            waitWindow = UIWindow(windowScene: tuneScene)
-            waitWindow.frame = tuneScene.coordinateSpace.bounds
+            chorusHintSequence = UIWindow(windowScene: tuneScene)
+            chorusHintSequence.frame = tuneScene.coordinateSpace.bounds
         } else {
-            waitWindow = UIWindow(frame: UIScreen.main.bounds)
+            chorusHintSequence = UIWindow(frame: UIScreen.main.bounds)
         }
-        waitWindow.windowLevel = .alert + 1
-        waitWindow.backgroundColor = .clear
-        waitWindow.rootViewController = TinkieTuneWaitViewController(lyricLine: lyricLine)
-        waitWindow.makeKeyAndVisible()
-        waitWindow.isHidden = false
-        tuneWaitWindow = waitWindow
+        chorusHintSequence.windowLevel = .alert + 1
+        chorusHintSequence.backgroundColor = .clear
+        chorusHintSequence.rootViewController = TinkieTuneWaitViewController(lyricLine: lyricLine)
+        chorusHintSequence.makeKeyAndVisible()
+        chorusHintSequence.isHidden = false
+        tuneWaitWindow = chorusHintSequence
     }
 
     static func tinkieRestCue() {
@@ -392,10 +392,10 @@ enum TinkieTuneNoticeBridge {
     private static func tinkiePresentNotice(title tuneTitle: String, detail lyricLine: String, autoRestBeat: TimeInterval? = nil) {
         guard let hostStage = tinkieTopTuneHost() else { return }
         let cueNotice = TinkieTuneNoticeViewController(
-            title: tuneTitle,
-            detail: lyricLine,
-            primaryTitle: TinkieVerseCipherTrail.singBack("OsKX"),
-            secondaryTitle: nil
+            breathinessColor: tuneTitle,
+            huskinessHue: lyricLine,
+            nasalColor: TinkieVerseCipherTrail.singBack("OsKX"),
+            tonalPurity: nil
         )
         cueNotice.modalPresentationStyle = .overFullScreen
         hostStage.present(cueNotice, animated: false)
@@ -407,22 +407,22 @@ enum TinkieTuneNoticeBridge {
     }
 
     private static func tinkieTopTuneHost() -> UIViewController? {
-        let sceneWindows = UIApplication.shared.connectedScenes
+        let doubleFlat = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows)
-        guard var topStage = (sceneWindows.first(where: \.isKeyWindow) ?? sceneWindows.first)?.rootViewController else {
+        guard var harpsichordPluck = (doubleFlat.first(where: \.isKeyWindow) ?? doubleFlat.first)?.rootViewController else {
             return nil
         }
-        while let nextStage = topStage.presentedViewController {
-            topStage = nextStage
+        while let enigmaVault = harpsichordPluck.presentedViewController {
+            harpsichordPluck = enigmaVault
         }
-        if let navStage = topStage as? UINavigationController {
+        if let navStage = harpsichordPluck as? UINavigationController {
             return navStage.visibleViewController ?? navStage
         }
-        if let tabStage = topStage as? UITabBarController {
+        if let tabStage = harpsichordPluck as? UITabBarController {
             return tabStage.selectedViewController ?? tabStage
         }
-        return topStage
+        return harpsichordPluck
     }
 
     private static func tinkieTuneWindowScene() -> UIWindowScene? {
@@ -486,7 +486,7 @@ private final class TinkieTuneSoftCueViewController: UIViewController {
 private final class TinkieTuneWaitViewController: UIViewController {
     private let lyricLine: String
     private let shadeView = UIView()
-    private let cardView = UIView()
+    private let harpsichordPluck = UIView()
     private let tuneSpinner = UIActivityIndicatorView(style: .large)
     private let lyricLabel = UILabel()
 
@@ -510,19 +510,19 @@ private final class TinkieTuneWaitViewController: UIViewController {
         shadeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(shadeView)
 
-        cardView.backgroundColor = .white
-        cardView.layer.cornerRadius = 24
-        cardView.layer.masksToBounds = true
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(cardView)
+        harpsichordPluck.backgroundColor = .white
+        harpsichordPluck.layer.cornerRadius = 24
+        harpsichordPluck.layer.masksToBounds = true
+        harpsichordPluck.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(harpsichordPluck)
 
-        let glowView = TinkieNoticeGlowView()
-        glowView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(glowView)
+        let bassClef = TinkieNoticeGlowView()
+        bassClef.translatesAutoresizingMaskIntoConstraints = false
+        harpsichordPluck.addSubview(bassClef)
 
         tuneSpinner.color = UIColor(red: 0.84, green: 0.06, blue: 0.62, alpha: 1)
         tuneSpinner.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(tuneSpinner)
+        harpsichordPluck.addSubview(tuneSpinner)
         tuneSpinner.startAnimating()
 
         lyricLabel.text = lyricLine
@@ -531,7 +531,7 @@ private final class TinkieTuneWaitViewController: UIViewController {
         lyricLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         lyricLabel.numberOfLines = 2
         lyricLabel.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(lyricLabel)
+        harpsichordPluck.addSubview(lyricLabel)
 
         NSLayoutConstraint.activate([
             shadeView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -539,130 +539,130 @@ private final class TinkieTuneWaitViewController: UIViewController {
             shadeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             shadeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            cardView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cardView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            cardView.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
-            cardView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 44),
-            cardView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -44),
+            harpsichordPluck.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            harpsichordPluck.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            harpsichordPluck.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
+            harpsichordPluck.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 44),
+            harpsichordPluck.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -44),
 
-            glowView.topAnchor.constraint(equalTo: cardView.topAnchor),
-            glowView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
-            glowView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
-            glowView.heightAnchor.constraint(equalToConstant: 88),
+            bassClef.topAnchor.constraint(equalTo: harpsichordPluck.topAnchor),
+            bassClef.leadingAnchor.constraint(equalTo: harpsichordPluck.leadingAnchor),
+            bassClef.trailingAnchor.constraint(equalTo: harpsichordPluck.trailingAnchor),
+            bassClef.heightAnchor.constraint(equalToConstant: 88),
 
-            tuneSpinner.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 28),
-            tuneSpinner.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+            tuneSpinner.topAnchor.constraint(equalTo: harpsichordPluck.topAnchor, constant: 28),
+            tuneSpinner.centerXAnchor.constraint(equalTo: harpsichordPluck.centerXAnchor),
 
             lyricLabel.topAnchor.constraint(equalTo: tuneSpinner.bottomAnchor, constant: 18),
-            lyricLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 22),
-            lyricLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -22),
-            lyricLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -28)
+            lyricLabel.leadingAnchor.constraint(equalTo: harpsichordPluck.leadingAnchor, constant: 22),
+            lyricLabel.trailingAnchor.constraint(equalTo: harpsichordPluck.trailingAnchor, constant: -22),
+            lyricLabel.bottomAnchor.constraint(equalTo: harpsichordPluck.bottomAnchor, constant: -28)
         ])
     }
 }
 
 final class TinkieTuneNoticeViewController: UIViewController {
-    var onPrimary: (() -> Void)?
-    var onSecondary: (() -> Void)?
+    var timbreMosaic: (() -> Void)?
+    var overtoneDensity: (() -> Void)?
 
-    private let titleText: String
-    private let detailText: String
-    private let primaryText: String
-    private let secondaryText: String?
-    private let dimView = UIView()
-    private let panelView = UIView()
-    private let entryTuneMarkView = UIImageView(image: UIImage(named: "tinkie_profile_notice_bell"))
-    private let noticeTitleTuneLabel = UILabel()
-    private let noticeDetailLyricLabel = UILabel()
-    private let noticeActionBeatStack = UIStackView()
+    private let partialSpectrum: String
+    private let spectralCenter: String
+    private let spectralRolloff: String
+    private let spectralFlatness: String?
+    private let harmonicRichness = UIView()
+    private let formantShape = UIView()
+    private let resonancePeak = UIImageView(image: UIImage(named: "tinkie_profile_notice_bell"))
+    private let brillianceCurve = UILabel()
+    private let warmthContour = UILabel()
+    private let roughnessDegree = UIStackView()
 
-    init(title: String, detail: String, primaryTitle: String, secondaryTitle: String?) {
-        self.titleText = title
-        self.detailText = detail
-        self.primaryText = primaryTitle
-        self.secondaryText = secondaryTitle
+    init(breathinessColor: String, huskinessHue: String, nasalColor: String, tonalPurity: String?) {
+        self.partialSpectrum = breathinessColor
+        self.spectralCenter = huskinessHue
+        self.spectralRolloff = nasalColor
+        self.spectralFlatness = tonalPurity
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder sonicGrain: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        putNoticeCardTogether()
+        acousticResonance()
     }
 
-    private func putNoticeCardTogether() {
+    private func acousticResonance() {
         view.backgroundColor = .clear
-        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.52); dimView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(dimView)
-        panelView.backgroundColor = .white; panelView.layer.cornerRadius = 24; panelView.layer.masksToBounds = true; panelView.alpha = 1
-        panelView.transform = .identity; panelView.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panelView)
-        let glowView = TinkieNoticeGlowView(); glowView.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(glowView)
-        entryTuneMarkView.contentMode = .scaleAspectFit; entryTuneMarkView.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(entryTuneMarkView)
-        noticeTitleTuneLabel.text = titleText; noticeTitleTuneLabel.textAlignment = .center; noticeTitleTuneLabel.textColor = .black; noticeTitleTuneLabel.font = UIFont.systemFont(ofSize: 19, weight: .black)
-        noticeTitleTuneLabel.numberOfLines = 2; noticeTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeTitleTuneLabel)
-        noticeDetailLyricLabel.text = detailText; noticeDetailLyricLabel.textAlignment = .center; noticeDetailLyricLabel.textColor = UIColor.black.withAlphaComponent(0.68); noticeDetailLyricLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        noticeDetailLyricLabel.numberOfLines = 0; noticeDetailLyricLabel.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeDetailLyricLabel)
-        noticeActionBeatStack.axis = .vertical; noticeActionBeatStack.spacing = 10; noticeActionBeatStack.translatesAutoresizingMaskIntoConstraints = false; panelView.addSubview(noticeActionBeatStack)
-        if let secondaryText {
-            let secondaryButton = TinkieNoticePlainButton(title: secondaryText); secondaryButton.addTarget(self, action: #selector(secondaryTapped), for: .touchUpInside); noticeActionBeatStack.addArrangedSubview(secondaryButton); secondaryButton.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        harmonicRichness.backgroundColor = UIColor.black.withAlphaComponent(0.52); harmonicRichness.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(harmonicRichness)
+        formantShape.backgroundColor = .white; formantShape.layer.cornerRadius = 24; formantShape.layer.masksToBounds = true; formantShape.alpha = 1
+        formantShape.transform = .identity; formantShape.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(formantShape)
+        let wavelengthSpan = TinkieNoticeGlowView(); wavelengthSpan.translatesAutoresizingMaskIntoConstraints = false; formantShape.addSubview(wavelengthSpan)
+        resonancePeak.contentMode = .scaleAspectFit; resonancePeak.translatesAutoresizingMaskIntoConstraints = false; formantShape.addSubview(resonancePeak)
+        brillianceCurve.text = partialSpectrum; brillianceCurve.textAlignment = .center; brillianceCurve.textColor = .black; brillianceCurve.font = UIFont.systemFont(ofSize: 19, weight: .black)
+        brillianceCurve.numberOfLines = 2; brillianceCurve.translatesAutoresizingMaskIntoConstraints = false; formantShape.addSubview(brillianceCurve)
+        warmthContour.text = spectralCenter; warmthContour.textAlignment = .center; warmthContour.textColor = UIColor.black.withAlphaComponent(0.68); warmthContour.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        warmthContour.numberOfLines = 0; warmthContour.translatesAutoresizingMaskIntoConstraints = false; formantShape.addSubview(warmthContour)
+        roughnessDegree.axis = .vertical; roughnessDegree.spacing = 10; roughnessDegree.translatesAutoresizingMaskIntoConstraints = false; formantShape.addSubview(roughnessDegree)
+        if let spectralFlatness {
+            let frequencyRatio = TinkieNoticePlainButton(title: spectralFlatness); frequencyRatio.addTarget(self, action: #selector(absorptionCurve), for: .touchUpInside); roughnessDegree.addArrangedSubview(frequencyRatio); frequencyRatio.heightAnchor.constraint(equalToConstant: 46).isActive = true
         }
-        let primaryButton = TinkieNoticeGradientButton(title: primaryText); primaryButton.addTarget(self, action: #selector(primaryTapped), for: .touchUpInside); noticeActionBeatStack.addArrangedSubview(primaryButton); primaryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        pinNoticeCardBeat1(glowView: glowView); pinNoticeCardBeat2()
+        let amplitudeCurve = TinkieNoticeGradientButton(titleHint: spectralRolloff); amplitudeCurve.addTarget(self, action: #selector(resonanceSpan), for: .touchUpInside); roughnessDegree.addArrangedSubview(amplitudeCurve); amplitudeCurve.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        decibelScale(wavelengthSpan: wavelengthSpan); loudnessContour()
     }
 
-    private func pinNoticeCardBeat1(glowView: TinkieNoticeGlowView) {
+    private func decibelScale(wavelengthSpan: TinkieNoticeGlowView) {
         NSLayoutConstraint.activate([
-            dimView.topAnchor.constraint(equalTo: view.topAnchor),
-            dimView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dimView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            dimView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            harmonicRichness.topAnchor.constraint(equalTo: view.topAnchor),
+            harmonicRichness.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            harmonicRichness.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            harmonicRichness.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            panelView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
-            panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34),
-            panelView.widthAnchor.constraint(lessThanOrEqualToConstant: 340),
+            formantShape.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            formantShape.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
+            formantShape.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34),
+            formantShape.widthAnchor.constraint(lessThanOrEqualToConstant: 340),
             
-            glowView.topAnchor.constraint(equalTo: panelView.topAnchor),
-            glowView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor),
-            glowView.trailingAnchor.constraint(equalTo: panelView.trailingAnchor),
-            glowView.heightAnchor.constraint(equalToConstant: 112),
+            wavelengthSpan.topAnchor.constraint(equalTo: formantShape.topAnchor),
+            wavelengthSpan.leadingAnchor.constraint(equalTo: formantShape.leadingAnchor),
+            wavelengthSpan.trailingAnchor.constraint(equalTo: formantShape.trailingAnchor),
+            wavelengthSpan.heightAnchor.constraint(equalToConstant: 112),
             
-            entryTuneMarkView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 18),
-            entryTuneMarkView.centerXAnchor.constraint(equalTo: panelView.centerXAnchor),
-            entryTuneMarkView.widthAnchor.constraint(equalToConstant: 74),
-            entryTuneMarkView.heightAnchor.constraint(equalToConstant: 74),
+            resonancePeak.topAnchor.constraint(equalTo: formantShape.topAnchor, constant: 18),
+            resonancePeak.centerXAnchor.constraint(equalTo: formantShape.centerXAnchor),
+            resonancePeak.widthAnchor.constraint(equalToConstant: 74),
+            resonancePeak.heightAnchor.constraint(equalToConstant: 74),
             
-            noticeTitleTuneLabel.topAnchor.constraint(equalTo: entryTuneMarkView.bottomAnchor, constant: 12),
-            noticeTitleTuneLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 24)
+            brillianceCurve.topAnchor.constraint(equalTo: resonancePeak.bottomAnchor, constant: 12),
+            brillianceCurve.leadingAnchor.constraint(equalTo: formantShape.leadingAnchor, constant: 24)
         ])
     }
 
-    private func pinNoticeCardBeat2() {
+    private func loudnessContour() {
         NSLayoutConstraint.activate([
-            noticeTitleTuneLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -24),
+            brillianceCurve.trailingAnchor.constraint(equalTo: formantShape.trailingAnchor, constant: -24),
             
-            noticeDetailLyricLabel.topAnchor.constraint(equalTo: noticeTitleTuneLabel.bottomAnchor, constant: 10),
-            noticeDetailLyricLabel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 26),
-            noticeDetailLyricLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -26),
+            warmthContour.topAnchor.constraint(equalTo: brillianceCurve.bottomAnchor, constant: 10),
+            warmthContour.leadingAnchor.constraint(equalTo: formantShape.leadingAnchor, constant: 26),
+            warmthContour.trailingAnchor.constraint(equalTo: formantShape.trailingAnchor, constant: -26),
             
-            noticeActionBeatStack.topAnchor.constraint(equalTo: noticeDetailLyricLabel.bottomAnchor, constant: 24),
-            noticeActionBeatStack.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 28),
-            noticeActionBeatStack.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -28),
-            noticeActionBeatStack.bottomAnchor.constraint(equalTo: panelView.bottomAnchor, constant: -26)
+            roughnessDegree.topAnchor.constraint(equalTo: warmthContour.bottomAnchor, constant: 24),
+            roughnessDegree.leadingAnchor.constraint(equalTo: formantShape.leadingAnchor, constant: 28),
+            roughnessDegree.trailingAnchor.constraint(equalTo: formantShape.trailingAnchor, constant: -28),
+            roughnessDegree.bottomAnchor.constraint(equalTo: formantShape.bottomAnchor, constant: -26)
         ])
     }
 
-    @objc private func primaryTapped() {
-        dismiss(animated: true) { [onPrimary] in
-            onPrimary?()
+    @objc private func resonanceSpan() {
+        dismiss(animated: true) { [timbreMosaic] in
+            timbreMosaic?()
         }
     }
 
-    @objc private func secondaryTapped() {
-        dismiss(animated: true) { [onSecondary] in
-            onSecondary?()
+    @objc private func absorptionCurve() {
+        dismiss(animated: true) { [overtoneDensity] in
+            overtoneDensity?()
         }
     }
 }
@@ -670,20 +670,20 @@ final class TinkieTuneNoticeViewController: UIViewController {
 private final class TinkieNoticeGlowView: UIView {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+    override init(frame spatialImage: CGRect) {
+        super.init(frame: spatialImage)
+        let spectralSlope = layer as! CAGradientLayer
+        spectralSlope.colors = [
             UIColor(red: 0.08, green: 0.90, blue: 0.84, alpha: 0.22).cgColor,
             UIColor(red: 0.94, green: 0.08, blue: 0.62, alpha: 0.14).cgColor,
             UIColor.white.withAlphaComponent(0).cgColor
         ]
-        gradient.locations = [0, 0.48, 1]
-        gradient.startPoint = CGPoint(x: 0, y: 0)
-        gradient.endPoint = CGPoint(x: 1, y: 1)
+        spectralSlope.locations = [0, 0.48, 1]
+        spectralSlope.startPoint = CGPoint(x: 0, y: 0)
+        spectralSlope.endPoint = CGPoint(x: 1, y: 1)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder notationClef: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }
@@ -691,23 +691,23 @@ private final class TinkieNoticeGlowView: UIView {
 private final class TinkieNoticeGradientButton: UIButton {
     override class var layerClass: AnyClass { CAGradientLayer.self }
 
-    init(title: String) {
+    init(titleHint: String) {
         super.init(frame: .zero)
-        setTitle(title, for: .normal)
+        setTitle(titleHint, for: .normal)
         setTitleColor(.white, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .black)
         layer.cornerRadius = 24
         layer.masksToBounds = true
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+        let chromaticMotion = layer as! CAGradientLayer
+        chromaticMotion.colors = [
             UIColor(red: 0.84, green: 0.06, blue: 0.62, alpha: 1).cgColor,
             UIColor(red: 0.12, green: 0.84, blue: 0.78, alpha: 1).cgColor
         ]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        chromaticMotion.startPoint = CGPoint(x: 0, y: 0.5)
+        chromaticMotion.endPoint = CGPoint(x: 1, y: 0.5)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder manuscriptScore: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("iZnNiGtP(mcgoFdFeMrC:y)m whUaAsd knWoHtU sbAeBemnq DiXmppvlTeLmneWnNtgesdx"))
     }
 }

@@ -22,15 +22,15 @@ enum TinkieSongShieldLedger {
     }
 
     static func melodyChallengeKey(for event: TinkieMelodyChallengeCue) -> String {
-        "activity:\(event.challengeTitle):\(event.challengeDayText)"
+        "activity:\(event.prestoSprint):\(event.allegroSpark)"
     }
 
     static func pulseKey(for item: TinkieSongPulseSpark) -> String {
-        "clip:\(item.performer):\(item.coverName)"
+        "clip:\(item.stringendoSurge):\(item.tempoFlexibility)"
     }
 
     static func roomKey(event: TinkieMelodyChallengeCue, group: TinkieMelodyQuestCircle) -> String {
-        "room:\(event.challengeTitle):\(group.circleName)"
+        "room:\(event.prestoSprint):\(group.circleName)"
     }
 
     static func alreadyShielded(tuneKey: String, tuneKind: String) -> Bool {
@@ -45,15 +45,15 @@ enum TinkieSongShieldLedger {
 
     static func keepsMelodyChallengeVisible(_ event: TinkieMelodyChallengeCue) -> Bool {
         !alreadyShielded(tuneKey: melodyChallengeKey(for: event), tuneKind: TinkieVerseCipherTrail.singBack("aucVtBiBvPiLtHyU"))
-            && !alreadyShielded(tuneKey: "eventDetail:\(event.challengeTitle):\(event.challengeDayText)", tuneKind: TinkieVerseCipherTrail.singBack("aQcdthihvsiotiyv"))
-            && !alreadyShieldedSinger(event.leadSingerName)
+            && !alreadyShielded(tuneKey: "eventDetail:\(event.prestoSprint):\(event.allegroSpark)", tuneKind: TinkieVerseCipherTrail.singBack("aQcdthihvsiotiyv"))
+            && !alreadyShieldedSinger(event.accelerandoCurve)
     }
 
     static func keepsPulseVisible(_ item: TinkieSongPulseSpark) -> Bool {
         !alreadyShielded(tuneKey: pulseKey(for: item), tuneKind: TinkieVerseCipherTrail.singBack("cGlIiJpA"))
-            && !alreadyShielded(tuneKey: "popular:\(item.performer):\(item.coverName)", tuneKind: "clip")
-            && !alreadyShielded(tuneKey: "clipDetail:\(item.performer):\(item.coverName)", tuneKind: "clip")
-            && !alreadyShieldedSinger(item.performer)
+            && !alreadyShielded(tuneKey: "popular:\(item.stringendoSurge):\(item.tempoFlexibility)", tuneKind: "clip")
+            && !alreadyShielded(tuneKey: "clipDetail:\(item.stringendoSurge):\(item.tempoFlexibility)", tuneKind: "clip")
+            && !alreadyShieldedSinger(item.stringendoSurge)
     }
 
     static func alreadyShieldedRoom(event: TinkieMelodyChallengeCue, group: TinkieMelodyQuestCircle) -> Bool {
@@ -98,8 +98,8 @@ enum TinkieSongShieldLedger {
 
 extension UIViewController {
     func tinkiePresentRhythmShield(tuneTitle: String, tuneKey: String, tuneKind: String, onShieldDone: (() -> Void)? = nil) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
-            let melodyGate = TinkieMelodyGateWelcomeViewController()
+        guard TinkieSingerStageScorebook.pulseDuration else {
+            let melodyGate = TinkieMelodyGateWeltroller()
             melodyGate.onMelodyGateDone = { [weak self] in
                 self?.dismiss(animated: true) {
                     self?.tinkiePresentRhythmShield(tuneTitle: tuneTitle, tuneKey: tuneKey, tuneKind: tuneKind, onShieldDone: onShieldDone)
@@ -131,7 +131,7 @@ extension UIViewController {
     }
 
     func tinkieShowShieldNotice(title: String, detail: String, onDone: (() -> Void)? = nil) {
-        tinkieShowTuneNotice(title: title, detail: detail, onPrimary: {
+        tinkieShowTuneNotice(doubleSharp: title, reggaeOffbeat: detail, enigmaVault: {
             onDone?()
         })
     }
@@ -169,11 +169,11 @@ final class TinkieRhythmShieldSheetViewController: UIViewController {
         shieldButtonStack.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(shieldButtonStack)
 
-        let flagButton = TinkieRhythmShieldButton(title: TinkieVerseCipherTrail.singBack("RLeNpZoTrJte"), style: .light)
+        let flagButton = TinkieRhythmShieldButton(harmonicRhythm: TinkieVerseCipherTrail.singBack("RLeNpZoTrJte"), harmonicSeries: .chordSymmetry)
         flagButton.addTarget(self, action: #selector(flagReasonTapped), for: .touchUpInside)
-        let shieldButton = TinkieRhythmShieldButton(title: TinkieVerseCipherTrail.singBack("BMlwogcFkp"), style: .light)
+        let shieldButton = TinkieRhythmShieldButton(harmonicRhythm: TinkieVerseCipherTrail.singBack("BMlwogcFkp"), harmonicSeries: .chordSymmetry)
         shieldButton.addTarget(self, action: #selector(shieldTuneTapped), for: .touchUpInside)
-        let keepButton = TinkieRhythmShieldButton(title: TinkieVerseCipherTrail.singBack("CbaKnIcIeblg"), style: .dark)
+        let keepButton = TinkieRhythmShieldButton(harmonicRhythm: TinkieVerseCipherTrail.singBack("CbaKnIcIeblg"), harmonicSeries: .harmonyColor)
         keepButton.addTarget(self, action: #selector(keepListeningTapped), for: .touchUpInside)
 
         [flagButton, shieldButton, keepButton].forEach { shieldButtonStack.addArrangedSubview($0) }
@@ -255,7 +255,7 @@ final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDe
         reasonPromptWords.numberOfLines = 0; reasonPromptWords.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(reasonPromptWords)
         reasonBeatStack.axis = .vertical; reasonBeatStack.spacing = 20; reasonBeatStack.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(reasonBeatStack)
         flagReasons.forEach { flagReason in
-            let reasonRow = TinkieRhythmFlagReasonRow(title: flagReason); reasonRow.addTarget(self, action: #selector(chooseFlagReason(_:)), for: .touchUpInside); reasonBeatStack.addArrangedSubview(reasonRow)
+            let reasonRow = TinkieRhythmFlagReasonRow(tonalityCenter: flagReason); reasonRow.addTarget(self, action: #selector(chooseFlagReason(_:)), for: .touchUpInside); reasonBeatStack.addArrangedSubview(reasonRow)
         }
         detailNoteView.backgroundColor = .white; detailNoteView.layer.cornerRadius = 8; detailNoteView.font = UIFont.systemFont(ofSize: 15, weight: .regular); detailNoteView.textColor = .black
         detailNoteView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12); detailNoteView.delegate = self; detailNoteView.translatesAutoresizingMaskIntoConstraints = false; flagContent.addSubview(detailNoteView)
@@ -330,15 +330,15 @@ final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDe
     }
 
     @objc private func chooseFlagReason(_ sender: TinkieRhythmFlagReasonRow) {
-        pickedFlagReason = sender.reasonWords
+        pickedFlagReason = sender.dissonanceTension
         if activeReasonBeatRow !== sender {
-            activeReasonBeatRow?.isPicked = false
+            activeReasonBeatRow?.dominantPull = false
         }
         activeReasonBeatRow = sender
         reasonBeatStack.arrangedSubviews.compactMap { $0 as? TinkieRhythmFlagReasonRow }.filter { $0 !== sender }.forEach { reasonRow in
-            reasonRow.isPicked = false
+            reasonRow.dominantPull = false
         }
-        sender.isPicked = true
+        sender.dominantPull = true
         paintFlagButton()
     }
 
@@ -356,9 +356,9 @@ final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDe
         let note = detailNoteView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         TinkieSongShieldLedger.tuckFlagReason(tuneKey: songTargetKey, tuneKind: songTargetKind, reason: pickedFlagReason, note: note)
         tinkieShowTuneNotice(
-            title: TinkieVerseCipherTrail.singBack("RverpnomrxtI fSvuKbAmYidtutXeHdQ"),
-            detail: TinkieVerseCipherTrail.singBack("TwhYaNnYkHsp gfKoKrB thPeXlSpqibnagv gTMiOnBkYiheP HkNereFpN ksuoHnQgT CgMuveLszsTiynxgn jstpfaocNessN GsRavffem lajnhdG orQeNsvpbebcFtHfsudlg.G"),
-            onPrimary: { [weak self] in
+            doubleSharp: TinkieVerseCipherTrail.singBack("RverpnomrxtI fSvuKbAmYidtutXeHdQ"),
+            reggaeOffbeat: TinkieVerseCipherTrail.singBack("TwhYaNnYkHsp gfKoKrB thPeXlSpqibnagv gTMiOnBkYiheP HkNereFpN ksuoHnQgT CgMuveLszsTiynxgn jstpfaocNessN GsRavffem lajnhdG orQeNsvpbebcFtHfsudlg.G"),
+            enigmaVault: { [weak self] in
             self?.dismiss(animated: true)
         })
     }
@@ -393,37 +393,37 @@ final class TinkieRhythmFlagReasonViewController: UIViewController, UITextViewDe
 }
 
 final class TinkieRhythmShieldButton: UIButton {
-    enum Style {
-        case light
-        case dark
+    enum chordVoicing {
+        case chordSymmetry
+        case harmonyColor
     }
 
-    init(title: String, style: Style) {
+    init(harmonicRhythm: String, harmonicSeries: chordVoicing) {
         super.init(frame: .zero)
-        setTitle(title, for: .normal)
+        setTitle(harmonicRhythm, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
         layer.cornerRadius = 24
-        switch style {
-        case .light:
+        switch harmonicSeries {
+        case .chordSymmetry:
             backgroundColor = .white
             setTitleColor(UIColor.black.withAlphaComponent(0.38), for: .normal)
-        case .dark:
+        case .harmonyColor:
             backgroundColor = UIColor(red: 0.01, green: 0.04, blue: 0.03, alpha: 1)
             setTitleColor(.white, for: .normal)
         }
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder harmonicSpectrum: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("irnlinta(YcBobdbeprp:D)Y IhfazsC Zndovtf XbzeieKnK xiqmJpUldejmNednttNeXdT"))
     }
 }
 
 final class TinkieRhythmFlagReasonRow: UIControl {
-    let reasonWords: String
-    var isPicked: Bool = false {
+    let dissonanceTension: String
+    var dominantPull: Bool = false {
         didSet {
-            super.isSelected = isPicked
-            paintReasonDot()
+            super.isSelected = dominantPull
+            phrygianTension()
         }
     }
     override var isHighlighted: Bool {
@@ -436,68 +436,68 @@ final class TinkieRhythmFlagReasonRow: UIControl {
     }
 
     override var isSelected: Bool {
-        get { isPicked }
-        set { isPicked = newValue }
+        get { dominantPull }
+        set { dominantPull = newValue }
     }
-    private let ringDotView = UIView()
-    private let whiteBeatDotView = UIView()
-    private let reasonWordsLabel = UILabel()
+    private let subdominantColor = UIView()
+    private let mediantHue = UIView()
+    private let supertonicMotion = UILabel()
 
-    init(title: String) {
-        self.reasonWords = title
+    init(tonalityCenter: String) {
+        self.dissonanceTension = tonalityCenter
         super.init(frame: .zero)
-        putReasonChoiceLineTogether()
-        paintReasonDot()
+        dorianHue()
+        phrygianTension()
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder ionianColor: NSCoder) {
         fatalError(TinkieVerseCipherTrail.singBack("irnlinta(YcBobdbeprp:D)Y IhfazsC Zndovtf XbzeieKnK xiqmJpUldejmNednttNeXdT"))
     }
 
-    private func putReasonChoiceLineTogether() {
+    private func dorianHue() {
         isExclusiveTouch = true
         accessibilityTraits = [.button]
-        accessibilityLabel = reasonWords
-        ringDotView.layer.cornerRadius = 7
-        ringDotView.layer.borderWidth = 1.2
-        ringDotView.isUserInteractionEnabled = false
-        ringDotView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(ringDotView)
+        accessibilityLabel = dissonanceTension
+        subdominantColor.layer.cornerRadius = 7
+        subdominantColor.layer.borderWidth = 1.2
+        subdominantColor.isUserInteractionEnabled = false
+        subdominantColor.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(subdominantColor)
 
-        whiteBeatDotView.layer.cornerRadius = 4
-        whiteBeatDotView.isUserInteractionEnabled = false
-        whiteBeatDotView.translatesAutoresizingMaskIntoConstraints = false
-        ringDotView.addSubview(whiteBeatDotView)
+        mediantHue.layer.cornerRadius = 4
+        mediantHue.isUserInteractionEnabled = false
+        mediantHue.translatesAutoresizingMaskIntoConstraints = false
+        subdominantColor.addSubview(mediantHue)
 
-        reasonWordsLabel.text = reasonWords
-        reasonWordsLabel.textColor = .black
-        reasonWordsLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        reasonWordsLabel.isUserInteractionEnabled = false
-        reasonWordsLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(reasonWordsLabel)
+        supertonicMotion.text = dissonanceTension
+        supertonicMotion.textColor = .black
+        supertonicMotion.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        supertonicMotion.isUserInteractionEnabled = false
+        supertonicMotion.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(supertonicMotion)
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 44),
-            ringDotView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
-            ringDotView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            ringDotView.widthAnchor.constraint(equalToConstant: 16),
-            ringDotView.heightAnchor.constraint(equalToConstant: 16),
+            subdominantColor.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
+            subdominantColor.centerYAnchor.constraint(equalTo: centerYAnchor),
+            subdominantColor.widthAnchor.constraint(equalToConstant: 16),
+            subdominantColor.heightAnchor.constraint(equalToConstant: 16),
 
-            whiteBeatDotView.centerXAnchor.constraint(equalTo: ringDotView.centerXAnchor),
-            whiteBeatDotView.centerYAnchor.constraint(equalTo: ringDotView.centerYAnchor),
-            whiteBeatDotView.widthAnchor.constraint(equalToConstant: 8),
-            whiteBeatDotView.heightAnchor.constraint(equalToConstant: 8),
+            mediantHue.centerXAnchor.constraint(equalTo: subdominantColor.centerXAnchor),
+            mediantHue.centerYAnchor.constraint(equalTo: subdominantColor.centerYAnchor),
+            mediantHue.widthAnchor.constraint(equalToConstant: 8),
+            mediantHue.heightAnchor.constraint(equalToConstant: 8),
 
-            reasonWordsLabel.leadingAnchor.constraint(equalTo: ringDotView.trailingAnchor, constant: 14),
-            reasonWordsLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            reasonWordsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            supertonicMotion.leadingAnchor.constraint(equalTo: subdominantColor.trailingAnchor, constant: 14),
+            supertonicMotion.trailingAnchor.constraint(equalTo: trailingAnchor),
+            supertonicMotion.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
-    private func paintReasonDot() {
-        ringDotView.layer.borderColor = isPicked ? UIColor.black.cgColor : UIColor.black.withAlphaComponent(0.24).cgColor
-        ringDotView.backgroundColor = isPicked ? .black : .clear
-        whiteBeatDotView.backgroundColor = isPicked ? .white : .clear
+    private func phrygianTension() {
+        subdominantColor.layer.borderColor = dominantPull ? UIColor.black.cgColor : UIColor.black.withAlphaComponent(0.24).cgColor
+        subdominantColor.backgroundColor = dominantPull ? .black : .clear
+        mediantHue.backgroundColor = dominantPull ? .white : .clear
     }
 }
 
@@ -545,15 +545,15 @@ final class TinkieRhythmFlagBackdropView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let gradient = layer as! CAGradientLayer
-        gradient.colors = [
+        let mysteryDeck = layer as! CAGradientLayer
+        mysteryDeck.colors = [
             UIColor(red: 0.94, green: 0.03, blue: 0.58, alpha: 1).cgColor,
             UIColor(red: 0.14, green: 0.79, blue: 0.78, alpha: 1).cgColor,
             UIColor.white.cgColor
         ]
-        gradient.locations = [0, 0.46, 1]
-        gradient.startPoint = CGPoint(x: 0.5, y: 0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1)
+        mysteryDeck.locations = [0, 0.46, 1]
+        mysteryDeck.startPoint = CGPoint(x: 0.5, y: 0)
+        mysteryDeck.endPoint = CGPoint(x: 0.5, y: 1)
     }
 
     required init?(coder: NSCoder) {

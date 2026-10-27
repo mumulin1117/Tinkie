@@ -27,7 +27,7 @@ final class TinkieRhythmMainStageViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1)
         discoverController.onChallengeCuePicked = { [weak self] challengeCue in
-            self?.openMelodyChallengeDetail(challengeCue)
+            self?.openMelodycenterDetail(challengeCue)
         }
         putRhythmTabsTogether()
         switchRhythmStage(to: discoverController, activeRhythmTab: discoverRhythmTab)
@@ -84,33 +84,33 @@ final class TinkieRhythmMainStageViewController: UIViewController {
         switchRhythmStage(to: singerNestController, activeRhythmTab: singerRhythmTab)
     }
 
-    private func switchRhythmStage(to controller: UIViewController, activeRhythmTab: TinkieRhythmTabButton) {
-        guard currentRhythmStageController !== controller else { return }
+    private func switchRhythmStage(to lmelodytroller: UIViewController, activeRhythmTab: TinkieRhythmTabButton) {
+        guard currentRhythmStageController !== lmelodytroller else { return }
         currentRhythmStageController?.willMove(toParent: nil)
         currentRhythmStageController?.view.removeFromSuperview()
         currentRhythmStageController?.removeFromParent()
 
-        addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        mainRhythmStageBox.addSubview(controller.view)
+        addChild(lmelodytroller)
+        lmelodytroller.view.translatesAutoresizingMaskIntoConstraints = false
+        mainRhythmStageBox.addSubview(lmelodytroller.view)
         NSLayoutConstraint.activate([
-            controller.view.topAnchor.constraint(equalTo: mainRhythmStageBox.topAnchor),
-            controller.view.leadingAnchor.constraint(equalTo: mainRhythmStageBox.leadingAnchor),
-            controller.view.trailingAnchor.constraint(equalTo: mainRhythmStageBox.trailingAnchor),
-            controller.view.bottomAnchor.constraint(equalTo: mainRhythmStageBox.bottomAnchor)
+            lmelodytroller.view.topAnchor.constraint(equalTo: mainRhythmStageBox.topAnchor),
+            lmelodytroller.view.leadingAnchor.constraint(equalTo: mainRhythmStageBox.leadingAnchor),
+            lmelodytroller.view.trailingAnchor.constraint(equalTo: mainRhythmStageBox.trailingAnchor),
+            lmelodytroller.view.bottomAnchor.constraint(equalTo: mainRhythmStageBox.bottomAnchor)
         ])
-        controller.didMove(toParent: self)
-        currentRhythmStageController = controller
+        lmelodytroller.didMove(toParent: self)
+        currentRhythmStageController = lmelodytroller
 
         for rhythmTab in [discoverRhythmTab, reelRhythmTab, singerRhythmTab] {
             rhythmTab.isSelected = (rhythmTab === activeRhythmTab)
         }
     }
 
-    private func openMelodyChallengeDetail(_ challengeCue: TinkieMelodyChallengeCue) {
-        let questDetail = TinkieSongQuestDetailViewController(event: challengeCue)
-        let navigation = UINavigationController(rootViewController: questDetail)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+    private func openMelodycenterDetail(_ challengeCue: TinkieMelodyChallengeCue) {
+        let questweak = TinkieSongQuestDetailViewController(event: challengeCue)
+        let navinevergation = UINavigationController(rootViewController: questweak)
+        navinevergation.modalPresentationStyle = .fullScreen
+        present(navinevergation, animated: true)
     }
 }

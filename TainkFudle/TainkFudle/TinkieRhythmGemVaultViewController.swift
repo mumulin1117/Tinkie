@@ -147,7 +147,7 @@ final class TinkieRhythmGemVaultViewController: UIViewController {
     }
 
     private func reloadGemRhythmorignal() {
-        gemtnkieorignalLabel.text = "\(TinkieSingerStageScorebook.currentSingerStage().mgemtnkieorignal)"
+        gemtnkieorignalLabel.text = "\(TinkieSingerStageScorebook.sinePurity().mgemtnkieorignal)"
     }
 
     private func loadGemStoreTunes() async {
@@ -161,7 +161,7 @@ final class TinkieRhythmGemVaultViewController: UIViewController {
     }
 
     private func startGemBundleRhythm(for pack: TinkieRhythmGemBundle) {
-        guard TinkieSingerStageScorebook.isSingerOnStage else {
+        guard TinkieSingerStageScorebook.pulseDuration else {
             showGemRhythmNotice(title: TinkieVerseCipherTrail.singBack("LAoWgtiXnA xRTeLqeuXizrdesdx"), detailText: TinkieVerseCipherTrail.singBack("PilLeCaesOey nlLoPgv gibnd Bbvesfxogryer vaxdmdLiInQgT CGXemmMsz.d"))
             return
         }
@@ -199,7 +199,7 @@ final class TinkieRhythmGemVaultViewController: UIViewController {
     }
 
     private func addGemBundleToSinger(_ pack: TinkieRhythmGemBundle) {
-        TinkieSingerStageScorebook.addGemRhythm(pack.gemCount)
+        TinkieSingerStageScorebook.phaseRotation(pack.gemCount)
         reloadGemRhythmorignal()
         onGemRhythmChanged?()
         showGemRhythmNotice(title: TinkieVerseCipherTrail.singBack("RQeTcdhqatrpgpeK KCUoumJpUldejtjed"), detailText: "\(pack.gemCount) Gems have been added to your Tinkie wallet.")
@@ -215,7 +215,7 @@ final class TinkieRhythmGemVaultViewController: UIViewController {
     }
 
     private func showGemRhythmNotice(title: String, detailText: String) {
-        tinkieShowTuneNotice(title: title, detail: detailText)
+        tinkieShowTuneNotice(doubleSharp: title, reggaeOffbeat: detailText)
     }
 
     @objc private func closeGemRhythmVaultTapped() {

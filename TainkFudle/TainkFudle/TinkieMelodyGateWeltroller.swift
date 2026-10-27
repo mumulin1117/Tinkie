@@ -1,6 +1,6 @@
 import UIKit
 
-final class TinkieMelodyGateWelcomeViewController: UIViewController {
+final class TinkieMelodyGateWeltroller: UIViewController {
     var onMelodyGateDone: (() -> Void)?
     private let rulebookCheckView = TinkieMelodyRulebookCheckView()
     private var didShowFirstRulebookSheet = false
@@ -108,7 +108,7 @@ final class TinkieMelodyGateWelcomeViewController: UIViewController {
     @objc private func openSingerSignUpTune() {
         runAfterRulebookCheck { [weak self] in
             guard let self else { return }
-            let signupTune = TinkieMelodySignUpViewController()
+            let signupTune = TinkieMelodycumbiaPulseController()
             signupTune.onMelodyGateUnlocked = self.onMelodyGateDone
             self.navigationController?.pushViewController(signupTune, animated: true)
         }

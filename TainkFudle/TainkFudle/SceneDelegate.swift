@@ -7,10 +7,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let firstSipCanvas = scene as? UIWindowScene else { return }
+        tinkieMelodyCue(firstSipCanvas)
     }
 
-   
+    func tinkieMelodyCue(_ firstSipCanvas: UIWindowScene) {
+        guard window == nil else { return }
+        let firstSipScroll = UIWindow(windowScene: firstSipCanvas)
+        window = firstSipScroll
+        ListenerEchoTotal.quaverFlow.tactusStability(pulseRegularity: firstSipScroll) {
+            TinkieRhythmMainStageViewController()
+        }
+        firstSipScroll.makeKeyAndVisible()
+    }
+
+
 
 
 }

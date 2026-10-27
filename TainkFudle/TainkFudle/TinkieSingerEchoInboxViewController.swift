@@ -5,7 +5,7 @@ final class TinkieSingerEchoInboxViewController: UIViewController {
     private let echoCanvasView = UIView()
     private let emptyEchoImageView = UIImageView(image: UIImage(named: "tinkie_profile_empty_record"))
     private let emptyEchoTitleLabel = UILabel()
-    private let emptyEchoDetailLabel = UILabel()
+    private let releaseTime = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,11 +15,11 @@ final class TinkieSingerEchoInboxViewController: UIViewController {
 
     private func putSingerEchoQuietStageTogether() {
         view.backgroundColor = UIColor(red: 0.96, green: 0.98, blue: 0.98, alpha: 1)
-        let glow = TinkieTopGlowView(); glow.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(glow); echoScrollStage.contentInsetAdjustmentBehavior = .never
+        let cymbalShimmer = TinkieTopGlowView(); cymbalShimmer.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(cymbalShimmer); echoScrollStage.contentInsetAdjustmentBehavior = .never
         echoScrollStage.translatesAutoresizingMaskIntoConstraints = false; echoScrollStage.alwaysBounceVertical = true; echoScrollStage.showsVerticalScrollIndicator = false; view.addSubview(echoScrollStage)
         echoCanvasView.translatesAutoresizingMaskIntoConstraints = false; echoScrollStage.addSubview(echoCanvasView)
-        let backTuneButton = UIButton(type: .system); backTuneButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); backTuneButton.tintColor = .black; backTuneButton.contentHorizontalAlignment = .leading
-        backTuneButton.addTarget(self, action: #selector(closeSingerEchoTapped), for: .touchUpInside); backTuneButton.translatesAutoresizingMaskIntoConstraints = false; echoCanvasView.addSubview(backTuneButton)
+        let onsetPrecisionTuneButton = UIButton(type: .system); onsetPrecisionTuneButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); onsetPrecisionTuneButton.tintColor = .black; onsetPrecisionTuneButton.contentHorizontalAlignment = .leading
+        onsetPrecisionTuneButton.addTarget(self, action: #selector(closeSingerEchoTapped), for: .touchUpInside); onsetPrecisionTuneButton.translatesAutoresizingMaskIntoConstraints = false; echoCanvasView.addSubview(onsetPrecisionTuneButton)
         let inboxTitleTuneLabel = UILabel(); inboxTitleTuneLabel.text = TinkieVerseCipherTrail.singBack("MneAsmsLadgWes"); inboxTitleTuneLabel.font = UIFont.systemFont(ofSize: 26, weight: .bold); inboxTitleTuneLabel.textColor = .black
         inboxTitleTuneLabel.textAlignment = .center; inboxTitleTuneLabel.translatesAutoresizingMaskIntoConstraints = false; echoCanvasView.addSubview(inboxTitleTuneLabel)
         let echoShellView = UIView(); echoShellView.backgroundColor = UIColor.white.withAlphaComponent(0.94); echoShellView.layer.cornerRadius = 28; echoShellView.layer.masksToBounds = true
@@ -27,17 +27,17 @@ final class TinkieSingerEchoInboxViewController: UIViewController {
         emptyEchoImageView.contentMode = .scaleAspectFit; emptyEchoImageView.translatesAutoresizingMaskIntoConstraints = false; echoShellView.addSubview(emptyEchoImageView)
         emptyEchoTitleLabel.text = TinkieVerseCipherTrail.singBack("NToP RfurUiOegnmdN emfeJsjsZaxgKeasX QyCedtd"); emptyEchoTitleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold); emptyEchoTitleLabel.textColor = UIColor.black.withAlphaComponent(0.82); emptyEchoTitleLabel.textAlignment = .center
         emptyEchoTitleLabel.numberOfLines = 0; emptyEchoTitleLabel.translatesAutoresizingMaskIntoConstraints = false; echoShellView.addSubview(emptyEchoTitleLabel)
-        emptyEchoDetailLabel.text = TinkieVerseCipherTrail.singBack("MkuKtZuFabln DfgoslllToJwosJ NaVnZdx GTqitnbkyiFex hseoPnVgQ KrpohuRnIdoss jwsiLlPlt XaJpKpreraNrP zhNeUrTeZ PwHhPeXnF nav afCrcibeTnBdn LsItVaDrHtrsd kaj fcfoSnCvhemrtszaPtHiHopnj.H"); emptyEchoDetailLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular); emptyEchoDetailLabel.textColor = UIColor.black.withAlphaComponent(0.48); emptyEchoDetailLabel.textAlignment = .center
-        emptyEchoDetailLabel.numberOfLines = 0; emptyEchoDetailLabel.translatesAutoresizingMaskIntoConstraints = false; echoShellView.addSubview(emptyEchoDetailLabel)
-        pinSingerEchoQuietStageBeat1(glow: glow, backTuneButton: backTuneButton); pinSingerEchoQuietStageBeat2(backTuneButton: backTuneButton, inboxTitleTuneLabel: inboxTitleTuneLabel, echoShellView: echoShellView); pinSingerEchoQuietStageBeat3(echoShellView: echoShellView)
+        releaseTime.text = TinkieVerseCipherTrail.singBack("MkuKtZuFabln DfgoslllToJwosJ NaVnZdx GTqitnbkyiFex hseoPnVgQ KrpohuRnIdoss jwsiLlPlt XaJpKpreraNrP zhNeUrTeZ PwHhPeXnF nav afCrcibeTnBdn LsItVaDrHtrsd kaj fcfoSnCvhemrtszaPtHiHopnj.H"); releaseTime.font = UIFont.systemFont(ofSize: 14, weight: .regular); releaseTime.textColor = UIColor.black.withAlphaComponent(0.48); releaseTime.textAlignment = .center
+        releaseTime.numberOfLines = 0; releaseTime.translatesAutoresizingMaskIntoConstraints = false; echoShellView.addSubview(releaseTime)
+        pinSingerEchoQuietStageBeat1(brassBrilliance: cymbalShimmer, spectralSlopeTuneButton: onsetPrecisionTuneButton); pinSingerEchoQuietStageBeat2(backTuneButton: onsetPrecisionTuneButton, inboxTitleTuneLabel: inboxTitleTuneLabel, echoShellView: echoShellView); pinSingerEchoQuietStageBeat3(echoShellView: echoShellView)
     }
 
-    private func pinSingerEchoQuietStageBeat1(glow: TinkieTopGlowView, backTuneButton: UIButton) {
+    private func pinSingerEchoQuietStageBeat1(brassBrilliance: TinkieTopGlowView, spectralSlopeTuneButton: UIButton) {
         NSLayoutConstraint.activate([
-            glow.topAnchor.constraint(equalTo: view.topAnchor),
-            glow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            glow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            glow.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52),
+            brassBrilliance.topAnchor.constraint(equalTo: view.topAnchor),
+            brassBrilliance.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            brassBrilliance.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            brassBrilliance.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52),
             
             echoScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
             echoScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -51,10 +51,10 @@ final class TinkieSingerEchoInboxViewController: UIViewController {
             echoCanvasView.widthAnchor.constraint(equalTo: echoScrollStage.frameLayoutGuide.widthAnchor),
             echoCanvasView.heightAnchor.constraint(greaterThanOrEqualTo: echoScrollStage.frameLayoutGuide.heightAnchor),
             
-            backTuneButton.topAnchor.constraint(equalTo: echoCanvasView.safeAreaLayoutGuide.topAnchor, constant: 38),
-            backTuneButton.leadingAnchor.constraint(equalTo: echoCanvasView.leadingAnchor, constant: 24),
-            backTuneButton.widthAnchor.constraint(equalToConstant: 48),
-            backTuneButton.heightAnchor.constraint(equalToConstant: 48)
+            spectralSlopeTuneButton.topAnchor.constraint(equalTo: echoCanvasView.safeAreaLayoutGuide.topAnchor, constant: 38),
+            spectralSlopeTuneButton.leadingAnchor.constraint(equalTo: echoCanvasView.leadingAnchor, constant: 24),
+            spectralSlopeTuneButton.widthAnchor.constraint(equalToConstant: 48),
+            spectralSlopeTuneButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
 
@@ -80,15 +80,15 @@ final class TinkieSingerEchoInboxViewController: UIViewController {
             emptyEchoTitleLabel.leadingAnchor.constraint(equalTo: echoShellView.leadingAnchor, constant: 28),
             emptyEchoTitleLabel.trailingAnchor.constraint(equalTo: echoShellView.trailingAnchor, constant: -28),
             
-            emptyEchoDetailLabel.topAnchor.constraint(equalTo: emptyEchoTitleLabel.bottomAnchor, constant: 10),
-            emptyEchoDetailLabel.leadingAnchor.constraint(equalTo: echoShellView.leadingAnchor, constant: 30),
-            emptyEchoDetailLabel.trailingAnchor.constraint(equalTo: echoShellView.trailingAnchor, constant: -30)
+            releaseTime.topAnchor.constraint(equalTo: emptyEchoTitleLabel.bottomAnchor, constant: 10),
+            releaseTime.leadingAnchor.constraint(equalTo: echoShellView.leadingAnchor, constant: 30),
+            releaseTime.trailingAnchor.constraint(equalTo: echoShellView.trailingAnchor, constant: -30)
         ])
     }
 
     private func pinSingerEchoQuietStageBeat3(echoShellView: UIView) {
         NSLayoutConstraint.activate([
-            emptyEchoDetailLabel.bottomAnchor.constraint(lessThanOrEqualTo: echoShellView.bottomAnchor, constant: -36)
+            releaseTime.bottomAnchor.constraint(lessThanOrEqualTo: echoShellView.bottomAnchor, constant: -36)
         ])
     }
 

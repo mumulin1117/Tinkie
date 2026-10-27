@@ -1,601 +1,601 @@
 import UIKit
 
 final class TinkieSongQuestForgeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
-    var onQuestReady: (() -> Void)?
-    private let questScrollStage = UIScrollView()
-    private let questContentStage = UIView()
-    private let questCoverButton = UIButton(type: .custom)
-    private let questCoverImageView = UIImageView()
-    private let questTitleField = UITextField()
-    private let questThemeLyricPad = UITextView()
-    private let questLyricCountLabel = UILabel()
-    private let questTimeButton = UIButton(type: .system)
-    private let questGroupStack = UIStackView()
-    private let questSpotValueLabel = UILabel()
-    private let questGemValueLabel = UILabel()
-    private let questSealButton = TinkieQuestForgeActionButton()
-    private var questDateChoice = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
-    private var questGenreChoice = TinkieVerseCipherTrail.singBack("Pkoppx")
-    private var questModeChoice = TinkieVerseCipherTrail.singBack("ChaTspuLaslt")
-    private var questSpotLimit = 1
-    private var questGemNeed = 50
-    private var questCoverPath: String?
-    private var questGenreBeatButtons: [TinkieQuestChoiceButton] = []
-    private var questModeBeatButtons: [TinkieQuestChoiceButton] = []
-    private var questGroupStates: [TinkieMelodyCircleForm] = [
+    var lydianShimmer: (() -> Void)?
+    private let mixolydianFlavor = UIScrollView()
+    private let aeolianCalm = UIView()
+    private let locrianMystery = UIButton(type: .custom)
+    private let pentatonicShape = UIImageView()
+    private let diatonicWeave = UITextField()
+    private let enharmonicEquivalence = UITextView()
+    private let augmentedInterval = UILabel()
+    private let diminishedInterval = UIButton(type: .system)
+    private let wholeToneColor = UIStackView()
+    private let octatonicLattice = UILabel()
+    private let hexatonicWeave = UILabel()
+    private let tetratonicShape = TinkieQuestForgeActionButton()
+    private var heptatonicScale = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
+    private var sonataOutline = TinkieVerseCipherTrail.singBack("Pkoppx")
+    private var rondoPattern = TinkieVerseCipherTrail.singBack("ChaTspuLaslt")
+    private var fugueSubject = 1
+    private var scherzoMotion = 50
+    private var preludeShape: String?
+    private var interludeArc: [TinkieQuestChoiceButton] = []
+    private var overtureMotif: [TinkieQuestChoiceButton] = []
+    private var suiteSequence: [TinkieMelodyCircleForm] = [
         TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GfrjovuHpV yAx"), spotLimit: 10, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pkoppx"), mode: TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"))
     ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        putSongQuestForgeStageTogether()
-        listenForQuestKeyboardRise()
-        paintQuestTimeText()
-        paintQuestChoiceButtons()
+        movementStructure()
+        lyricScansion()
+        bassResonance()
+        contraltoColor()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
-    private func putSongQuestForgeStageTogether() {
+    private func movementStructure() {
         view.backgroundColor = .white
-        let backdrop = TinkieQuestForgeBackdropView(); backdrop.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(backdrop)
-        questScrollStage.alwaysBounceVertical = true; questScrollStage.showsVerticalScrollIndicator = false; questScrollStage.keyboardDismissMode = .interactive; questScrollStage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(questScrollStage)
-        questContentStage.translatesAutoresizingMaskIntoConstraints = false; questScrollStage.addSubview(questContentStage)
-        let questBackBeatButton = UIButton(type: .system); questBackBeatButton.setImage(UIImage(systemName: "chevron.left"), for: .normal); questBackBeatButton.tintColor = .black; questBackBeatButton.addTarget(self, action: #selector(leaveSongQuestForge), for: .touchUpInside)
-        questBackBeatButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questBackBeatButton)
-        let headingLabel = UILabel(); headingLabel.text = TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"); headingLabel.textColor = .black; headingLabel.font = UIFont.systemFont(ofSize: 24, weight: .black)
-        headingLabel.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(headingLabel)
-        let coreCard = UIView(); coreCard.backgroundColor = .white; coreCard.layer.cornerRadius = 24; coreCard.translatesAutoresizingMaskIntoConstraints = false
-        questContentStage.addSubview(coreCard)
-        fillQuestCoverVerseCard(in: coreCard)
-        questGroupStack.axis = .vertical; questGroupStack.spacing = 18; questGroupStack.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questGroupStack)
-        rebuildMelodyCircleStack()
-        let addGroupButton = UIButton(type: .system); addGroupButton.setTitle("  Add Registration Group", for: .normal); addGroupButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal); addGroupButton.tintColor = UIColor(red: 0.09, green: 0.86, blue: 0.78, alpha: 1)
-        addGroupButton.setTitleColor(.black, for: .normal); addGroupButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold); addGroupButton.layer.cornerRadius = 18; addGroupButton.layer.borderWidth = 1.5
-        addGroupButton.layer.borderColor = UIColor.black.cgColor; addGroupButton.addTarget(self, action: #selector(addMelodyCircleDraftTapped), for: .touchUpInside); addGroupButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(addGroupButton)
-        questSealButton.setTitle(TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"), for: .normal); questSealButton.addTarget(self, action: #selector(sealSongQuestForge), for: .touchUpInside); questSealButton.translatesAutoresizingMaskIntoConstraints = false; questContentStage.addSubview(questSealButton)
-        pinSongQuestForgeStageBeat1(backdrop: backdrop, questBackBeatButton: questBackBeatButton, headingLabel: headingLabel); pinSongQuestForgeStageBeat2(questBackBeatButton: questBackBeatButton, headingLabel: headingLabel, coreCard: coreCard, addGroupButton: addGroupButton)
+        let expositionTheme = TinkieQuestForgeBackdropView(); expositionTheme.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(expositionTheme)
+        mixolydianFlavor.alwaysBounceVertical = true; mixolydianFlavor.showsVerticalScrollIndicator = false; mixolydianFlavor.keyboardDismissMode = .interactive; mixolydianFlavor.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mixolydianFlavor)
+        aeolianCalm.translatesAutoresizingMaskIntoConstraints = false; mixolydianFlavor.addSubview(aeolianCalm)
+        let thematicEvolution = UIButton(type: .system); thematicEvolution.setImage(UIImage(systemName: "chevron.left"), for: .normal); thematicEvolution.tintColor = .black; thematicEvolution.addTarget(self, action: #selector(articulationPrecision), for: .touchUpInside)
+        thematicEvolution.translatesAutoresizingMaskIntoConstraints = false; aeolianCalm.addSubview(thematicEvolution)
+        let recapitulationReturn = UILabel(); recapitulationReturn.text = TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"); recapitulationReturn.textColor = .black; recapitulationReturn.font = UIFont.systemFont(ofSize: 24, weight: .black)
+        recapitulationReturn.translatesAutoresizingMaskIntoConstraints = false; aeolianCalm.addSubview(recapitulationReturn)
+        let codettaPhrase = UIView(); codettaPhrase.backgroundColor = .white; codettaPhrase.layer.cornerRadius = 24; codettaPhrase.translatesAutoresizingMaskIntoConstraints = false
+        aeolianCalm.addSubview(codettaPhrase)
+        introLength(themeRecurrence: codettaPhrase)
+        wholeToneColor.axis = .vertical; wholeToneColor.spacing = 18; wholeToneColor.translatesAutoresizingMaskIntoConstraints = false; aeolianCalm.addSubview(wholeToneColor)
+        strophicCycle()
+        let ritornelloPattern = UIButton(type: .system); ritornelloPattern.setTitle("  Add Registration Group", for: .normal); ritornelloPattern.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal); ritornelloPattern.tintColor = UIColor(red: 0.09, green: 0.86, blue: 0.78, alpha: 1)
+        ritornelloPattern.setTitleColor(.black, for: .normal); ritornelloPattern.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold); ritornelloPattern.layer.cornerRadius = 18; ritornelloPattern.layer.borderWidth = 1.5
+        ritornelloPattern.layer.borderColor = UIColor.black.cgColor; ritornelloPattern.addTarget(self, action: #selector(phonationOnset), for: .touchUpInside); ritornelloPattern.translatesAutoresizingMaskIntoConstraints = false; aeolianCalm.addSubview(ritornelloPattern)
+        tetratonicShape.setTitle(TinkieVerseCipherTrail.singBack("CVrMeBattsei qEbveevnztA"), for: .normal); tetratonicShape.addTarget(self, action: #selector(hummingFocus), for: .touchUpInside); tetratonicShape.translatesAutoresizingMaskIntoConstraints = false; aeolianCalm.addSubview(tetratonicShape)
+        verseStructure(expositionTheme: expositionTheme, thematicEvolution: thematicEvolution, recapitulationReturn: recapitulationReturn); chorusEntrance(thematicEvolution: thematicEvolution, recapitulationReturn: recapitulationReturn, codettaPhrase: codettaPhrase, ritornelloPattern: ritornelloPattern)
     }
 
-    private func pinSongQuestForgeStageBeat1(backdrop: TinkieQuestForgeBackdropView, questBackBeatButton: UIButton, headingLabel: UILabel) {
+    private func verseStructure(expositionTheme: TinkieQuestForgeBackdropView, thematicEvolution: UIButton, recapitulationReturn: UILabel) {
         NSLayoutConstraint.activate([
-            backdrop.topAnchor.constraint(equalTo: view.topAnchor),
-            backdrop.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backdrop.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backdrop.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            expositionTheme.topAnchor.constraint(equalTo: view.topAnchor),
+            expositionTheme.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            expositionTheme.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            expositionTheme.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            questScrollStage.topAnchor.constraint(equalTo: view.topAnchor),
-            questScrollStage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            questScrollStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            questScrollStage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mixolydianFlavor.topAnchor.constraint(equalTo: view.topAnchor),
+            mixolydianFlavor.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mixolydianFlavor.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mixolydianFlavor.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            questContentStage.topAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.topAnchor),
-            questContentStage.leadingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.leadingAnchor),
-            questContentStage.trailingAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.trailingAnchor),
-            questContentStage.bottomAnchor.constraint(equalTo: questScrollStage.contentLayoutGuide.bottomAnchor),
-            questContentStage.widthAnchor.constraint(equalTo: questScrollStage.frameLayoutGuide.widthAnchor),
+            aeolianCalm.topAnchor.constraint(equalTo: mixolydianFlavor.contentLayoutGuide.topAnchor),
+            aeolianCalm.leadingAnchor.constraint(equalTo: mixolydianFlavor.contentLayoutGuide.leadingAnchor),
+            aeolianCalm.trailingAnchor.constraint(equalTo: mixolydianFlavor.contentLayoutGuide.trailingAnchor),
+            aeolianCalm.bottomAnchor.constraint(equalTo: mixolydianFlavor.contentLayoutGuide.bottomAnchor),
+            aeolianCalm.widthAnchor.constraint(equalTo: mixolydianFlavor.frameLayoutGuide.widthAnchor),
             
-            questBackBeatButton.topAnchor.constraint(equalTo: questContentStage.safeAreaLayoutGuide.topAnchor, constant: 22),
-            questBackBeatButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 22),
-            questBackBeatButton.widthAnchor.constraint(equalToConstant: 44),
-            questBackBeatButton.heightAnchor.constraint(equalToConstant: 44),
+            thematicEvolution.topAnchor.constraint(equalTo: aeolianCalm.safeAreaLayoutGuide.topAnchor, constant: 22),
+            thematicEvolution.leadingAnchor.constraint(equalTo: aeolianCalm.leadingAnchor, constant: 22),
+            thematicEvolution.widthAnchor.constraint(equalToConstant: 44),
+            thematicEvolution.heightAnchor.constraint(equalToConstant: 44),
             
-            headingLabel.centerYAnchor.constraint(equalTo: questBackBeatButton.centerYAnchor)
+            recapitulationReturn.centerYAnchor.constraint(equalTo: thematicEvolution.centerYAnchor)
         ])
     }
 
-    private func pinSongQuestForgeStageBeat2(questBackBeatButton: UIButton, headingLabel: UILabel, coreCard: UIView, addGroupButton: UIButton) {
+    private func chorusEntrance(thematicEvolution: UIButton, recapitulationReturn: UILabel, codettaPhrase: UIView, ritornelloPattern: UIButton) {
         NSLayoutConstraint.activate([
-            headingLabel.centerXAnchor.constraint(equalTo: questContentStage.centerXAnchor),
+            recapitulationReturn.centerXAnchor.constraint(equalTo: aeolianCalm.centerXAnchor),
             
-            coreCard.topAnchor.constraint(equalTo: questBackBeatButton.bottomAnchor, constant: 34),
-            coreCard.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 24),
-            coreCard.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -24),
+            codettaPhrase.topAnchor.constraint(equalTo: thematicEvolution.bottomAnchor, constant: 34),
+            codettaPhrase.leadingAnchor.constraint(equalTo: aeolianCalm.leadingAnchor, constant: 24),
+            codettaPhrase.trailingAnchor.constraint(equalTo: aeolianCalm.trailingAnchor, constant: -24),
             
-            questGroupStack.topAnchor.constraint(equalTo: coreCard.bottomAnchor, constant: 24),
-            questGroupStack.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 18),
-            questGroupStack.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -18),
+            wholeToneColor.topAnchor.constraint(equalTo: codettaPhrase.bottomAnchor, constant: 24),
+            wholeToneColor.leadingAnchor.constraint(equalTo: aeolianCalm.leadingAnchor, constant: 18),
+            wholeToneColor.trailingAnchor.constraint(equalTo: aeolianCalm.trailingAnchor, constant: -18),
             
-            addGroupButton.topAnchor.constraint(equalTo: questGroupStack.bottomAnchor, constant: 28),
-            addGroupButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 24),
-            addGroupButton.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -24),
-            addGroupButton.heightAnchor.constraint(equalToConstant: 48),
+            ritornelloPattern.topAnchor.constraint(equalTo: wholeToneColor.bottomAnchor, constant: 28),
+            ritornelloPattern.leadingAnchor.constraint(equalTo: aeolianCalm.leadingAnchor, constant: 24),
+            ritornelloPattern.trailingAnchor.constraint(equalTo: aeolianCalm.trailingAnchor, constant: -24),
+            ritornelloPattern.heightAnchor.constraint(equalToConstant: 48),
             
-            questSealButton.topAnchor.constraint(equalTo: addGroupButton.bottomAnchor, constant: 40),
-            questSealButton.leadingAnchor.constraint(equalTo: questContentStage.leadingAnchor, constant: 30),
-            questSealButton.trailingAnchor.constraint(equalTo: questContentStage.trailingAnchor, constant: -30),
-            questSealButton.heightAnchor.constraint(equalToConstant: 50),
-            questSealButton.bottomAnchor.constraint(equalTo: questContentStage.bottomAnchor, constant: -42)
+            tetratonicShape.topAnchor.constraint(equalTo: ritornelloPattern.bottomAnchor, constant: 40),
+            tetratonicShape.leadingAnchor.constraint(equalTo: aeolianCalm.leadingAnchor, constant: 30),
+            tetratonicShape.trailingAnchor.constraint(equalTo: aeolianCalm.trailingAnchor, constant: -30),
+            tetratonicShape.heightAnchor.constraint(equalToConstant: 50),
+            tetratonicShape.bottomAnchor.constraint(equalTo: aeolianCalm.bottomAnchor, constant: -42)
         ])
     }
 
-    private func fillQuestCoverVerseCard(in card: UIView) {
-        questCoverButton.backgroundColor = UIColor(red: 0.95, green: 0.96, blue: 0.96, alpha: 1); questCoverButton.layer.cornerRadius = 14; questCoverButton.addTarget(self, action: #selector(openQuestCoverSourceSheet), for: .touchUpInside); questCoverButton.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questCoverButton)
-        questCoverImageView.contentMode = .scaleAspectFill; questCoverImageView.layer.cornerRadius = 14; questCoverImageView.layer.masksToBounds = true; questCoverImageView.translatesAutoresizingMaskIntoConstraints = false
-        questCoverButton.addSubview(questCoverImageView)
-        let plusLabel = UILabel(); plusLabel.text = TinkieVerseCipherTrail.singBack("+M"); plusLabel.textColor = UIColor.black.withAlphaComponent(0.12); plusLabel.font = UIFont.systemFont(ofSize: 36, weight: .regular)
-        plusLabel.translatesAutoresizingMaskIntoConstraints = false; questCoverButton.addSubview(plusLabel)
-        let uploadLabel = UILabel(); uploadLabel.text = TinkieVerseCipherTrail.singBack("UfpqlLoPakdt ECPonvjesru"); uploadLabel.textColor = UIColor.black.withAlphaComponent(0.32); uploadLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        uploadLabel.translatesAutoresizingMaskIntoConstraints = false; questCoverButton.addSubview(uploadLabel)
-        questTitleField.placeholder = TinkieVerseCipherTrail.singBack("FVoPrI gezxvasmLpPlqet:q SFurKiFdLaMys sPJoLpL qHZiXtHsM YCQhPaBlVliesnbgmeJ"); questTitleField.textColor = .black; questTitleField.font = UIFont.systemFont(ofSize: 20, weight: .medium); questTitleField.adjustsFontSizeToFitWidth = true
-        questTitleField.minimumFontSize = 15; questTitleField.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questTitleField)
-        let line = UIView(); line.backgroundColor = UIColor.black.withAlphaComponent(0.08); line.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(line)
-        questThemeLyricPad.backgroundColor = .clear; questThemeLyricPad.font = UIFont.systemFont(ofSize: 17, weight: .regular); questThemeLyricPad.textColor = .black; questThemeLyricPad.delegate = self
-        questThemeLyricPad.textContainerInset = .zero; questThemeLyricPad.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questThemeLyricPad)
-        let themePlace = UILabel(); themePlace.text = TinkieVerseCipherTrail.singBack("DyexsVcgrjilbves etVhcer vtFhdeamDeg,v CgMabmMeepwlOaOyj,q MaBnNdm ZwFhNoM PtrhEeA TeYvYeMnVtd KiBsk vfMoVrA.b"); themePlace.textColor = UIColor.black.withAlphaComponent(0.30); themePlace.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        themePlace.numberOfLines = 2; themePlace.tag = 201; themePlace.translatesAutoresizingMaskIntoConstraints = false; questThemeLyricPad.addSubview(themePlace)
-        questTimeButton.setImage(UIImage(systemName: "clock"), for: .normal); questTimeButton.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal); questTimeButton.tintColor = .black; questTimeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-        questTimeButton.layer.cornerRadius = 20; questTimeButton.layer.borderWidth = 1; questTimeButton.layer.borderColor = UIColor.black.withAlphaComponent(0.10).cgColor; questTimeButton.addTarget(self, action: #selector(openQuestTimeWheel), for: .touchUpInside)
-        questTimeButton.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questTimeButton)
-        questLyricCountLabel.text = TinkieVerseCipherTrail.singBack("0K/P2I0z0T"); questLyricCountLabel.textColor = UIColor.black.withAlphaComponent(0.32); questLyricCountLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium); questLyricCountLabel.textAlignment = .right
-        questLyricCountLabel.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(questLyricCountLabel)
-        pinQuestCoverVerseCardBeat3(card: card, plusLabel: plusLabel, uploadLabel: uploadLabel, line: line); pinQuestCoverVerseCardBeat4(card: card, line: line, themePlace: themePlace)
+    private func introLength(themeRecurrence motifContinuum: UIView) {
+        locrianMystery.backgroundColor = UIColor(red: 0.95, green: 0.96, blue: 0.96, alpha: 1); locrianMystery.layer.cornerRadius = 14; locrianMystery.addTarget(self, action: #selector(vibratoSpan), for: .touchUpInside); locrianMystery.translatesAutoresizingMaskIntoConstraints = false
+        motifContinuum.addSubview(locrianMystery)
+        pentatonicShape.contentMode = .scaleAspectFill; pentatonicShape.layer.cornerRadius = 14; pentatonicShape.layer.masksToBounds = true; pentatonicShape.translatesAutoresizingMaskIntoConstraints = false
+        locrianMystery.addSubview(pentatonicShape)
+        let phraseAntecedent = UILabel(); phraseAntecedent.text = TinkieVerseCipherTrail.singBack("+M"); phraseAntecedent.textColor = UIColor.black.withAlphaComponent(0.12); phraseAntecedent.font = UIFont.systemFont(ofSize: 36, weight: .regular)
+        phraseAntecedent.translatesAutoresizingMaskIntoConstraints = false; locrianMystery.addSubview(phraseAntecedent)
+        let phraseConsequent = UILabel(); phraseConsequent.text = TinkieVerseCipherTrail.singBack("UfpqlLoPakdt ECPonvjesru"); phraseConsequent.textColor = UIColor.black.withAlphaComponent(0.32); phraseConsequent.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        phraseConsequent.translatesAutoresizingMaskIntoConstraints = false; locrianMystery.addSubview(phraseConsequent)
+        diatonicWeave.placeholder = TinkieVerseCipherTrail.singBack("FVoPrI gezxvasmLpPlqet:q SFurKiFdLaMys sPJoLpL qHZiXtHsM YCQhPaBlVliesnbgmeJ"); diatonicWeave.textColor = .black; diatonicWeave.font = UIFont.systemFont(ofSize: 20, weight: .medium); diatonicWeave.adjustsFontSizeToFitWidth = true
+        diatonicWeave.minimumFontSize = 15; diatonicWeave.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(diatonicWeave)
+        let periodSymmetry = UIView(); periodSymmetry.backgroundColor = UIColor.black.withAlphaComponent(0.08); periodSymmetry.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(periodSymmetry)
+        enharmonicEquivalence.backgroundColor = .clear; enharmonicEquivalence.font = UIFont.systemFont(ofSize: 17, weight: .regular); enharmonicEquivalence.textColor = .black; enharmonicEquivalence.delegate = self
+        enharmonicEquivalence.textContainerInset = .zero; enharmonicEquivalence.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(enharmonicEquivalence)
+        let sentenceStructure = UILabel(); sentenceStructure.text = TinkieVerseCipherTrail.singBack("DyexsVcgrjilbves etVhcer vtFhdeamDeg,v CgMabmMeepwlOaOyj,q MaBnNdm ZwFhNoM PtrhEeA TeYvYeMnVtd KiBsk vfMoVrA.b"); sentenceStructure.textColor = UIColor.black.withAlphaComponent(0.30); sentenceStructure.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        sentenceStructure.numberOfLines = 2; sentenceStructure.tag = 201; sentenceStructure.translatesAutoresizingMaskIntoConstraints = false; enharmonicEquivalence.addSubview(sentenceStructure)
+        diminishedInterval.setImage(UIImage(systemName: "clock"), for: .normal); diminishedInterval.setTitleColor(UIColor.black.withAlphaComponent(0.28), for: .normal); diminishedInterval.tintColor = .black; diminishedInterval.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        diminishedInterval.layer.cornerRadius = 20; diminishedInterval.layer.borderWidth = 1; diminishedInterval.layer.borderColor = UIColor.black.withAlphaComponent(0.10).cgColor; diminishedInterval.addTarget(self, action: #selector(portamentoLink), for: .touchUpInside)
+        diminishedInterval.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(diminishedInterval)
+        augmentedInterval.text = TinkieVerseCipherTrail.singBack("0K/P2I0z0T"); augmentedInterval.textColor = UIColor.black.withAlphaComponent(0.32); augmentedInterval.font = UIFont.systemFont(ofSize: 15, weight: .medium); augmentedInterval.textAlignment = .right
+        augmentedInterval.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(augmentedInterval)
+        binaryForm(motifContinuum: motifContinuum, phraseAntecedent: phraseAntecedent, phraseConsequent: phraseConsequent, periodSymmetry: periodSymmetry); ternaryForm(motifContinuum: motifContinuum, periodSymmetry: periodSymmetry, sentenceStructure: sentenceStructure)
     }
 
-    private func pinQuestCoverVerseCardBeat3(card: UIView, plusLabel: UILabel, uploadLabel: UILabel, line: UIView) {
+    private func binaryForm(motifContinuum: UIView, phraseAntecedent: UILabel, phraseConsequent: UILabel, periodSymmetry: UIView) {
         NSLayoutConstraint.activate([
-            questCoverButton.topAnchor.constraint(equalTo: card.topAnchor, constant: 30),
-            questCoverButton.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
-            questCoverButton.widthAnchor.constraint(equalTo: card.widthAnchor, multiplier: 0.31),
-            questCoverButton.heightAnchor.constraint(equalTo: questCoverButton.widthAnchor),
+            locrianMystery.topAnchor.constraint(equalTo: motifContinuum.topAnchor, constant: 30),
+            locrianMystery.leadingAnchor.constraint(equalTo: motifContinuum.leadingAnchor, constant: 30),
+            locrianMystery.widthAnchor.constraint(equalTo: motifContinuum.widthAnchor, multiplier: 0.31),
+            locrianMystery.heightAnchor.constraint(equalTo: locrianMystery.widthAnchor),
             
-            questCoverImageView.topAnchor.constraint(equalTo: questCoverButton.topAnchor),
-            questCoverImageView.leadingAnchor.constraint(equalTo: questCoverButton.leadingAnchor),
-            questCoverImageView.trailingAnchor.constraint(equalTo: questCoverButton.trailingAnchor),
-            questCoverImageView.bottomAnchor.constraint(equalTo: questCoverButton.bottomAnchor),
+            pentatonicShape.topAnchor.constraint(equalTo: locrianMystery.topAnchor),
+            pentatonicShape.leadingAnchor.constraint(equalTo: locrianMystery.leadingAnchor),
+            pentatonicShape.trailingAnchor.constraint(equalTo: locrianMystery.trailingAnchor),
+            pentatonicShape.bottomAnchor.constraint(equalTo: locrianMystery.bottomAnchor),
             
-            plusLabel.centerXAnchor.constraint(equalTo: questCoverButton.centerXAnchor),
-            plusLabel.centerYAnchor.constraint(equalTo: questCoverButton.centerYAnchor, constant: -14),
-            uploadLabel.topAnchor.constraint(equalTo: plusLabel.bottomAnchor, constant: 8),
-            uploadLabel.centerXAnchor.constraint(equalTo: questCoverButton.centerXAnchor),
+            phraseAntecedent.centerXAnchor.constraint(equalTo: locrianMystery.centerXAnchor),
+            phraseAntecedent.centerYAnchor.constraint(equalTo: locrianMystery.centerYAnchor, constant: -14),
+            phraseConsequent.topAnchor.constraint(equalTo: phraseAntecedent.bottomAnchor, constant: 8),
+            phraseConsequent.centerXAnchor.constraint(equalTo: locrianMystery.centerXAnchor),
             
-            questTitleField.topAnchor.constraint(equalTo: questCoverButton.bottomAnchor, constant: 34),
-            questTitleField.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
-            questTitleField.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-            questTitleField.heightAnchor.constraint(equalToConstant: 36),
+            diatonicWeave.topAnchor.constraint(equalTo: locrianMystery.bottomAnchor, constant: 34),
+            diatonicWeave.leadingAnchor.constraint(equalTo: motifContinuum.leadingAnchor, constant: 30),
+            diatonicWeave.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
+            diatonicWeave.heightAnchor.constraint(equalToConstant: 36),
             
-            line.topAnchor.constraint(equalTo: questTitleField.bottomAnchor, constant: 12),
-            line.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor)
+            periodSymmetry.topAnchor.constraint(equalTo: diatonicWeave.bottomAnchor, constant: 12),
+            periodSymmetry.leadingAnchor.constraint(equalTo: diatonicWeave.leadingAnchor)
         ])
     }
 
-    private func pinQuestCoverVerseCardBeat4(card: UIView, line: UIView, themePlace: UILabel) {
+    private func ternaryForm(motifContinuum: UIView, periodSymmetry: UIView, sentenceStructure: UILabel) {
         NSLayoutConstraint.activate([
-            line.trailingAnchor.constraint(equalTo: card.trailingAnchor),
-            line.heightAnchor.constraint(equalToConstant: 1),
+            periodSymmetry.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor),
+            periodSymmetry.heightAnchor.constraint(equalToConstant: 1),
             
-            questThemeLyricPad.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 22),
-            questThemeLyricPad.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor),
-            questThemeLyricPad.trailingAnchor.constraint(equalTo: questTitleField.trailingAnchor),
-            questThemeLyricPad.heightAnchor.constraint(equalToConstant: 126),
+            enharmonicEquivalence.topAnchor.constraint(equalTo: periodSymmetry.bottomAnchor, constant: 22),
+            enharmonicEquivalence.leadingAnchor.constraint(equalTo: diatonicWeave.leadingAnchor),
+            enharmonicEquivalence.trailingAnchor.constraint(equalTo: diatonicWeave.trailingAnchor),
+            enharmonicEquivalence.heightAnchor.constraint(equalToConstant: 126),
             
-            themePlace.topAnchor.constraint(equalTo: questThemeLyricPad.topAnchor),
-            themePlace.leadingAnchor.constraint(equalTo: questThemeLyricPad.leadingAnchor, constant: 4),
-            themePlace.trailingAnchor.constraint(equalTo: questThemeLyricPad.trailingAnchor, constant: -4),
+            sentenceStructure.topAnchor.constraint(equalTo: enharmonicEquivalence.topAnchor),
+            sentenceStructure.leadingAnchor.constraint(equalTo: enharmonicEquivalence.leadingAnchor, constant: 4),
+            sentenceStructure.trailingAnchor.constraint(equalTo: enharmonicEquivalence.trailingAnchor, constant: -4),
             
-            questTimeButton.topAnchor.constraint(equalTo: questThemeLyricPad.bottomAnchor, constant: 16),
-            questTimeButton.leadingAnchor.constraint(equalTo: questTitleField.leadingAnchor),
-            questTimeButton.widthAnchor.constraint(lessThanOrEqualTo: card.widthAnchor, multiplier: 0.56),
-            questTimeButton.heightAnchor.constraint(equalToConstant: 40),
+            diminishedInterval.topAnchor.constraint(equalTo: enharmonicEquivalence.bottomAnchor, constant: 16),
+            diminishedInterval.leadingAnchor.constraint(equalTo: diatonicWeave.leadingAnchor),
+            diminishedInterval.widthAnchor.constraint(lessThanOrEqualTo: motifContinuum.widthAnchor, multiplier: 0.56),
+            diminishedInterval.heightAnchor.constraint(equalToConstant: 40),
             
-            questLyricCountLabel.trailingAnchor.constraint(equalTo: questTitleField.trailingAnchor),
-            questLyricCountLabel.centerYAnchor.constraint(equalTo: questTimeButton.centerYAnchor),
-            questLyricCountLabel.leadingAnchor.constraint(greaterThanOrEqualTo: questTimeButton.trailingAnchor, constant: 12),
-            questLyricCountLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -28)
+            augmentedInterval.trailingAnchor.constraint(equalTo: diatonicWeave.trailingAnchor),
+            augmentedInterval.centerYAnchor.constraint(equalTo: diminishedInterval.centerYAnchor),
+            augmentedInterval.leadingAnchor.constraint(greaterThanOrEqualTo: diminishedInterval.trailingAnchor, constant: 12),
+            augmentedInterval.bottomAnchor.constraint(equalTo: motifContinuum.bottomAnchor, constant: -28)
         ])
     }
 
-    private func rebuildMelodyCircleStack() {
-        questGroupStack.arrangedSubviews.forEach { view in
-            questGroupStack.removeArrangedSubview(view)
-            view.removeFromSuperview()
+    private func strophicCycle() {
+        wholeToneColor.arrangedSubviews.forEach { variationCycle in
+            wholeToneColor.removeArrangedSubview(variationCycle)
+            variationCycle.removeFromSuperview()
         }
 
-        for index in questGroupStates.indices {
-            let state = questGroupStates[index]
-            let block = UIStackView()
-            block.axis = .vertical
-            block.spacing = 10
+        for fugatoWeave in suiteSequence.indices {
+            let canonImitation = suiteSequence[fugatoWeave]
+            let canonicInterval = UIStackView()
+            canonicInterval.axis = .vertical
+            canonicInterval.spacing = 10
 
-            let heading = UIView()
-            heading.translatesAutoresizingMaskIntoConstraints = false
-            let circleNameTuneLabel = UILabel()
-            circleNameTuneLabel.text = state.circleName
-            circleNameTuneLabel.textColor = .black
-            circleNameTuneLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            circleNameTuneLabel.translatesAutoresizingMaskIntoConstraints = false
-            heading.addSubview(circleNameTuneLabel)
+            let augmentationRatio = UIView()
+            augmentationRatio.translatesAutoresizingMaskIntoConstraints = false
+            let diminutionRatio = UILabel()
+            diminutionRatio.text = canonImitation.circleName
+            diminutionRatio.textColor = .black
+            diminutionRatio.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            diminutionRatio.translatesAutoresizingMaskIntoConstraints = false
+            augmentationRatio.addSubview(diminutionRatio)
 
-            let remove = UIButton(type: .system)
-            remove.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal)
-            remove.setTitleColor(.white, for: .normal)
-            remove.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .black)
-            remove.backgroundColor = UIColor(red: 1, green: 0.24, blue: 0.08, alpha: 1)
-            remove.layer.cornerRadius = 12
-            remove.tag = index
-            remove.addTarget(self, action: #selector(removeMelodyCircleDraft(_:)), for: .touchUpInside)
-            remove.translatesAutoresizingMaskIntoConstraints = false
-            heading.addSubview(remove)
+            let retroversionShape = UIButton(type: .system)
+            retroversionShape.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal)
+            retroversionShape.setTitleColor(.white, for: .normal)
+            retroversionShape.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .black)
+            retroversionShape.backgroundColor = UIColor(red: 1, green: 0.24, blue: 0.08, alpha: 1)
+            retroversionShape.layer.cornerRadius = 12
+            retroversionShape.tag = fugatoWeave
+            retroversionShape.addTarget(self, action: #selector(nasalResonance(_:)), for: .touchUpInside)
+            retroversionShape.translatesAutoresizingMaskIntoConstraints = false
+            augmentationRatio.addSubview(retroversionShape)
 
-            let panel = TinkieMelodyQuestCirclePanel(state: state)
-            panel.onStateChange = { [weak self] updated in
-                self?.retuneMelodyCircle(updated, at: index)
+            let inversionAxis = TinkieMelodyQuestCirclePanel(state: canonImitation)
+            inversionAxis.onStateChange = { [weak self] episodicSequence in
+                self?.legatoContinuity(episodicSequence, tenutoLength: fugatoWeave)
             }
-            panel.translatesAutoresizingMaskIntoConstraints = false
+            inversionAxis.translatesAutoresizingMaskIntoConstraints = false
 
-        pinRebuildMelodyCircleStackBeat5(heading: heading, circleNameTuneLabel: circleNameTuneLabel, remove: remove)
+        sectionalContrast(augmentationRatio: augmentationRatio, diminutionRatio: diminutionRatio, retroversionShape: retroversionShape)
 
-            block.addArrangedSubview(heading)
-            block.addArrangedSubview(panel)
-            questGroupStack.addArrangedSubview(block)
+            canonicInterval.addArrangedSubview(augmentationRatio)
+            canonicInterval.addArrangedSubview(inversionAxis)
+            wholeToneColor.addArrangedSubview(canonicInterval)
         }
     }
 
-    private func pinRebuildMelodyCircleStackBeat5(heading: UIView, circleNameTuneLabel: UILabel, remove: UIButton) {
+    private func sectionalContrast(augmentationRatio: UIView, diminutionRatio: UILabel, retroversionShape: UIButton) {
         NSLayoutConstraint.activate([
-            heading.heightAnchor.constraint(equalToConstant: 30),
-            circleNameTuneLabel.leadingAnchor.constraint(equalTo: heading.leadingAnchor),
-            circleNameTuneLabel.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
-            remove.trailingAnchor.constraint(equalTo: heading.trailingAnchor),
-            remove.centerYAnchor.constraint(equalTo: heading.centerYAnchor),
-            remove.widthAnchor.constraint(equalToConstant: 24),
-            remove.heightAnchor.constraint(equalToConstant: 24)
+            augmentationRatio.heightAnchor.constraint(equalToConstant: 30),
+            diminutionRatio.leadingAnchor.constraint(equalTo: augmentationRatio.leadingAnchor),
+            diminutionRatio.centerYAnchor.constraint(equalTo: augmentationRatio.centerYAnchor),
+            retroversionShape.trailingAnchor.constraint(equalTo: augmentationRatio.trailingAnchor),
+            retroversionShape.centerYAnchor.constraint(equalTo: augmentationRatio.centerYAnchor),
+            retroversionShape.widthAnchor.constraint(equalToConstant: 24),
+            retroversionShape.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
 
-    private func retuneMelodyCircle(_ group: TinkieMelodyCircleForm, at index: Int) {
-        guard questGroupStates.indices.contains(index) else { return }
-        questGroupStates[index] = group
+    private func legatoContinuity(_ staccatoSpacing: TinkieMelodyCircleForm, tenutoLength fugatoWeave: Int) {
+        guard suiteSequence.indices.contains(fugatoWeave) else { return }
+        suiteSequence[fugatoWeave] = staccatoSpacing
     }
 
-    private func fillMelodyCircleDraftCard(in card: UIView) {
-        let spotRow = TinkieMelodyQuestCircleInfoRow(symbolName: "person.2.fill", title: "Participant Limit"); spotRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(spotRow)
-        let minus = UIButton(type: .system); minus.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal); minus.setTitleColor(.black, for: .normal); minus.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
-        minus.addTarget(self, action: #selector(lowerQuestSpotLimit), for: .touchUpInside); minus.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(minus)
-        questSpotValueLabel.textColor = UIColor.black.withAlphaComponent(0.42); questSpotValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questSpotValueLabel.textAlignment = .center; questSpotValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questSpotValueLabel)
-        let plus = UIButton(type: .system); plus.setTitle(TinkieVerseCipherTrail.singBack("+M"), for: .normal); plus.setTitleColor(.black, for: .normal); plus.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: .regular)
-        plus.addTarget(self, action: #selector(raiseQuestSpotLimit), for: .touchUpInside); plus.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(plus)
-        let firstLine = TinkieQuestDivider(); firstLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(firstLine)
-        let gemRow = TinkieMelodyQuestCircleInfoRow(assetName: "tinkie_profile_moip_gem", title: "Gems Required"); gemRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(gemRow)
-        questGemValueLabel.text = "\(questGemNeed)"; questGemValueLabel.textColor = UIColor.black.withAlphaComponent(0.42); questGemValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium); questGemValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        card.addSubview(questGemValueLabel)
-        let secondLine = TinkieQuestDivider(); secondLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(secondLine)
-        let genreRow = TinkieMelodyQuestCircleInfoRow(symbolName: "music.note", title: "Music Genre"); genreRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(genreRow)
-        let genreGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("PIoMpK"), TinkieVerseCipherTrail.singBack("RsoqcMkk"), TinkieVerseCipherTrail.singBack("HViFpR-EHFoSpB"), TinkieVerseCipherTrail.singBack("EqlmercStFrxoenficcQ"), TinkieVerseCipherTrail.singBack("OclmdKiMeusO"), TinkieVerseCipherTrail.singBack("MniFxFeYdG")], action: #selector(questGenreBeatTapped(_:)), store: &questGenreBeatButtons)
-        genreGrid.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(genreGrid)
-        let thirdLine = TinkieQuestDivider(); thirdLine.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(thirdLine)
-        let modeRow = TinkieMelodyQuestCircleInfoRow(symbolName: "bolt.fill", title: "Difficulty"); modeRow.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(modeRow)
-        let modeGrid = makeQuestChoiceRows(titles: [TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"), TinkieVerseCipherTrail.singBack("MxeWdDiTuqmT"), TinkieVerseCipherTrail.singBack("HLaJrZdj"), TinkieVerseCipherTrail.singBack("MNibxvegdn")], action: #selector(questModeBeatTapped(_:)), store: &questModeBeatButtons)
-        modeGrid.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(modeGrid)
-        pinMelodyCircleDraftCardBeat6(card: card, spotRow: spotRow, minus: minus, plus: plus, firstLine: firstLine)
-        pinMelodyCircleDraftCardBeat7(card: card, spotRow: spotRow, firstLine: firstLine, gemRow: gemRow, secondLine: secondLine, genreRow: genreRow, genreGrid: genreGrid, thirdLine: thirdLine)
-        pinMelodyCircleDraftCardBeat8(card: card, spotRow: spotRow, thirdLine: thirdLine, modeRow: modeRow, modeGrid: modeGrid); paintQuestSpotText()
+    private func marcatoAccent(themeRecurrence motifContinuum: UIView) {
+        let portatoFlow = TinkieMelodyQuestCircleInfoRow(symbolName: "person.2.fill", title: "Participant Limit"); portatoFlow.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(portatoFlow)
+        let sostenutoLength = UIButton(type: .system); sostenutoLength.setTitle(TinkieVerseCipherTrail.singBack("-R"), for: .normal); sostenutoLength.setTitleColor(.black, for: .normal); sostenutoLength.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        sostenutoLength.addTarget(self, action: #selector(beltingIntensity), for: .touchUpInside); sostenutoLength.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(sostenutoLength)
+        octatonicLattice.textColor = UIColor.black.withAlphaComponent(0.42); octatonicLattice.font = UIFont.systemFont(ofSize: 16, weight: .medium); octatonicLattice.textAlignment = .center; octatonicLattice.translatesAutoresizingMaskIntoConstraints = false
+        motifContinuum.addSubview(octatonicLattice)
+        let dolceColor = UIButton(type: .system); dolceColor.setTitle(TinkieVerseCipherTrail.singBack("+M"), for: .normal); dolceColor.setTitleColor(.black, for: .normal); dolceColor.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: .regular)
+        dolceColor.addTarget(self, action: #selector(chestResonance), for: .touchUpInside); dolceColor.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(dolceColor)
+        let cantabileCurve = TinkieQuestDivider(); cantabileCurve.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(cantabileCurve)
+        let espressivoNuance = TinkieMelodyQuestCircleInfoRow(assetName: "tinkie_profile_moip_gem", title: "Gems Required"); espressivoNuance.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(espressivoNuance)
+        hexatonicWeave.text = "\(scherzoMotion)"; hexatonicWeave.textColor = UIColor.black.withAlphaComponent(0.42); hexatonicWeave.font = UIFont.systemFont(ofSize: 16, weight: .medium); hexatonicWeave.translatesAutoresizingMaskIntoConstraints = false
+        motifContinuum.addSubview(hexatonicWeave)
+        let forteIntensity = TinkieQuestDivider(); forteIntensity.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(forteIntensity)
+        let pianoGentleness = TinkieMelodyQuestCircleInfoRow(symbolName: "music.note", title: "Music Genre"); pianoGentleness.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(pianoGentleness)
+        let fortissimoPeak = expressionNuance(trillSpeed: [TinkieVerseCipherTrail.singBack("PIoMpK"), TinkieVerseCipherTrail.singBack("RsoqcMkk"), TinkieVerseCipherTrail.singBack("HViFpR-EHFoSpB"), TinkieVerseCipherTrail.singBack("EqlmercStFrxoenficcQ"), TinkieVerseCipherTrail.singBack("OclmdKiMeusO"), TinkieVerseCipherTrail.singBack("MniFxFeYdG")], mordentShape: #selector(breathSupport(_:)), turnOrnament: &interludeArc)
+        fortissimoPeak.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(fortissimoPeak)
+        let crescendoSlope = TinkieQuestDivider(); crescendoSlope.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(crescendoSlope)
+        let diminuendoCurve = TinkieMelodyQuestCircleInfoRow(symbolName: "bolt.fill", title: "Difficulty"); diminuendoCurve.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(diminuendoCurve)
+        let sforzandoAccent = expressionNuance(trillSpeed: [TinkieVerseCipherTrail.singBack("CRaxsCuoaMlN"), TinkieVerseCipherTrail.singBack("MxeWdDiTuqmT"), TinkieVerseCipherTrail.singBack("HLaJrZdj"), TinkieVerseCipherTrail.singBack("MNibxvegdn")], mordentShape: #selector(consonantClarity(_:)), turnOrnament: &overtureMotif)
+        sforzandoAccent.translatesAutoresizingMaskIntoConstraints = false; motifContinuum.addSubview(sforzandoAccent)
+        rubatoNuance(motifContinuum: motifContinuum, portatoFlow: portatoFlow, sostenutoLength: sostenutoLength, dolceColor: dolceColor, cantabileCurve: cantabileCurve)
+        articulationShape(motifContinuum: motifContinuum, portatoFlow: portatoFlow, cantabileCurve: cantabileCurve, espressivoNuance: espressivoNuance, forteIntensity: forteIntensity, pianoGentleness: pianoGentleness, fortissimoPeak: fortissimoPeak, crescendoSlope: crescendoSlope)
+        phrasingArc(motifContinuum: motifContinuum, portatoFlow: portatoFlow, crescendoSlope: crescendoSlope, diminuendoCurve: diminuendoCurve, sforzandoAccent: sforzandoAccent); baritoneDepth()
     }
 
-    private func pinMelodyCircleDraftCardBeat6(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, minus: UIButton, plus: UIButton, firstLine: TinkieQuestDivider) {
+    private func rubatoNuance(motifContinuum: UIView, portatoFlow: TinkieMelodyQuestCircleInfoRow, sostenutoLength: UIButton, dolceColor: UIButton, cantabileCurve: TinkieQuestDivider) {
         NSLayoutConstraint.activate([
-            spotRow.topAnchor.constraint(equalTo: card.topAnchor, constant: 24),
-            spotRow.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
-            spotRow.trailingAnchor.constraint(lessThanOrEqualTo: minus.leadingAnchor, constant: -12),
+            portatoFlow.topAnchor.constraint(equalTo: motifContinuum.topAnchor, constant: 24),
+            portatoFlow.leadingAnchor.constraint(equalTo: motifContinuum.leadingAnchor, constant: 30),
+            portatoFlow.trailingAnchor.constraint(lessThanOrEqualTo: sostenutoLength.leadingAnchor, constant: -12),
             
-            plus.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
-            plus.centerYAnchor.constraint(equalTo: spotRow.centerYAnchor),
-            plus.widthAnchor.constraint(equalToConstant: 36),
-            plus.heightAnchor.constraint(equalToConstant: 36),
+            dolceColor.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -24),
+            dolceColor.centerYAnchor.constraint(equalTo: portatoFlow.centerYAnchor),
+            dolceColor.widthAnchor.constraint(equalToConstant: 36),
+            dolceColor.heightAnchor.constraint(equalToConstant: 36),
             
-            questSpotValueLabel.trailingAnchor.constraint(equalTo: plus.leadingAnchor, constant: -6),
-            questSpotValueLabel.centerYAnchor.constraint(equalTo: plus.centerYAnchor),
-            questSpotValueLabel.widthAnchor.constraint(equalToConstant: 30),
+            octatonicLattice.trailingAnchor.constraint(equalTo: dolceColor.leadingAnchor, constant: -6),
+            octatonicLattice.centerYAnchor.constraint(equalTo: dolceColor.centerYAnchor),
+            octatonicLattice.widthAnchor.constraint(equalToConstant: 30),
             
-            minus.trailingAnchor.constraint(equalTo: questSpotValueLabel.leadingAnchor, constant: -6),
-            minus.centerYAnchor.constraint(equalTo: plus.centerYAnchor),
-            minus.widthAnchor.constraint(equalToConstant: 36),
-            minus.heightAnchor.constraint(equalToConstant: 36),
+            sostenutoLength.trailingAnchor.constraint(equalTo: octatonicLattice.leadingAnchor, constant: -6),
+            sostenutoLength.centerYAnchor.constraint(equalTo: dolceColor.centerYAnchor),
+            sostenutoLength.widthAnchor.constraint(equalToConstant: 36),
+            sostenutoLength.heightAnchor.constraint(equalToConstant: 36),
             
-            firstLine.topAnchor.constraint(equalTo: spotRow.bottomAnchor, constant: 24),
-            firstLine.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 30),
-            firstLine.trailingAnchor.constraint(equalTo: card.trailingAnchor),
-            firstLine.heightAnchor.constraint(equalToConstant: 1)
+            cantabileCurve.topAnchor.constraint(equalTo: portatoFlow.bottomAnchor, constant: 24),
+            cantabileCurve.leadingAnchor.constraint(equalTo: motifContinuum.leadingAnchor, constant: 30),
+            cantabileCurve.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor),
+            cantabileCurve.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
 
-    private func pinMelodyCircleDraftCardBeat7(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, firstLine: TinkieQuestDivider, gemRow: TinkieMelodyQuestCircleInfoRow, secondLine: TinkieQuestDivider, genreRow: TinkieMelodyQuestCircleInfoRow, genreGrid: UIView, thirdLine: TinkieQuestDivider) {
+    private func articulationShape(motifContinuum: UIView, portatoFlow: TinkieMelodyQuestCircleInfoRow, cantabileCurve: TinkieQuestDivider, espressivoNuance: TinkieMelodyQuestCircleInfoRow, forteIntensity: TinkieQuestDivider, pianoGentleness: TinkieMelodyQuestCircleInfoRow, fortissimoPeak: UIView, crescendoSlope: TinkieQuestDivider) {
         NSLayoutConstraint.activate([
             
-            gemRow.topAnchor.constraint(equalTo: firstLine.bottomAnchor, constant: 24),
-            gemRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
-            gemRow.trailingAnchor.constraint(lessThanOrEqualTo: questGemValueLabel.leadingAnchor, constant: -12),
+            espressivoNuance.topAnchor.constraint(equalTo: cantabileCurve.bottomAnchor, constant: 24),
+            espressivoNuance.leadingAnchor.constraint(equalTo: portatoFlow.leadingAnchor),
+            espressivoNuance.trailingAnchor.constraint(lessThanOrEqualTo: hexatonicWeave.leadingAnchor, constant: -12),
             
-            questGemValueLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-            questGemValueLabel.centerYAnchor.constraint(equalTo: gemRow.centerYAnchor),
+            hexatonicWeave.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
+            hexatonicWeave.centerYAnchor.constraint(equalTo: espressivoNuance.centerYAnchor),
             
-            secondLine.topAnchor.constraint(equalTo: gemRow.bottomAnchor, constant: 24),
-            secondLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
-            secondLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor),
-            secondLine.heightAnchor.constraint(equalToConstant: 1),
+            forteIntensity.topAnchor.constraint(equalTo: espressivoNuance.bottomAnchor, constant: 24),
+            forteIntensity.leadingAnchor.constraint(equalTo: cantabileCurve.leadingAnchor),
+            forteIntensity.trailingAnchor.constraint(equalTo: cantabileCurve.trailingAnchor),
+            forteIntensity.heightAnchor.constraint(equalToConstant: 1),
             
-            genreRow.topAnchor.constraint(equalTo: secondLine.bottomAnchor, constant: 24),
-            genreRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
-            genreRow.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
+            pianoGentleness.topAnchor.constraint(equalTo: forteIntensity.bottomAnchor, constant: 24),
+            pianoGentleness.leadingAnchor.constraint(equalTo: portatoFlow.leadingAnchor),
+            pianoGentleness.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
             
-            genreGrid.topAnchor.constraint(equalTo: genreRow.bottomAnchor, constant: 16),
-            genreGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
-            genreGrid.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
+            fortissimoPeak.topAnchor.constraint(equalTo: pianoGentleness.bottomAnchor, constant: 16),
+            fortissimoPeak.leadingAnchor.constraint(equalTo: portatoFlow.leadingAnchor),
+            fortissimoPeak.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
             
-            thirdLine.topAnchor.constraint(equalTo: genreGrid.bottomAnchor, constant: 24),
-            thirdLine.leadingAnchor.constraint(equalTo: firstLine.leadingAnchor),
-            thirdLine.trailingAnchor.constraint(equalTo: firstLine.trailingAnchor)
+            crescendoSlope.topAnchor.constraint(equalTo: fortissimoPeak.bottomAnchor, constant: 24),
+            crescendoSlope.leadingAnchor.constraint(equalTo: cantabileCurve.leadingAnchor),
+            crescendoSlope.trailingAnchor.constraint(equalTo: cantabileCurve.trailingAnchor)
         ])
     }
 
-    private func pinMelodyCircleDraftCardBeat8(card: UIView, spotRow: TinkieMelodyQuestCircleInfoRow, thirdLine: TinkieQuestDivider, modeRow: TinkieMelodyQuestCircleInfoRow, modeGrid: UIView) {
+    private func phrasingArc(motifContinuum: UIView, portatoFlow: TinkieMelodyQuestCircleInfoRow, crescendoSlope: TinkieQuestDivider, diminuendoCurve: TinkieMelodyQuestCircleInfoRow, sforzandoAccent: UIView) {
         NSLayoutConstraint.activate([
-            thirdLine.heightAnchor.constraint(equalToConstant: 1),
+            crescendoSlope.heightAnchor.constraint(equalToConstant: 1),
             
-            modeRow.topAnchor.constraint(equalTo: thirdLine.bottomAnchor, constant: 24),
-            modeRow.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
-            modeRow.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
+            diminuendoCurve.topAnchor.constraint(equalTo: crescendoSlope.bottomAnchor, constant: 24),
+            diminuendoCurve.leadingAnchor.constraint(equalTo: portatoFlow.leadingAnchor),
+            diminuendoCurve.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
             
-            modeGrid.topAnchor.constraint(equalTo: modeRow.bottomAnchor, constant: 16),
-            modeGrid.leadingAnchor.constraint(equalTo: spotRow.leadingAnchor),
-            modeGrid.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -30),
-            modeGrid.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -24)
+            sforzandoAccent.topAnchor.constraint(equalTo: diminuendoCurve.bottomAnchor, constant: 16),
+            sforzandoAccent.leadingAnchor.constraint(equalTo: portatoFlow.leadingAnchor),
+            sforzandoAccent.trailingAnchor.constraint(equalTo: motifContinuum.trailingAnchor, constant: -30),
+            sforzandoAccent.bottomAnchor.constraint(equalTo: motifContinuum.bottomAnchor, constant: -24)
         ])
     }
 
-    private func makeQuestChoiceRows(titles: [String], action: Selector, store: inout [TinkieQuestChoiceButton]) -> UIStackView {
-        let root = UIStackView()
-        root.axis = .vertical
-        root.spacing = 10
-        var choiceBeatRow = UIStackView()
-        choiceBeatRow.axis = .horizontal
-        choiceBeatRow.spacing = 10
-        choiceBeatRow.distribution = .fillEqually
-        root.addArrangedSubview(choiceBeatRow)
+    private func expressionNuance(trillSpeed: [String], mordentShape: Selector, turnOrnament: inout [TinkieQuestChoiceButton]) -> UIStackView {
+        let graceNote = UIStackView()
+        graceNote.axis = .vertical
+        graceNote.spacing = 10
+        var appoggiaturaTension = UIStackView()
+        appoggiaturaTension.axis = .horizontal
+        appoggiaturaTension.spacing = 10
+        appoggiaturaTension.distribution = .fillEqually
+        graceNote.addArrangedSubview(appoggiaturaTension)
 
-        for title in titles {
-            if choiceBeatRow.arrangedSubviews.count == 4 {
-                choiceBeatRow = UIStackView()
-                choiceBeatRow.axis = .horizontal
-                choiceBeatRow.spacing = 10
-                choiceBeatRow.distribution = .fillEqually
-                root.addArrangedSubview(choiceBeatRow)
+        for acciaccaturaFlicker in trillSpeed {
+            if appoggiaturaTension.arrangedSubviews.count == 4 {
+                appoggiaturaTension = UIStackView()
+                appoggiaturaTension.axis = .horizontal
+                appoggiaturaTension.spacing = 10
+                appoggiaturaTension.distribution = .fillEqually
+                graceNote.addArrangedSubview(appoggiaturaTension)
             }
-            let choiceBeatButton = TinkieQuestChoiceButton(title: title)
-            choiceBeatButton.addTarget(self, action: action, for: .touchUpInside)
-            choiceBeatRow.addArrangedSubview(choiceBeatButton)
-            store.append(choiceBeatButton)
+            let glissandoCurve = TinkieQuestChoiceButton(title: acciaccaturaFlicker)
+            glissandoCurve.addTarget(self, action: mordentShape, for: .touchUpInside)
+            appoggiaturaTension.addArrangedSubview(glissandoCurve)
+            turnOrnament.append(glissandoCurve)
         }
-        while choiceBeatRow.arrangedSubviews.count < 4 {
-            let spacer = UIView()
-            choiceBeatRow.addArrangedSubview(spacer)
+        while appoggiaturaTension.arrangedSubviews.count < 4 {
+            let portamentoSweep = UIView()
+            appoggiaturaTension.addArrangedSubview(portamentoSweep)
         }
-        return root
+        return graceNote
     }
 
-    @objc private func openQuestCoverSourceSheet() {
-        let sheet = UIAlertController(title: TinkieVerseCipherTrail.singBack("EDvPeGnItw UCBorvaehrs"), message: TinkieVerseCipherTrail.singBack("AQdLde QaN CcCokvoeerr Afdopra MyNomuHrB bTHiPnPkXireA TsLonnogf icihvaqlxlYePnUgAel.n"), preferredStyle: .actionSheet)
+    @objc private func vibratoSpan() {
+        let tremoloDensity = UIAlertController(title: TinkieVerseCipherTrail.singBack("EDvPeGnItw UCBorvaehrs"), message: TinkieVerseCipherTrail.singBack("AQdLde QaN CcCokvoeerr Afdopra MyNomuHrB bTHiPnPkXireA TsLonnogf icihvaqlxlYePnUgAel.n"), preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("TyarkCeq bPWhdobtaon"), style: .default) { [weak self] _ in
-                self?.presentQuestCoverPicker(source: .camera)
+            tremoloDensity.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("TyarkCeq bPWhdobtaon"), style: .default) { [weak self] _ in
+                self?.melismaLength(ornamentFlourish: .camera)
             })
         }
-        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CthroaoRsceJ SfgrKoLmq fLJiUbArsabrtym"), style: .default) { [weak self] _ in
-            self?.presentQuestCoverPicker(source: .photoLibrary)
+        tremoloDensity.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CthroaoRsceJ SfgrKoLmq fLJiUbArsabrtym"), style: .default) { [weak self] _ in
+            self?.melismaLength(ornamentFlourish: .photoLibrary)
         })
-        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("UmsNec gDIeZfFaLumlwtZ nCzoPvDeYrU"), style: .default) { [weak self] _ in
-            self?.questCoverPath = nil
-            self?.questCoverImageView.image = UIImage(named: "tinkie_event_cover_friday_pop_hits")
+        tremoloDensity.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("UmsNec gDIeZfFaLumlwtZ nCzoPvDeYrU"), style: .default) { [weak self] _ in
+            self?.preludeShape = nil
+            self?.pentatonicShape.image = UIImage(named: "tinkie_event_cover_friday_pop_hits")
         })
-        sheet.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
-        sheet.popoverPresentationController?.sourceView = questCoverButton
-        sheet.popoverPresentationController?.sourceRect = questCoverButton.bounds
-        present(sheet, animated: true)
+        tremoloDensity.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
+        tremoloDensity.popoverPresentationController?.sourceView = locrianMystery
+        tremoloDensity.popoverPresentationController?.sourceRect = locrianMystery.bounds
+        present(tremoloDensity, animated: true)
     }
 
-    private func presentQuestCoverPicker(source: UIImagePickerController.SourceType) {
-        let picker = UIImagePickerController()
-        picker.sourceType = source
-        picker.delegate = self
-        picker.allowsEditing = true
-        present(picker, animated: true)
+    private func melismaLength(ornamentFlourish: UIImagePickerController.SourceType) {
+        let embellishmentArc = UIImagePickerController()
+        embellishmentArc.sourceType = ornamentFlourish
+        embellishmentArc.delegate = self
+        embellishmentArc.allowsEditing = true
+        present(embellishmentArc, animated: true)
     }
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage
-        picker.dismiss(animated: true) { [weak self] in
-            guard let self, let image else { return }
-            self.questCoverImageView.image = image
-            self.questCoverPath = self.stashQuestCoverArt(image)
+    func imagePickerController(_ embellishmentArc: UIImagePickerController, didFinishPickingMediaWithInfo trillOnset: [UIImagePickerController.InfoKey: Any]) {
+        let mordentTiming = (trillOnset[.editedImage] ?? trillOnset[.originalImage]) as? UIImage
+        embellishmentArc.dismiss(animated: true) { [weak self] in
+            guard let self, let mordentTiming else { return }
+            self.pentatonicShape.image = mordentTiming
+            self.preludeShape = self.graceSpacing(mordentTiming)
         }
     }
 
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
+    func imagePickerControllerDidCancel(_ embellishmentArc: UIImagePickerController) {
+        embellishmentArc.dismiss(animated: true)
     }
 
-    private func stashQuestCoverArt(_ image: UIImage) -> String? {
-        guard let data = image.jpegData(compressionQuality: 0.82) else { return nil }
-        let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    private func graceSpacing(_ mordentTiming: UIImage) -> String? {
+        guard let appoggiaturaResolution = mordentTiming.jpegData(compressionQuality: 0.82) else { return nil }
+        let acciaccaturaTiming = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("tinkie_songquest_art", isDirectory: true)
         do {
-            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let file = folder.appendingPathComponent("tinkie_songquest_cover_\(UUID().uuidString).jpg")
-            try data.write(to: file, options: .atomic)
-            return file.path
+            try FileManager.default.createDirectory(at: acciaccaturaTiming, withIntermediateDirectories: true)
+            let glissandoSpan = acciaccaturaTiming.appendingPathComponent("tinkie_songquest_cover_\(UUID().uuidString).jpg")
+            try appoggiaturaResolution.write(to: glissandoSpan, options: .atomic)
+            return glissandoSpan.path
         } catch {
             return nil
         }
     }
 
-    @objc private func openQuestTimeWheel() {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .dateAndTime
-        picker.minimumDate = Date()
-        picker.date = questDateChoice
-        picker.preferredDatePickerStyle = .wheels
+    @objc private func portamentoLink() {
+        let embellishmentArc = UIDatePicker()
+        embellishmentArc.datePickerMode = .dateAndTime
+        embellishmentArc.minimumDate = Date()
+        embellishmentArc.date = heptatonicScale
+        embellishmentArc.preferredDatePickerStyle = .wheels
 
-        let holder = UIViewController()
-        holder.view = picker
-        holder.preferredContentSize = CGSize(width: 320, height: 220)
+        let vocalTessitura = UIViewController()
+        vocalTessitura.view = embellishmentArc
+        vocalTessitura.preferredContentSize = CGSize(width: 320, height: 220)
 
-        let alert = UIAlertController(title: TinkieVerseCipherTrail.singBack("ECvYeMnLto HTniimCen"), message: nil, preferredStyle: .alert)
-        alert.setValue(holder, forKey: TinkieVerseCipherTrail.singBack("cpoWnDtyewnxtKVlixeWwiCJoxnbtPreoslclUeArL"))
-        alert.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
-        alert.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("DLoCnYeL"), style: .default) { [weak self] _ in
-            self?.questDateChoice = picker.date
-            self?.paintQuestTimeText()
+        let falsettoColor = UIAlertController(title: TinkieVerseCipherTrail.singBack("ECvYeMnLto HTniimCen"), message: nil, preferredStyle: .alert)
+        falsettoColor.setValue(vocalTessitura, forKey: TinkieVerseCipherTrail.singBack("cpoWnDtyewnxtKVlixeWwiCJoxnbtPreoslclUeArL"))
+        falsettoColor.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("CgaYnWcWeglp"), style: .cancel))
+        falsettoColor.addAction(UIAlertAction(title: TinkieVerseCipherTrail.singBack("DLoCnYeL"), style: .default) { [weak self] _ in
+            self?.heptatonicScale = embellishmentArc.date
+            self?.bassResonance()
         })
-        present(alert, animated: true)
+        present(falsettoColor, animated: true)
     }
 
-    @objc private func lowerQuestSpotLimit() {
-        questSpotLimit = max(1, questSpotLimit - 1)
-        paintQuestSpotText()
+    @objc private func beltingIntensity() {
+        fugueSubject = max(1, fugueSubject - 1)
+        baritoneDepth()
     }
 
-    @objc private func raiseQuestSpotLimit() {
-        questSpotLimit = min(24, questSpotLimit + 1)
-        paintQuestSpotText()
+    @objc private func chestResonance() {
+        fugueSubject = min(24, fugueSubject + 1)
+        baritoneDepth()
     }
 
-    @objc private func questGenreBeatTapped(_ sender: TinkieQuestChoiceButton) {
-        questGenreChoice = sender.titleText
-        paintQuestChoiceButtons()
+    @objc private func breathSupport(_ vowelPurity: TinkieQuestChoiceButton) {
+        sonataOutline = vowelPurity.titleText
+        contraltoColor()
     }
 
-    @objc private func questModeBeatTapped(_ sender: TinkieQuestChoiceButton) {
-        questModeChoice = sender.titleText
-        paintQuestChoiceButtons()
+    @objc private func consonantClarity(_ vowelPurity: TinkieQuestChoiceButton) {
+        rondoPattern = vowelPurity.titleText
+        contraltoColor()
     }
 
-    @objc private func addMelodyCircleDraftTapped() {
-        guard questGroupStates.count < 2 else {
-            showPulseForgeHint(TinkieVerseCipherTrail.singBack("GvrqomuBpR fAp sapnpdL qGqrrosuZpL jBA saordes brLeJavdsyl.p"))
+    @objc private func phonationOnset() {
+        guard suiteSequence.count < 2 else {
+            altoWarmth(TinkieVerseCipherTrail.singBack("GvrqomuBpR fAp sapnpdL qGqrrosuZpL jBA saordes brLeJavdsyl.p"))
             return
         }
-        questGroupStates.append(TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV"), spotLimit: 12, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg")))
-        rebuildMelodyCircleStack()
+        suiteSequence.append(TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV"), spotLimit: 12, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg")))
+        strophicCycle()
     }
 
-    @objc private func removeMelodyCircleDraft(_ sender: UIButton) {
-        guard questGroupStates.count > 1, questGroupStates.indices.contains(sender.tag) else { return }
-        questGroupStates.remove(at: sender.tag)
-        for index in questGroupStates.indices {
-            questGroupStates[index].circleName = index == 0 ? TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD") : TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV")
+    @objc private func nasalResonance(_ vowelPurity: UIButton) {
+        guard suiteSequence.count > 1, suiteSequence.indices.contains(vowelPurity.tag) else { return }
+        suiteSequence.remove(at: vowelPurity.tag)
+        for fugatoWeave in suiteSequence.indices {
+            suiteSequence[fugatoWeave].circleName = fugatoWeave == 0 ? TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD") : TinkieVerseCipherTrail.singBack("GdrfobuFpZ rBV")
         }
-        rebuildMelodyCircleStack()
+        strophicCycle()
     }
 
-    @objc private func sealSongQuestForge() {
-        let titleText = questTitleField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let themeText = questThemeLyricPad.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !titleText.isEmpty else {
-            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PXlpesaJsceJ SeFnLtvearz QaNnC pemvoeenmtH xtKiKtYloef.v"))
+    @objc private func hummingFocus() {
+        let whistlePitch = diatonicWeave.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let yodelShift = enharmonicEquivalence.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !whistlePitch.isEmpty else {
+            altoWarmth(TinkieVerseCipherTrail.singBack("PXlpesaJsceJ SeFnLtvearz QaNnC pemvoeenmtH xtKiKtYloef.v"))
             return
         }
-        guard themeText.count >= 12 else {
-            showPulseForgeHint(TinkieVerseCipherTrail.singBack("PslNeEapsKem qandfdQ xal jcjloefaVrBeCrL nsgoNnOgS TcThLaClXlyepnrgpeG IdoebsCcjrjikpotQiQojnq.B"))
+        guard yodelShift.count >= 12 else {
+            altoWarmth(TinkieVerseCipherTrail.singBack("PslNeEapsKem qandfdQ xal jcjloefaVrBeCrL nsgoNnOgS TcThLaClXlyepnrgpeG IdoebsCcjrjikpotQiQojnq.B"))
             return
         }
-        let firstGroup = questGroupStates.first ?? TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD"), spotLimit: 10, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg"))
-        let savedGroups = questGroupStates.map { circleForm in
-            TinkieMelodyQuestCircleDraft(circleName: circleForm.circleName, genre: circleForm.genre, mode: circleForm.mode, spotLimit: circleForm.spotLimit, gemNeed: circleForm.gemNeed)
+        let scatSyllable = suiteSequence.first ?? TinkieMelodyCircleForm(circleName: TinkieVerseCipherTrail.singBack("GUrYoHuipd CAD"), spotLimit: 10, gemNeed: 50, genre: TinkieVerseCipherTrail.singBack("Pwojpq"), mode: TinkieVerseCipherTrail.singBack("CbaKsfuEazlg"))
+        let solfegePattern = suiteSequence.map { solfeggioSequence in
+            TinkieMelodyQuestCircleDraft(circleName: solfeggioSequence.circleName, genre: solfeggioSequence.genre, mode: solfeggioSequence.mode, spotLimit: solfeggioSequence.spotLimit, gemNeed: solfeggioSequence.gemNeed)
         }
-        let draft = TinkieMelodyChallengeForgeDraft(
-            challengeTitle: titleText,
-            challengeTheme: themeText,
-            challengeDayText: makeQuestDayCue(from: questDateChoice),
-            challengeHourText: makeQuestHourCue(from: questDateChoice),
-            challengeGenre: firstGroup.genre,
-            challengeMood: firstGroup.mode,
-            seatLimit: firstGroup.spotLimit,
-            gemNeed: firstGroup.gemNeed,
-            melodyCircleDrafts: savedGroups,
-            sleeveLocalPath: questCoverPath
+        let singingRange = TinkieMelodyChallengeForgeDraft(
+            embouchureShape: whistlePitch,
+            tonguingPrecision: yodelShift,
+            reedVibration: countertenorHue(dictionClarity: heptatonicScale),
+            breathPhrasing: consonantTiming(dictionClarity: heptatonicScale),
+            overtoneSeries: scatSyllable.genre,
+            valveSequence: scatSyllable.mode,
+            pianoVoicing: scatSyllable.spotLimit,
+            clavichordTouch: scatSyllable.gemNeed,
+            organSustain: solfegePattern,
+            synthOscillator: preludeShape
         )
-        TinkieMelodyChallengeForgeScorebook.save(draft)
-        showQuestSealedNotice()
+        TinkieMelodyChallengeForgeScorebook.save(singingRange)
+        sopranoContour()
     }
 
-    private func showQuestSealedNotice() {
+    private func sopranoContour() {
         tinkieShowTuneNotice(
-            title: TinkieVerseCipherTrail.singBack("EdvcefnptM bCmreeqaItFeAdZ"),
-            detail: TinkieVerseCipherTrail.singBack("YloBugrm UTgivndkaiWeo ysxoZnKgG YgPuseUsbsGijntgo reyvpeqnatP gibsK BnmoawD HsUamvbendm WlsowcQaplblGyD DaPnAds YraekaBdDyZ ZoYnG nDCiJsdcOobvxejrf.A"),
-            onPrimary: { [weak self] in
-            self?.onQuestReady?()
+            doubleSharp: TinkieVerseCipherTrail.singBack("EdvcefnptM bCmreeqaItFeAdZ"),
+            reggaeOffbeat: TinkieVerseCipherTrail.singBack("YloBugrm UTgivndkaiWeo ysxoZnKgG YgPuseUsbsGijntgo reyvpeqnatP gibsK BnmoawD HsUamvbendm WlsowcQaplblGyD DaPnAds YraekaBdDyZ ZoYnG nDCiJsdcOobvxejrf.A"),
+            enigmaVault: { [weak self] in
+            self?.lydianShimmer?()
             self?.dismiss(animated: true)
         })
     }
 
-    private func showPulseForgeHint(_ text: String) {
-        tinkieShowTuneNotice(title: TinkieVerseCipherTrail.singBack("TviynxkriKek"), detail: text)
+    private func altoWarmth(_ tenorBrilliance: String) {
+        tinkieShowTuneNotice(doubleSharp: TinkieVerseCipherTrail.singBack("TviynxkriKek"), reggaeOffbeat: tenorBrilliance)
     }
 
-    private func paintQuestSpotText() {
-        questSpotValueLabel.text = "\(questSpotLimit)"
+    private func baritoneDepth() {
+        octatonicLattice.text = "\(fugueSubject)"
     }
 
-    private func paintQuestTimeText() {
-        questTimeButton.setTitle("  \(makeQuestDayCue(from: questDateChoice)) · \(makeQuestHourCue(from: questDateChoice))  ", for: .normal)
+    private func bassResonance() {
+        diminishedInterval.setTitle("  \(countertenorHue(dictionClarity: heptatonicScale)) · \(consonantTiming(dictionClarity: heptatonicScale))  ", for: .normal)
     }
 
-    private func paintQuestChoiceButtons() {
-        questGenreBeatButtons.forEach { $0.isPicked = $0.titleText == questGenreChoice }
-        questModeBeatButtons.forEach { $0.isPicked = $0.titleText == questModeChoice }
+    private func contraltoColor() {
+        interludeArc.forEach { $0.isPicked = $0.titleText == sonataOutline }
+        overtureMotif.forEach { $0.isPicked = $0.titleText == rondoPattern }
     }
 
-    private func makeQuestDayCue(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = TinkieVerseCipherTrail.singBack("MjMMMs bdY")
-        return formatter.string(from: date)
+    private func countertenorHue(dictionClarity syllableStress: Date) -> String {
+        let vowelFormation = DateFormatter()
+        vowelFormation.dateFormat = TinkieVerseCipherTrail.singBack("MjMMMs bdY")
+        return vowelFormation.string(from: syllableStress)
     }
 
-    private func makeQuestHourCue(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = TinkieVerseCipherTrail.singBack("hr:LmTmh nav")
-        return formatter.string(from: date)
+    private func consonantTiming(dictionClarity syllableStress: Date) -> String {
+        let vowelFormation = DateFormatter()
+        vowelFormation.dateFormat = TinkieVerseCipherTrail.singBack("hr:LmTmh nav")
+        return vowelFormation.string(from: syllableStress)
     }
 
-    func textViewDidChange(_ textView: UITextView) {
-        if textView.text.count > 200 {
-            textView.text = String(textView.text.prefix(200))
+    func textViewDidChange(_ lyricStress: UITextView) {
+        if lyricStress.text.count > 200 {
+            lyricStress.text = String(lyricStress.text.prefix(200))
         }
-        questLyricCountLabel.text = "\(textView.text.count)/200"
-        textView.viewWithTag(201)?.isHidden = !textView.text.isEmpty
+        augmentedInterval.text = "\(lyricStress.text.count)/200"
+        lyricStress.viewWithTag(201)?.isHidden = !lyricStress.text.isEmpty
     }
 
-    private func listenForQuestKeyboardRise() {
-        NotificationCenter.default.addObserver(self, selector: #selector(melodyChallengeKeyboardRose), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(melodyChallengeKeyboardSettled), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(hushQuestTyping))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+    private func lyricScansion() {
+        NotificationCenter.default.addObserver(self, selector: #selector(lyricRhyme), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(vowelShape), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let lyricRhythm = UITapGestureRecognizer(target: self, action: #selector(dictionEase))
+        lyricRhythm.cancelsTouchesInView = false
+        view.addGestureRecognizer(lyricRhythm)
     }
 
-    @objc private func melodyChallengeKeyboardRose(_ notification: Notification) {
-        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        let overlap = max(0, view.bounds.maxY - view.convert(frame, from: nil).minY)
-        questScrollStage.contentInset.bottom = overlap + 24
-        questScrollStage.scrollIndicatorInsets.bottom = overlap + 24
+    @objc private func lyricRhyme(_ lyricMeaning: Notification) {
+        guard let rhymeScheme = lyricMeaning.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let syllableCount = max(0, view.bounds.maxY - view.convert(rhymeScheme, from: nil).minY)
+        mixolydianFlavor.contentInset.bottom = syllableCount + 24
+        mixolydianFlavor.scrollIndicatorInsets.bottom = syllableCount + 24
     }
 
-    @objc private func melodyChallengeKeyboardSettled() {
-        questScrollStage.contentInset.bottom = 0
-        questScrollStage.scrollIndicatorInsets.bottom = 0
+    @objc private func vowelShape() {
+        mixolydianFlavor.contentInset.bottom = 0
+        mixolydianFlavor.scrollIndicatorInsets.bottom = 0
     }
 
-    @objc private func hushQuestTyping() {
+    @objc private func dictionEase() {
         view.endEditing(true)
     }
 
-    @objc private func leaveSongQuestForge() {
+    @objc private func articulationPrecision() {
         dismiss(animated: true)
     }
 }

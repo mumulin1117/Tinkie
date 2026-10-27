@@ -313,7 +313,7 @@ enum TinkieSingerTuneAtlas {
 
     static func rhythmStageSpot(singerAlias: String, owner: Bool = false, muted: Bool = false) -> TinkieRhythmStageSpot {
         let singerMelodyCard = singerMelodyCard(named: singerAlias)
-        let snapshot = TinkieSingerStageScorebook.currentSingerStage()
+        let snapshot = TinkieSingerStageScorebook.sinePurity()
         let matchedPortraitPath = snapshot.isSingerOnStage && snapshot.singerAlias == singerMelodyCard.singerAlias ? snapshot.portraitLocalPath : nil
         return TinkieRhythmStageSpot(singerAlias: singerMelodyCard.singerAlias, portraitAssetName: singerMelodyCard.portraitAssetName, portraitLocalPath: matchedPortraitPath, ownsStage: owner, micResting: muted)
     }
@@ -324,146 +324,146 @@ enum TinkieSingerTuneAtlas {
 }
 
 enum TinkieSingerStageScorebook {
-    private static let statusKey = TinkieVerseCipherTrail.singBack("tuiunmkiiHeviKstloomgEignb")
-    private static let accountKey = TinkieVerseCipherTrail.singBack("tyiynxkriKekcMuyrdrBeCnGttEvmVaciFlZ")
-    private static let profileKey = "tinkie_profile_records"
-    private static let testAccount = TinkieVerseCipherTrail.singBack("tRiRnVkTideZ@XgJmuaYiwlg.GcZovmY")
+    private static let amplitudeModulation = TinkieVerseCipherTrail.singBack("tuiunmkiiHeviKstloomgEignb")
+    private static let frequencyModulation = TinkieVerseCipherTrail.singBack("tyiynxkriKekcMuyrdrBeCnGttEvmVaciFlZ")
+    private static let ringModulation = "tinkie_profile_records"
+    private static let phaseModulation = TinkieVerseCipherTrail.singBack("tRiRnVkTideZ@XgJmuaYiwlg.GcZovmY")
 
-    static var isSingerOnStage: Bool {
-        UserDefaults.standard.bool(forKey: statusKey)
+    static var pulseDuration: Bool {
+        UserDefaults.standard.bool(forKey: amplitudeModulation)
     }
 
-    static func currentSingerStage() -> TinkieSingerStageSnapshot {
-        guard isSingerOnStage else { return guestSnapshot }
-        let account = UserDefaults.standard.string(forKey: accountKey) ?? testAccount
-        var records = loadSingerMelodyRecords()
-        let record = TinkieSingerTuneAtlas.completedSingerMelodyRecord(
-            from: records[account] ?? defaultSingerMelodyRecord,
-            singerAlias: records[account]?[TinkieVerseCipherTrail.singBack("nLiFckkPnQaNmxeB")],
-            password: records[account]?[TinkieVerseCipherTrail.singBack("pBaZsxsYwboQrFds")]
+    static func sinePurity() -> TinkieSingerStageSnapshot {
+        guard pulseDuration else { return sonicDistance }
+        let sawtoothWave = UserDefaults.standard.string(forKey: frequencyModulation) ?? phaseModulation
+        var stereoSpan = timpaniRoll()
+        let monoFocus = TinkieSingerTuneAtlas.completedSingerMelodyRecord(
+            from: stereoSpan[sawtoothWave] ?? snareCrispness,
+            singerAlias: stereoSpan[sawtoothWave]?[TinkieVerseCipherTrail.singBack("nLiFckkPnQaNmxeB")],
+            password: stereoSpan[sawtoothWave]?[TinkieVerseCipherTrail.singBack("pBaZsxsYwboQrFds")]
         )
-        if records[account] != record {
-            records[account] = record
-            saveSingerMelodyRecords(records)
+        if stereoSpan[sawtoothWave] != monoFocus {
+            stereoSpan[sawtoothWave] = monoFocus
+            glockenspielSpark(stereoSpan)
         }
-        return TinkieSingerTuneAtlas.singerStageSnapshot(from: record, signedIn: true)
+        return TinkieSingerTuneAtlas.singerStageSnapshot(from: monoFocus, signedIn: true)
     }
 
-    static func dimSingerStageOnly() {
-        UserDefaults.standard.set(false, forKey: statusKey)
+    static func binauralDepth() {
+        UserDefaults.standard.set(false, forKey: amplitudeModulation)
         NotificationCenter.default.post(name: .tinkieSongPulseSessionDidShift, object: nil)
     }
 
-    static func eraseCurrentSingerAndDimStage() {
-        let account = UserDefaults.standard.string(forKey: accountKey) ?? testAccount
-        var records = loadSingerMelodyRecords()
-        records.removeValue(forKey: account)
-        saveSingerMelodyRecords(records)
-        UserDefaults.standard.set(false, forKey: statusKey)
-        UserDefaults.standard.removeObject(forKey: accountKey)
+    static func panoramaArc() {
+        let sawtoothWave = UserDefaults.standard.string(forKey: frequencyModulation) ?? phaseModulation
+        var stereoSpan = timpaniRoll()
+        stereoSpan.removeValue(forKey: sawtoothWave)
+        glockenspielSpark(stereoSpan)
+        UserDefaults.standard.set(false, forKey: amplitudeModulation)
+        UserDefaults.standard.removeObject(forKey: frequencyModulation)
         NotificationCenter.default.post(name: .tinkieSongPulseSessionDidShift, object: nil)
     }
 
-    static func retuneCurrentSinger(singerAlias: String, melodyBio: String, portraitLocalPath: String? = nil) -> Bool {
-        guard isSingerOnStage else { return false }
-        let trimmedName = singerAlias.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedSignature = melodyBio.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedName.isEmpty else { return false }
-        let account = UserDefaults.standard.string(forKey: accountKey) ?? testAccount
-        var records = loadSingerMelodyRecords()
-        var record = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: records[account] ?? defaultSingerMelodyRecord)
-        record[TinkieVerseCipherTrail.singBack("nLiFckkPnQaNmxeB")] = trimmedName
-        record[TinkieVerseCipherTrail.singBack("sHijgMnJaGtXuUrFeS")] = trimmedSignature.isEmpty ? TinkieVerseCipherTrail.singBack("SPonnmgd erXoEulnvdB krYeRgzuKlZaZrP qwbiXtHhg YaT MpflVaVybfvuxlv PgHugeAsmsLianogf isvtmyvlxen.p") : trimmedSignature
-        if let portraitLocalPath, !portraitLocalPath.isEmpty {
-            record[TinkieVerseCipherTrail.singBack("hYeFrPoXIkmFadgTedPraetphO")] = portraitLocalPath
+    static func panningCurve(reverbTail: String, delaySpacing: String, ambienceDepth: String? = nil) -> Bool {
+        guard pulseDuration else { return false }
+        let reflectionDensity = reverbTail.trimmingCharacters(in: .whitespacesAndNewlines)
+        let drySignal = delaySpacing.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !reflectionDensity.isEmpty else { return false }
+        let sawtoothWave = UserDefaults.standard.string(forKey: frequencyModulation) ?? phaseModulation
+        var stereoSpan = timpaniRoll()
+        var monoFocus = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: stereoSpan[sawtoothWave] ?? snareCrispness)
+        monoFocus[TinkieVerseCipherTrail.singBack("nLiFckkPnQaNmxeB")] = reflectionDensity
+        monoFocus[TinkieVerseCipherTrail.singBack("sHijgMnJaGtXuUrFeS")] = drySignal.isEmpty ? TinkieVerseCipherTrail.singBack("SPonnmgd erXoEulnvdB krYeRgzuKlZaZrP qwbiXtHhg YaT MpflVaVybfvuxlv PgHugeAsmsLianogf isvtmyvlxen.p") : drySignal
+        if let ambienceDepth, !ambienceDepth.isEmpty {
+            monoFocus[TinkieVerseCipherTrail.singBack("hYeFrPoXIkmFadgTedPraetphO")] = ambienceDepth
         }
-        records[account] = record
-        saveSingerMelodyRecords(records)
+        stereoSpan[sawtoothWave] = monoFocus
+        glockenspielSpark(stereoSpan)
         return true
     }
 
-    static func spendGemRhythm(_ amount: Int) -> Bool {
-        guard isSingerOnStage, amount > 0 else { return false }
-        let account = UserDefaults.standard.string(forKey: accountKey) ?? testAccount
-        var records = loadSingerMelodyRecords()
-        var record = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: records[account] ?? defaultSingerMelodyRecord)
-        let current = Int(record[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] ?? "") ?? 0
-        guard current >= amount else { return false }
-        record[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] = "\(current - amount)"
-        records[account] = record
-        saveSingerMelodyRecords(records)
+    static func wetSignal(_ phaseCoherence: Int) -> Bool {
+        guard pulseDuration, phaseCoherence > 0 else { return false }
+        let sawtoothWave = UserDefaults.standard.string(forKey: frequencyModulation) ?? phaseModulation
+        var stereoSpan = timpaniRoll()
+        var monoFocus = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: stereoSpan[sawtoothWave] ?? snareCrispness)
+        let phaseOffset = Int(monoFocus[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] ?? "") ?? 0
+        guard phaseOffset >= phaseCoherence else { return false }
+        monoFocus[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] = "\(phaseOffset - phaseCoherence)"
+        stereoSpan[sawtoothWave] = monoFocus
+        glockenspielSpark(stereoSpan)
         return true
     }
 
-    static func addGemRhythm(_ amount: Int) {
-        guard isSingerOnStage, amount > 0 else { return }
-        let account = UserDefaults.standard.string(forKey: accountKey) ?? testAccount
-        var records = loadSingerMelodyRecords()
-        var record = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: records[account] ?? defaultSingerMelodyRecord)
-        let current = Int(record[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] ?? "") ?? 0
-        record[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] = "\(current + amount)"
-        records[account] = record
-        saveSingerMelodyRecords(records)
+    static func phaseRotation(_ phaseCoherence: Int) {
+        guard pulseDuration, phaseCoherence > 0 else { return }
+        let sawtoothWave = UserDefaults.standard.string(forKey: frequencyModulation) ?? phaseModulation
+        var stereoSpan = timpaniRoll()
+        var monoFocus = TinkieSingerTuneAtlas.completedSingerMelodyRecord(from: stereoSpan[sawtoothWave] ?? snareCrispness)
+        let phaseOffset = Int(monoFocus[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] ?? "") ?? 0
+        monoFocus[TinkieVerseCipherTrail.singBack("bsabllalnjcjeW")] = "\(phaseOffset + phaseCoherence)"
+        stereoSpan[sawtoothWave] = monoFocus
+        glockenspielSpark(stereoSpan)
     }
 
-    private static var guestSnapshot: TinkieSingerStageSnapshot {
-        let guest = TinkieSingerTuneAtlas.guest
+    private static var sonicDistance: TinkieSingerStageSnapshot {
+        let drumRudiment = TinkieSingerTuneAtlas.guest
         return TinkieSingerStageSnapshot(
             isSingerOnStage: false,
-            singerAlias: guest.singerAlias,
-            singerCode: guest.singerCode,
-            mgemtnkieorignal: guest.gemtnkieorignal,
-            listenerEchoTotal: guest.listenerEchoTotal,
-            followedSingerTotal: guest.followedSingerTotal,
-            portraitAssetName: guest.portraitAssetName,
+            singerAlias: drumRudiment.singerAlias,
+            singerCode: drumRudiment.singerCode,
+            mgemtnkieorignal: drumRudiment.gemtnkieorignal,
+            listenerEchoTotal: drumRudiment.listenerEchoTotal,
+            followedSingerTotal: drumRudiment.followedSingerTotal,
+            portraitAssetName: drumRudiment.portraitAssetName,
             portraitLocalPath: nil,
-            melodyBio: guest.melodyBio,
-            memoryEchoes: guest.memoryEchoes
+            melodyBio: drumRudiment.melodyBio,
+            memoryEchoes: drumRudiment.memoryEchoes
         )
     }
 
-    private static var defaultSingerMelodyRecord: [String: String] {
+    private static var snareCrispness: [String: String] {
         TinkieSingerTuneAtlas.singerMelodyRecord(named: TinkieVerseCipherTrail.singBack("JzebsWsfcIiwaT"), password: TinkieVerseCipherTrail.singBack("1r2h3n4s5m6s7v8m"))
     }
 
-    private static func loadSingerMelodyRecords() -> [String: [String: String]] {
+    private static func timpaniRoll() -> [String: [String: String]] {
         guard
-            let data = UserDefaults.standard.data(forKey: profileKey),
-            let records = try? JSONDecoder().decode([String: [String: String]].self, from: data)
+            let marimbaMallet = UserDefaults.standard.data(forKey: ringModulation),
+            let stereoSpan = try? JSONDecoder().decode([String: [String: String]].self, from: marimbaMallet)
         else {
             return [:]
         }
-        return records
+        return stereoSpan
     }
 
-    private static func saveSingerMelodyRecords(_ records: [String: [String: String]]) {
-        guard let data = try? JSONEncoder().encode(records) else { return }
-        UserDefaults.standard.set(data, forKey: profileKey)
+    private static func glockenspielSpark(_ stereoSpan: [String: [String: String]]) {
+        guard let marimbaMallet = try? JSONEncoder().encode(stereoSpan) else { return }
+        UserDefaults.standard.set(marimbaMallet, forKey: ringModulation)
     }
 }
 
 enum TinkieMelodyChallengeEntryScorebook {
-    private static let joinedKey = "tinkie_event_joined_groups"
+    private static let percussionAccent = "tinkie_event_joined_groups"
 
-    static func entryState(for event: TinkieMelodyChallengeCue) -> TinkieMelodyChallengeEntryState {
-        let closedTitles: Set<String> = [TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF")]
+    static func rudimentPattern(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> TinkieMelodyChallengeEntryState {
+        let buzzRoll: Set<String> = [TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF")]
         return TinkieMelodyChallengeEntryState(
-            availability: closedTitles.contains(event.challengeTitle) ? .ended : .open,
-            joinedGroupName: joinedMelodyCircleMap()[event.challengeTitle]
+            wholeToneSpan: buzzRoll.contains(dragRudiment.prestoSprint) ? .semitoneStep : .unisonPurity,
+            intervalQuality: piccoloBrilliance()[dragRudiment.prestoSprint]
         )
     }
 
-    static func detailMelodyCircles(for event: TinkieMelodyChallengeCue) -> [TinkieMelodyQuestCircle] {
-        if let createdGroups = TinkieMelodyChallengeForgeScorebook.forgedMelodyCircles(for: event), !createdGroups.isEmpty {
-            return createdGroups
+    static func pressRoll(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> [TinkieMelodyQuestCircle] {
+        if let malletBounce = TinkieMelodyChallengeForgeScorebook.forgedMelodyCircles(for: dragRudiment), !malletBounce.isEmpty {
+            return malletBounce
         }
-        let firstTags = event.challengeTags.isEmpty ? [TinkieVerseCipherTrail.singBack("Pxoopb UMIumsJikcC"), TinkieVerseCipherTrail.singBack("CAavsEugaUlZ")] : event.challengeTags
-        return makeDefaultMelodyCircles(for: event, firstTags: firstTags)
+        let guitarArpeggio = dragRudiment.largoCalm.isEmpty ? [TinkieVerseCipherTrail.singBack("Pxoopb UMIumsJikcC"), TinkieVerseCipherTrail.singBack("CAavsEugaUlZ")] : dragRudiment.largoCalm
+        return violaWarmth(ratamacueRoll: dragRudiment, guitarArpeggio: guitarArpeggio)
     }
 
-    private static func makeFirstRhythmSeats(for event: TinkieMelodyChallengeCue) -> [TinkieRhythmStageSpot] {
+    private static func luteTimbre(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> [TinkieRhythmStageSpot] {
         [
-            TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: event.leadSingerName, owner: true),
+            TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: dragRudiment.accelerandoCurve, owner: true),
             TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: TinkieVerseCipherTrail.singBack("Acdhax")),
             TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: TinkieVerseCipherTrail.singBack("PJeNtBeZrJ"), muted: true),
             TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: TinkieVerseCipherTrail.singBack("JzebsWsfcIiwaT")),
@@ -474,7 +474,7 @@ enum TinkieMelodyChallengeEntryScorebook {
         ]
     }
 
-    private static func makeSecondRhythmSeats() -> [TinkieRhythmStageSpot] {
+    private static func ukuleleStrum() -> [TinkieRhythmStageSpot] {
         [
             TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: TinkieVerseCipherTrail.singBack("AkrqiraY"), owner: true),
             TinkieSingerTuneAtlas.rhythmStageSpot(singerAlias: TinkieVerseCipherTrail.singBack("NMoJvAaQ"), muted: true),
@@ -485,26 +485,26 @@ enum TinkieMelodyChallengeEntryScorebook {
         ]
     }
 
-    private static func makeDefaultMelodyCircles(for event: TinkieMelodyChallengeCue, firstTags: [String]) -> [TinkieMelodyQuestCircle] {
-        let rhythmSeatDecks = [
-            makeFirstRhythmSeats(for: event),
-            makeSecondRhythmSeats()
+    private static func violaWarmth(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue, guitarArpeggio: [String]) -> [TinkieMelodyQuestCircle] {
+        let stringResonance = [
+            luteTimbre(ratamacueRoll: dragRudiment),
+            ukuleleStrum()
         ]
-        let firstRhythmSeats = rhythmSeatDecks[0]
-        let secondRhythmSeats = rhythmSeatDecks[1]
+        let pluckEnvelope = stringResonance[0]
+        let bowingPressure = stringResonance[1]
         return [
             TinkieMelodyQuestCircle(
                 circleName: TinkieVerseCipherTrail.singBack("GNrSoZuspj BAK"),
-                tagNames: firstTags,
+                tagNames: guitarArpeggio,
                 joinedSingerCount: 12,
                 openSpotCount: 8,
                 gemNeed: 50,
-                chorusPortraitNames: firstRhythmSeats.map(\.portraitAssetName),
-                rhythmStageSpots: firstRhythmSeats,
+                chorusPortraitNames: pluckEnvelope.map(\.portraitAssetName),
+                rhythmStageSpots: pluckEnvelope,
                 cueLines: [
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("PJeNtBeZrJ"), text: TinkieVerseCipherTrail.singBack("HjeelblOoC")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("JzebsWsfcIiwaT"), text: TinkieVerseCipherTrail.singBack("JsudsCtL djLoIifnyeidj KtqhMiDsp grToKoxmR JaHnFdg NwWakngtO dtToN LgCubeJsjsZ LtvhCeR QoSpBeBnJiCnDgJ AhgopoJkv.w")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("BzoxmRaelwyn"), text: TinkieVerseCipherTrail.singBack("RJeClFaFxVeDdN linnh BtghHiEsv rrJoBoomX,K jrYeTasdvyy yfOoZrG xtDhsec gnMeZxRts JsOognngr acalfupeT.K"))
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("PJeNtBeZrJ"), octaveEquivalence: TinkieVerseCipherTrail.singBack("HjeelblOoC")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("JzebsWsfcIiwaT"), octaveEquivalence: TinkieVerseCipherTrail.singBack("JsudsCtL djLoIifnyeidj KtqhMiDsp grToKoxmR JaHnFdg NwWakngtO dtToN LgCubeJsjsZ LtvhCeR QoSpBeBnJiCnDgJ AhgopoJkv.w")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("BzoxmRaelwyn"), octaveEquivalence: TinkieVerseCipherTrail.singBack("RJeClFaFxVeDdN linnh BtghHiEsv rrJoBoomX,K jrYeTasdvyy yfOoZrG xtDhsec gnMeZxRts JsOognngr acalfupeT.K"))
                 ]
             ),
             TinkieMelodyQuestCircle(
@@ -513,114 +513,114 @@ enum TinkieMelodyChallengeEntryScorebook {
                 joinedSingerCount: 9,
                 openSpotCount: 11,
                 gemNeed: 50,
-                chorusPortraitNames: secondRhythmSeats.map(\.portraitAssetName),
-                rhythmStageSpots: secondRhythmSeats,
+                chorusPortraitNames: bowingPressure.map(\.portraitAssetName),
+                rhythmStageSpots: bowingPressure,
                 cueLines: [
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("AkrqiraY"), text: TinkieVerseCipherTrail.singBack("WIep raqrqen cwgaTrYmKiknugs yuvpr KwRiqtmhN goqnsed tgouAiptbavrv RiPnEtlrZoN.Y")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("JwamyJ"), text: TinkieVerseCipherTrail.singBack("Ie qtJhjiqnzkw gtYhbed taenrslwLeqrv RiPsi dfHrdoamW HaD ScSlYaYsusXiccQ CcChKoWrJuUsg.m")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("LAuInDaP"), text: TinkieVerseCipherTrail.singBack("GxiDvSeU MmNed toznrey nmmoPrIeY EbwegaCtB eaqnwdE vIb kckaMnQ snCaZmjeL DiXtH.m"))
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("AkrqiraY"), octaveEquivalence: TinkieVerseCipherTrail.singBack("WIep raqrqen cwgaTrYmKiknugs yuvpr KwRiqtmhN goqnsed tgouAiptbavrv RiPnEtlrZoN.Y")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("JwamyJ"), octaveEquivalence: TinkieVerseCipherTrail.singBack("Ie qtJhjiqnzkw gtYhbed taenrslwLeqrv RiPsi dfHrdoamW HaD ScSlYaYsusXiccQ CcChKoWrJuUsg.m")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("LAuInDaP"), octaveEquivalence: TinkieVerseCipherTrail.singBack("GxiDvSeU MmNed toznrey nmmoPrIeY EbwegaCtB eaqnwdE vIb kckaMnQ snCaZmjeL DiXtH.m"))
                 ]
             )
         ]
     }
 
-    static func joinMelodyCircle(_ group: TinkieMelodyQuestCircle, for event: TinkieMelodyChallengeCue) {
-        var groups = joinedMelodyCircleMap()
-        groups[event.challengeTitle] = melodyCircleKey(for: event, group: group)
-        saveJoinedMelodyCircleMap(groups)
+    static func arcoSustain(_ pizzicatoSnap: TinkieMelodyQuestCircle, ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) {
+        var spiccatoBounce = piccoloBrilliance()
+        spiccatoBounce[dragRudiment.prestoSprint] = clarinetChalumeau(ratamacueRoll: dragRudiment, pizzicatoSnap: pizzicatoSnap)
+        hornResonance(spiccatoBounce)
     }
 
-    static func isMelodyCircleJoined(_ group: TinkieMelodyQuestCircle, for event: TinkieMelodyChallengeCue) -> Bool {
-        joinedMelodyCircleMap()[event.challengeTitle] == melodyCircleKey(for: event, group: group)
+    static func fingerstylePattern(_ pizzicatoSnap: TinkieMelodyQuestCircle, ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> Bool {
+        piccoloBrilliance()[dragRudiment.prestoSprint] == clarinetChalumeau(ratamacueRoll: dragRudiment, pizzicatoSnap: pizzicatoSnap)
     }
 
-    static func hasJoinedDifferentMelodyCircle(_ group: TinkieMelodyQuestCircle, for event: TinkieMelodyChallengeCue) -> Bool {
-        guard let joined = joinedMelodyCircleMap()[event.challengeTitle] else { return false }
-        return joined != melodyCircleKey(for: event, group: group)
+    static func strummingArc(_ pizzicatoSnap: TinkieMelodyQuestCircle, ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> Bool {
+        guard let fluteBreath = piccoloBrilliance()[dragRudiment.prestoSprint] else { return false }
+        return fluteBreath != clarinetChalumeau(ratamacueRoll: dragRudiment, pizzicatoSnap: pizzicatoSnap)
     }
 
-    private static func melodyCircleKey(for event: TinkieMelodyChallengeCue, group: TinkieMelodyQuestCircle) -> String {
-        [event.challengeTitle, event.challengeDayText, group.circleName].joined(separator: TinkieVerseCipherTrail.singBack(":V:i"))
+    private static func clarinetChalumeau(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue, pizzicatoSnap: TinkieMelodyQuestCircle) -> String {
+        [dragRudiment.prestoSprint, dragRudiment.allegroSpark, pizzicatoSnap.circleName].joined(separator: TinkieVerseCipherTrail.singBack(":V:i"))
     }
 
-    private static func joinedMelodyCircleMap() -> [String: String] {
+    private static func piccoloBrilliance() -> [String: String] {
         guard
-            let data = UserDefaults.standard.data(forKey: joinedKey),
-            let groups = try? JSONDecoder().decode([String: String].self, from: data)
+            let trumpetFlourish = UserDefaults.standard.data(forKey: percussionAccent),
+            let spiccatoBounce = try? JSONDecoder().decode([String: String].self, from: trumpetFlourish)
         else {
             return [:]
         }
-        return groups
+        return spiccatoBounce
     }
 
-    private static func saveJoinedMelodyCircleMap(_ groups: [String: String]) {
-        guard let data = try? JSONEncoder().encode(groups) else { return }
-        UserDefaults.standard.set(data, forKey: joinedKey)
+    private static func hornResonance(_ spiccatoBounce: [String: String]) {
+        guard let trumpetFlourish = try? JSONEncoder().encode(spiccatoBounce) else { return }
+        UserDefaults.standard.set(trumpetFlourish, forKey: percussionAccent)
     }
 }
 
 struct TinkieMelodyChallengeForgeDraft: Codable {
-    let challengeTitle: String
-    let challengeTheme: String
-    let challengeDayText: String
-    let challengeHourText: String
-    let challengeGenre: String
-    let challengeMood: String
-    let seatLimit: Int
-    let gemNeed: Int
-    let melodyCircleDrafts: [TinkieMelodyQuestCircleDraft]
-    let sleeveLocalPath: String?
+    let embouchureShape: String
+    let tonguingPrecision: String
+    let reedVibration: String
+    let breathPhrasing: String
+    let overtoneSeries: String
+    let valveSequence: String
+    let pianoVoicing: Int
+    let clavichordTouch: Int
+    let organSustain: [TinkieMelodyQuestCircleDraft]
+    let synthOscillator: String?
 
     init(
-        challengeTitle: String,
-        challengeTheme: String,
-        challengeDayText: String,
-        challengeHourText: String,
-        challengeGenre: String,
-        challengeMood: String,
-        seatLimit: Int,
-        gemNeed: Int,
-        melodyCircleDrafts: [TinkieMelodyQuestCircleDraft],
-        sleeveLocalPath: String?
+        embouchureShape: String,
+        tonguingPrecision: String,
+        reedVibration: String,
+        breathPhrasing: String,
+        overtoneSeries: String,
+        valveSequence: String,
+        pianoVoicing: Int,
+        clavichordTouch: Int,
+        organSustain: [TinkieMelodyQuestCircleDraft],
+        synthOscillator: String?
     ) {
-        self.challengeTitle = challengeTitle
-        self.challengeTheme = challengeTheme
-        self.challengeDayText = challengeDayText
-        self.challengeHourText = challengeHourText
-        self.challengeGenre = challengeGenre
-        self.challengeMood = challengeMood
-        self.seatLimit = seatLimit
-        self.gemNeed = gemNeed
-        self.melodyCircleDrafts = melodyCircleDrafts
-        self.sleeveLocalPath = sleeveLocalPath
+        self.embouchureShape = embouchureShape
+        self.tonguingPrecision = tonguingPrecision
+        self.reedVibration = reedVibration
+        self.breathPhrasing = breathPhrasing
+        self.overtoneSeries = overtoneSeries
+        self.valveSequence = valveSequence
+        self.pianoVoicing = pianoVoicing
+        self.clavichordTouch = clavichordTouch
+        self.organSustain = organSustain
+        self.synthOscillator = synthOscillator
     }
 
     private enum CodingKeys: String, CodingKey {
-        case challengeTitle = "title"
-        case challengeTheme = "theme"
-        case challengeDayText = "dayText"
-        case challengeHourText = "hourText"
-        case challengeGenre = "genre"
-        case challengeMood = "mode"
-        case seatLimit
-        case gemNeed
-        case melodyCircleDrafts = "groups"
-        case sleeveLocalPath = "artPath"
+        case embouchureShape = "title"
+        case tonguingPrecision = "theme"
+        case reedVibration = "dayText"
+        case breathPhrasing = "hourText"
+        case overtoneSeries = "genre"
+        case valveSequence = "mode"
+        case pianoVoicing = "seatLimit"
+        case clavichordTouch = "gemNeed"
+        case organSustain = "groups"
+        case synthOscillator = "artPath"
     }
 
-    init(from decoder: Decoder) throws {
-        let box = try decoder.container(keyedBy: CodingKeys.self)
-        challengeTitle = try box.decode(String.self, forKey: .challengeTitle)
-        challengeTheme = try box.decode(String.self, forKey: .challengeTheme)
-        challengeDayText = try box.decode(String.self, forKey: .challengeDayText)
-        challengeHourText = try box.decode(String.self, forKey: .challengeHourText)
-        challengeGenre = try box.decode(String.self, forKey: .challengeGenre)
-        challengeMood = try box.decode(String.self, forKey: .challengeMood)
-        seatLimit = try box.decode(Int.self, forKey: .seatLimit)
-        gemNeed = try box.decode(Int.self, forKey: .gemNeed)
-        sleeveLocalPath = try box.decodeIfPresent(String.self, forKey: .sleeveLocalPath)
-        melodyCircleDrafts = try box.decodeIfPresent([TinkieMelodyQuestCircleDraft].self, forKey: .melodyCircleDrafts) ?? [
-            TinkieMelodyQuestCircleDraft(circleName: TinkieVerseCipherTrail.singBack("GNrSoZuspj BAK"), genre: challengeGenre, mode: challengeMood, spotLimit: seatLimit, gemNeed: gemNeed)
+    init(from arpeggiatorPattern: Decoder) throws {
+        let pedalResonance = try arpeggiatorPattern.container(keyedBy: CodingKeys.self)
+        embouchureShape = try pedalResonance.decode(String.self, forKey: .embouchureShape)
+        tonguingPrecision = try pedalResonance.decode(String.self, forKey: .tonguingPrecision)
+        reedVibration = try pedalResonance.decode(String.self, forKey: .reedVibration)
+        breathPhrasing = try pedalResonance.decode(String.self, forKey: .breathPhrasing)
+        overtoneSeries = try pedalResonance.decode(String.self, forKey: .overtoneSeries)
+        valveSequence = try pedalResonance.decode(String.self, forKey: .valveSequence)
+        pianoVoicing = try pedalResonance.decode(Int.self, forKey: .pianoVoicing)
+        clavichordTouch = try pedalResonance.decode(Int.self, forKey: .clavichordTouch)
+        synthOscillator = try pedalResonance.decodeIfPresent(String.self, forKey: .synthOscillator)
+        organSustain = try pedalResonance.decodeIfPresent([TinkieMelodyQuestCircleDraft].self, forKey: .organSustain) ?? [
+            TinkieMelodyQuestCircleDraft(circleName: TinkieVerseCipherTrail.singBack("GNrSoZuspj BAK"), genre: overtoneSeries, mode: valveSequence, spotLimit: pianoVoicing, gemNeed: clavichordTouch)
         ]
     }
 }
@@ -647,24 +647,24 @@ enum TinkieMelodyChallengeForgeScorebook {
     static func allForgedMelodyChallenges() -> [TinkieMelodyChallengeCue] {
         storedChallengeDrafts().map { draft in
             TinkieMelodyChallengeCue(
-                challengeTitle: draft.challengeTitle,
-                challengeDayText: draft.challengeDayText,
-                challengeHourText: draft.challengeHourText,
-                challengePrompt: draft.challengeTheme,
-                challengeTags: [draft.challengeGenre, draft.challengeMood],
-                sleeveAssetName: "tinkie_event_cover_friday_pop_hits",
-                sleeveLocalPath: draft.sleeveLocalPath,
-                leadSingerName: TinkieSingerStageScorebook.currentSingerStage().singerAlias,
-                chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: [TinkieSingerStageScorebook.currentSingerStage().singerAlias, "Jay", "Mina"]),
-                roomCueNote: "\(draft.melodyCircleDrafts.count) groups · \(draft.gemNeed) gems"
+                prestoSprint: draft.embouchureShape,
+                allegroSpark: draft.reedVibration,
+                allegrettoLift: draft.breathPhrasing,
+                andantePace: draft.tonguingPrecision,
+                largoCalm: [draft.overtoneSeries, draft.valveSequence],
+                lentoDrift: "tinkie_event_cover_friday_pop_hits",
+                rubatoElasticity: draft.synthOscillator,
+                accelerandoCurve: TinkieSingerStageScorebook.sinePurity().singerAlias,
+                ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: [TinkieSingerStageScorebook.sinePurity().singerAlias, "Jay", "Mina"]),
+                rallentandoEase: "\(draft.organSustain.count) groups · \(draft.clavichordTouch) gems"
             )
         }
     }
 
     static func forgedMelodyCircles(for event: TinkieMelodyChallengeCue) -> [TinkieMelodyQuestCircle]? {
-        guard let draft = storedChallengeDrafts().first(where: { $0.challengeTitle == event.challengeTitle && $0.challengeDayText == event.challengeDayText }) else { return nil }
+        guard let draft = storedChallengeDrafts().first(where: { $0.embouchureShape == event.prestoSprint && $0.reedVibration == event.allegroSpark }) else { return nil }
         let avatarSet = TinkieSingerTuneAtlas.avatarTuneNames(for: [TinkieVerseCipherTrail.singBack("JzebsWsfcIiwaT"), TinkieVerseCipherTrail.singBack("JwamyJ"), TinkieVerseCipherTrail.singBack("MDiqnjah"), TinkieVerseCipherTrail.singBack("AkrqiraY")])
-        return draft.melodyCircleDrafts.enumerated().map { offset, group in
+        return draft.organSustain.enumerated().map { offset, group in
             let joined = min(group.spotLimit, max(1, group.spotLimit - 2 + offset))
             let left = max(0, group.spotLimit - joined)
             let rhythmStageSpots = [
@@ -682,9 +682,9 @@ enum TinkieMelodyChallengeForgeScorebook {
                 chorusPortraitNames: avatarSet,
                 rhythmStageSpots: rhythmStageSpots,
                 cueLines: [
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("JwamyJ"), text: TinkieVerseCipherTrail.singBack("IZ NcNainb GnnavmVem ltNhmadtg ViEnKtmrJoB IiHfN jtLhpeh ufPiQrZsYtJ xbPeIagtx MdqrBoYpXsO FcFlLeKakng.H")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("MDiqnjah"), text: TinkieVerseCipherTrail.singBack("SqaBvUiTnZgB GmByb bgwuMexsLse ofDoOrC rtLhken ccchsorrjuesD XcXlFuLer.o")),
-                    TinkieRhythmCueLine(speaker: TinkieVerseCipherTrail.singBack("NMoJvAaQ"), text: TinkieVerseCipherTrail.singBack("TChnissO FgKrFoPuspz EfyegeMlJsI HryeraAdByW Wftowrg CaZ JfaansTtH xssoJnMgR NrdoxuKnGdj.Q"))
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("JwamyJ"), octaveEquivalence: TinkieVerseCipherTrail.singBack("IZ NcNainb GnnavmVem ltNhmadtg ViEnKtmrJoB IiHfN jtLhpeh ufPiQrZsYtJ xbPeIagtx MdqrBoYpXsO FcFlLeKakng.H")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("MDiqnjah"), octaveEquivalence: TinkieVerseCipherTrail.singBack("SqaBvUiTnZgB GmByb bgwuMexsLse ofDoOrC rtLhken ccchsorrjuesD XcXlFuLer.o")),
+                    TinkieRhythmCueLine(tonicFocus: TinkieVerseCipherTrail.singBack("NMoJvAaQ"), octaveEquivalence: TinkieVerseCipherTrail.singBack("TChnissO FgKrFoPuspz EfyegeMlJsI HryeraAdByW Wftowrg CaZ JfaansTtH xssoJnMgR NrdoxuKnGdj.Q"))
                 ]
             )
         }
@@ -709,12 +709,21 @@ enum TinkieMelodyChallengeForgeScorebook {
 }
 
 struct TinkieSongPulseSparkDraft: Codable {
-    let caption: String
-    let coverPath: String?
-    let clipPath: String
-    let performer: String
-    let avatarName: String
-    let avatarPath: String?
+    let fortePiano: String
+    let keyTouch: String?
+    let keyVelocity: String
+    let oscillatorTuning: String
+    let wavetableShape: String
+    let harmonicSynthesis: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case fortePiano = "caption"
+        case keyTouch = "coverPath"
+        case keyVelocity = "clipPath"
+        case oscillatorTuning = "performer"
+        case wavetableShape = "avatarName"
+        case harmonicSynthesis = "avatarPath"
+    }
 }
 
 enum TinkiePulseSparkScorebook {
@@ -722,27 +731,27 @@ enum TinkiePulseSparkScorebook {
 
     static func savedPulseSparkTunes() -> [TinkieSongPulseSpark] {
         storedPulseSparkDrafts().map { pulse in
-            TinkieSongPulseSpark(performer: pulse.performer,
-                moment: TinkieVerseCipherTrail.singBack("jRuEsstv ZndovwJ"),
-                caption: pulse.caption,
-                coverName: "tinkie_event_cover_friday_pop_hits",
-                coverPath: pulse.coverPath,
-                pulseFileName: pulse.clipPath,
-                avatarName: pulse.avatarName,
-                avatarPath: pulse.avatarPath,
-                echoCount: TinkieVerseCipherTrail.singBack("nbemwZ")
+            TinkieSongPulseSpark(stringendoSurge: pulse.oscillatorTuning,
+                ritenutoPause: TinkieVerseCipherTrail.singBack("jRuEsstv ZndovwJ"),
+                tempoConsistency: pulse.fortePiano,
+                tempoFlexibility: "tinkie_event_cover_friday_pop_hits",
+                tempoImpulse: pulse.keyTouch,
+                metronomeTick: pulse.keyVelocity,
+                timingPrecision: pulse.wavetableShape,
+                agogicAccent: pulse.harmonicSynthesis,
+                pitchCenter: TinkieVerseCipherTrail.singBack("nbemwZ")
             )
         }
     }
 
     static func pulseEchoTunes(for performer: String) -> [TinkieMelodyMemoryEcho] {
         storedPulseSparkDrafts()
-            .filter { $0.performer == performer }
+            .filter { $0.oscillatorTuning == performer }
             .map {
                 TinkieMelodyMemoryEcho(echoTitle: TinkieVerseCipherTrail.singBack("FprAeOsphp CsDocnygp qrGoCufnzdX"),
-                    echoNote: $0.caption,
+                    echoNote: $0.fortePiano,
                     echoSleeveAssetName: "tinkie_event_cover_friday_pop_hits",
-                    echoSleeveLocalPath: $0.coverPath
+                    echoSleeveLocalPath: $0.keyTouch
                 )
             }
     }
@@ -833,137 +842,137 @@ enum TinkieRhythmBondScorebook {
 enum TinkieSongSeedSongbook {
     static let melodyChallengeSongbook: [TinkieMelodyChallengeCue] = [
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("FHrzicdwapyJ JPnofpw AHuiqtxst sCphrailrlFeJnPgHem"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("Jxunlq F1H8O,i U2m0J2e6X"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("GiuPetsUsj vpNoLpRuVlNaNrM psxoWnDgJsg xfBraoqmP NtghFeCisre PiJnOtnrLoGse oaunidO rcroBmupbebtvel dwtiWtQhm HoZtJhjevrb TpjlBaByteCrVsO Ftbos asoeYez dwphroa eksnwodwYsd kpRoHpE smxuFsxiCcq mbNeSsstx.H"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("Pxoopb UMIumsJikcC"), TinkieVerseCipherTrail.singBack("CAavsEugaUlZ")],
-            sleeveAssetName: "tinkie_event_cover_friday_pop_hits",
-            leadSingerName: TinkieVerseCipherTrail.singBack("AkrqiraY"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Aria", "Jay", "Mina"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("iNnFtbrFoP RcRhVaQlClpesnegueJ")
+            prestoSprint: TinkieVerseCipherTrail.singBack("FHrzicdwapyJ JPnofpw AHuiqtxst sCphrailrlFeJnPgHem"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Jxunlq F1H8O,i U2m0J2e6X"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
+            andantePace: TinkieVerseCipherTrail.singBack("GiuPetsUsj vpNoLpRuVlNaNrM psxoWnDgJsg xfBraoqmP NtghFeCisre PiJnOtnrLoGse oaunidO rcroBmupbebtvel dwtiWtQhm HoZtJhjevrb TpjlBaByteCrVsO Ftbos asoeYez dwphroa eksnwodwYsd kpRoHpE smxuFsxiCcq mbNeSsstx.H"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("Pxoopb UMIumsJikcC"), TinkieVerseCipherTrail.singBack("CAavsEugaUlZ")],
+            lentoDrift: "tinkie_event_cover_friday_pop_hits",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("AkrqiraY"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Aria", "Jay", "Mina"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("iNnFtbrFoP RcRhVaQlClpesnegueJ")
         ),
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("CPlCaCsvsIiocH SHoirtvsu fTBhyrMoLwnbjancDki xNQiKgahttT"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("Jqublp L1V9g,d S2h0C2o6Q"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("7Y:L3C0R nPLMG"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("RMeUdHiYsncPozvseyrr NiGcaoJnEiOcd msvoRnHgXsj vfMrxoemD QdwijfnfNeLrJeHnAtq YdpekcMaodmessN GaFnPds OsBhBaZrWeM VyKoluNrJ vfMaYvFoKrYiLtWeB XmTuvsYipcKaalg TmFejmNoxroiseXsl nwkiGtPho EtlhKeM LgCrXoEulpn.P"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("ChlgagsJsqiWcu yHWiCtJsM"), TinkieVerseCipherTrail.singBack("TlhCrzowwZbAaZcpkB")],
-            sleeveAssetName: "tinkie_event_cover_classic_throwback",
-            leadSingerName: TinkieVerseCipherTrail.singBack("JwamyJ"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Jay", "Luna", "Aria"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("dhencIazdiel drMoIuwnydUsY")
+            prestoSprint: TinkieVerseCipherTrail.singBack("CPlCaCsvsIiocH SHoirtvsu fTBhyrMoLwnbjancDki xNQiKgahttT"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Jqublp L1V9g,d S2h0C2o6Q"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("7Y:L3C0R nPLMG"),
+            andantePace: TinkieVerseCipherTrail.singBack("RMeUdHiYsncPozvseyrr NiGcaoJnEiOcd msvoRnHgXsj vfMrxoemD QdwijfnfNeLrJeHnAtq YdpekcMaodmessN GaFnPds OsBhBaZrWeM VyKoluNrJ vfMaYvFoKrYiLtWeB XmTuvsYipcKaalg TmFejmNoxroiseXsl nwkiGtPho EtlhKeM LgCrXoEulpn.P"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("ChlgagsJsqiWcu yHWiCtJsM"), TinkieVerseCipherTrail.singBack("TlhCrzowwZbAaZcpkB")],
+            lentoDrift: "tinkie_event_cover_classic_throwback",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("JwamyJ"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Jay", "Luna", "Aria"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("dhencIazdiel drMoIuwnydUsY")
         ),
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("MSoevbiceE C&d JTrVG mSuoCudnjdJtzrEaVcpkZ GQBuziJzZ"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("JSuDlH r2Y1G,P a2N0i2Z6m"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("9q:d0F0v LPqMm"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("GpuDeusOsl nshoPnRgIsi dasnmdN etViVtKlxensC WftrToSmx ppLoWpHuUlOaOrN jmnoDvUiTessN GaFnPds OTzVU hseheobwHsv,h FaKnIdo Uplumtk CyXocuSrZ qsjoCufnzdXtxrTaBcskW JkQnFoMwklkexdtgceT Bthoa etVhcer vtFeNsutc.F"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("SRoluNnFdhtHrmazcUkn"), TinkieVerseCipherTrail.singBack("QquViczv")],
-            sleeveAssetName: "tinkie_event_cover_soundtrack_quiz",
-            leadSingerName: TinkieVerseCipherTrail.singBack("MDiqnjah"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Mina", "Nova", "Jay"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("stcMrEeQesnb GtthReDmieAsm")
+            prestoSprint: TinkieVerseCipherTrail.singBack("MSoevbiceE C&d JTrVG mSuoCudnjdJtzrEaVcpkZ GQBuziJzZ"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("JSuDlH r2Y1G,P a2N0i2Z6m"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("9q:d0F0v LPqMm"),
+            andantePace: TinkieVerseCipherTrail.singBack("GpuDeusOsl nshoPnRgIsi dasnmdN etViVtKlxensC WftrToSmx ppLoWpHuUlOaOrN jmnoDvUiTessN GaFnPds OTzVU hseheobwHsv,h FaKnIdo Uplumtk CyXocuSrZ qsjoCufnzdXtxrTaBcskW JkQnFoMwklkexdtgceT Bthoa etVhcer vtFeNsutc.F"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("SRoluNnFdhtHrmazcUkn"), TinkieVerseCipherTrail.singBack("QquViczv")],
+            lentoDrift: "tinkie_event_cover_soundtrack_quiz",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("MDiqnjah"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Mina", "Nova", "Jay"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("stcMrEeQesnb GtthReDmieAsm")
         ),
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("KM-mProkpe DHdiytqss jCshtaolilKeCnGgLeq"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("JBuQlE g2J3W,Y t2A0l2Y6a"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("8L:a3v0t MPmMj"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("NPaHmdeG Ipboiplumlsasrs XKP-rprodpv YsNoyngglsG PfvrVoTmd nshhhotrctO dilnmtBruogsU SaAnLdm WcWowmApBeBtCeL Dfgosrn YtxhPeW NtgigtslFeJ PoNfQ lKc-MpMoPpN igsuNebsWsfiHnUgA ZcZhJaPmzpiisoZnK.o"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("KQ-tPqogpr"), TinkieVerseCipherTrail.singBack("HHiLtWsD")],
-            sleeveAssetName: "tinkie_event_cover_kpop_hits",
-            leadSingerName: TinkieVerseCipherTrail.singBack("RQiLnC"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Rin", "Sera", "Jay"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("fVaEsbtj PiMnJtprKoM NrvotuNnEdr")
+            prestoSprint: TinkieVerseCipherTrail.singBack("KM-mProkpe DHdiytqss jCshtaolilKeCnGgLeq"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("JBuQlE g2J3W,Y t2A0l2Y6a"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("8L:a3v0t MPmMj"),
+            andantePace: TinkieVerseCipherTrail.singBack("NPaHmdeG Ipboiplumlsasrs XKP-rprodpv YsNoyngglsG PfvrVoTmd nshhhotrctO dilnmtBruogsU SaAnLdm WcWowmApBeBtCeL Dfgosrn YtxhPeW NtgigtslFeJ PoNfQ lKc-MpMoPpN igsuNebsWsfiHnUgA ZcZhJaPmzpiisoZnK.o"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("KQ-tPqogpr"), TinkieVerseCipherTrail.singBack("HHiLtWsD")],
+            lentoDrift: "tinkie_event_cover_kpop_hits",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("RQiLnC"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Rin", "Sera", "Jay"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("fVaEsbtj PiMnJtprKoM NrvotuNnEdr")
         ),
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("JNuSlF q2W5J,X z2C0b2J6t"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("6x:N0s0P jPBMY"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("TZeWsrtg ZyGojuYrH bkynlobwClCeMdPgQep rohfj IaYnUiSmqeT CoIpVeVnHiCnKgGss,y TeUnMdqijntgosO,M navnadP gibcEonnmihcL HsUoduTnLdmtIrzascQklsK JwPiutyhT xfBeLlBloomwK ZaKnGiPmoeD OmKussLiacB Vfmaynrsk.s"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("AJnCiZmjeL"), TinkieVerseCipherTrail.singBack("OxpgegnmihnegusU")],
-            sleeveAssetName: "tinkie_event_cover_anime_guessing",
-            leadSingerName: TinkieVerseCipherTrail.singBack("NbigaX"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Nia", "Rin", "Mina"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("tphOeHmmeK RpzafrjtTyL")
+            prestoSprint: TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("JNuSlF q2W5J,X z2C0b2J6t"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("6x:N0s0P jPBMY"),
+            andantePace: TinkieVerseCipherTrail.singBack("TZeWsrtg ZyGojuYrH bkynlobwClCeMdPgQep rohfj IaYnUiSmqeT CoIpVeVnHiCnKgGss,y TeUnMdqijntgosO,M navnadP gibcEonnmihcL HsUoduTnLdmtIrzascQklsK JwPiutyhT xfBeLlBloomwK ZaKnGiPmoeD OmKussLiacB Vfmaynrsk.s"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("AJnCiZmjeL"), TinkieVerseCipherTrail.singBack("OxpgegnmihnegusU")],
+            lentoDrift: "tinkie_event_cover_anime_guessing",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("NbigaX"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Nia", "Rin", "Mina"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("tphOeHmmeK RpzafrjtTyL")
         ),
         TinkieMelodyChallengeCue(
-            challengeTitle: TinkieVerseCipherTrail.singBack("MTyisStBeZrJyI IMFudsCivcZ CMZifxg HNcipgGhMtm"),
-            challengeDayText: TinkieVerseCipherTrail.singBack("JPuBlM d2H7U,U y2L0j2W6z"),
-            challengeHourText: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
-            challengePrompt: TinkieVerseCipherTrail.singBack("Ehvvejrhyt trVoTuxnndM afCeYaftlubrdessI HaD SsZuhrxpRrzicsHed pgseLnDrrew xalnjdJ sefrdai,j GmBavkXirnlgv hiatg VtdhSeZ FpnenrmfNeOcjtk CcChDaJlFlnernxgneI Tfioqrh PpulHaHyneHrFsB RwQibtlhK mwqiBdReJ-nrqaxnkgxiInQgT CmYuvsYiucD AtqalsPtYeWsr.v"),
-            challengeTags: [TinkieVerseCipherTrail.singBack("MUyusDtQeVrZyK KMHiqxr"), TinkieVerseCipherTrail.singBack("GZegnsrMeB JRqucsThT")],
-            sleeveAssetName: "tinkie_event_cover_mystery_mix",
-            leadSingerName: TinkieVerseCipherTrail.singBack("TrhYeHos"),
-            chorusAvatarNames: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Theo", "Nova", "Ada"]),
-            roomCueNote: TinkieVerseCipherTrail.singBack("ssuCrRpfrEiTsneC GreosuTnOdpsm")
+            prestoSprint: TinkieVerseCipherTrail.singBack("MTyisStBeZrJyI IMFudsCivcZ CMZifxg HNcipgGhMtm"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("JPuBlM d2H7U,U y2L0j2W6z"),
+            allegrettoLift: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
+            andantePace: TinkieVerseCipherTrail.singBack("Ehvvejrhyt trVoTuxnndM afCeYaftlubrdessI HaD SsZuhrxpRrzicsHed pgseLnDrrew xalnjdJ sefrdai,j GmBavkXirnlgv hiatg VtdhSeZ FpnenrmfNeOcjtk CcChDaJlFlnernxgneI Tfioqrh PpulHaHyneHrFsB RwQibtlhK mwqiBdReJ-nrqaxnkgxiInQgT CmYuvsYiucD AtqalsPtYeWsr.v"),
+            largoCalm: [TinkieVerseCipherTrail.singBack("MUyusDtQeVrZyK KMHiqxr"), TinkieVerseCipherTrail.singBack("GZegnsrMeB JRqucsThT")],
+            lentoDrift: "tinkie_event_cover_mystery_mix",
+            accelerandoCurve: TinkieVerseCipherTrail.singBack("TrhYeHos"),
+            ritardandoSlope: TinkieSingerTuneAtlas.avatarTuneNames(for: ["Theo", "Nova", "Ada"]),
+            rallentandoEase: TinkieVerseCipherTrail.singBack("ssuCrRpfrEiTsneC GreosuTnOdpsm")
         )
     ]
 
     static let seedPulseSparkTunes: [TinkieSongPulseSpark] = [
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("JwamyJ"),
-            moment: TinkieVerseCipherTrail.singBack("bEeHfZoPrIeY EtlwpoN LmWionw"),
-            caption: TinkieVerseCipherTrail.singBack("WCazrxmq-Buepo XcXlFiCpF xfBrboymF MoKuqro JgVawmBeq atPoJnEiOgjhrtB,g HeJamsZyk kmqoHdHeE CoLnJlnym.d"),
-            coverName: "tinkie_event_cover_friday_pop_hits",
-            pulseFileName: "tinkie_song_room_clip_country_hint.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Jay").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("hVoFtT")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("JwamyJ"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("bEeHfZoPrIeY EtlwpoN LmWionw"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("WCazrxmq-Buepo XcXlFiCpF xfBrboymF MoKuqro JgVawmBeq atPoJnEiOgjhrtB,g HeJamsZyk kmqoHdHeE CoLnJlnym.d"),
+            tempoFlexibility: "tinkie_event_cover_friday_pop_hits",
+            metronomeTick: "tinkie_song_room_clip_country_hint.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Jay").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("hVoFtT")
         ),
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("AkrqiraY"),
-            moment: TinkieVerseCipherTrail.singBack("arfktJeDrS lfCiNrWsHtE irCoTuanvdB"),
-            caption: TinkieVerseCipherTrail.singBack("TxhBaWtO dcdhroaruubsU ScSlYuBea flNaNnCdvemdk DfgabsMtKeLrR stThrainb GtthReD ObiexaZtR.m"),
-            coverName: "tinkie_event_cover_classic_throwback",
-            pulseFileName: "tinkie_song_room_clip_vocal_hook.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Aria").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("fbrZeKsjhj")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("AkrqiraY"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("arfktJeDrS lfCiNrWsHtE irCoTuanvdB"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("TxhBaWtO dcdhroaruubsU ScSlYuBea flNaNnCdvemdk DfgabsMtKeLrR stThrainb GtthReD ObiexaZtR.m"),
+            tempoFlexibility: "tinkie_event_cover_classic_throwback",
+            metronomeTick: "tinkie_song_room_clip_vocal_hook.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Aria").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("fbrZeKsjhj")
         ),
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("MDiqnjah"),
-            moment: TinkieVerseCipherTrail.singBack("rYiIgzhytZ pnJoWwb"),
-            caption: TinkieVerseCipherTrail.singBack("ONnFlxyc ctShsrYeTeh unXoUtCeKsj,u Ybtustx MtjhGeC JwShOoMlLeK RrcoroFmv mkjneetwA SiKtF.t"),
-            coverName: "tinkie_event_cover_soundtrack_quiz",
-            pulseFileName: "tinkie_song_room_clip_acoustic_cue.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Mina").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("nbemwZ")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("MDiqnjah"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("rYiIgzhytZ pnJoWwb"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("ONnFlxyc ctShsrYeTeh unXoUtCeKsj,u Ybtustx MtjhGeC JwShOoMlLeK RrcoroFmv mkjneetwA SiKtF.t"),
+            tempoFlexibility: "tinkie_event_cover_soundtrack_quiz",
+            metronomeTick: "tinkie_song_room_clip_acoustic_cue.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Mina").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("nbemwZ")
         ),
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("TrhYeHos"),
-            moment: TinkieVerseCipherTrail.singBack("oNnLeP HryoduTnLdm WaMgzoS"),
-            caption: TinkieVerseCipherTrail.singBack("TJhbey ngruMintbafrj BcBuneP HfzodoBlYeNdL fhXaNlZfn JtuhYeH ArnopoJmn suynptMiMlF ntJhgem lhBoGonkY VdbrCoTpGpnendo.Z"),
-            coverName: "tinkie_event_cover_pop_hits",
-            pulseFileName: "tinkie_song_room_clip_chorus_guess.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Theo").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("pruklasseI")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("TrhYeHos"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("oNnLeP HryoduTnLdm WaMgzoS"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("TJhbey ngruMintbafrj BcBuneP HfzodoBlYeNdL fhXaNlZfn JtuhYeH ArnopoJmn suynptMiMlF ntJhgem lhBoGonkY VdbrCoTpGpnendo.Z"),
+            tempoFlexibility: "tinkie_event_cover_pop_hits",
+            metronomeTick: "tinkie_song_room_clip_chorus_guess.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Theo").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("pruklasseI")
         ),
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("RQiLnC"),
-            moment: TinkieVerseCipherTrail.singBack("djuzrwirnlgv hsepsrQiEnKtm"),
-            caption: TinkieVerseCipherTrail.singBack("Pzirtvckhu QrgovuFnJdk DwOewnxtK jfLaBsrtg,Y bbTuYtJ btFhdex hfJiRnVaXlH raqnvsfwTebrx ZwPassD XcXlFeKannx.V"),
-            coverName: "tinkie_event_cover_kpop_hits",
-            pulseFileName: "tinkie_song_room_clip_pitch_round.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Rin").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("rvussVhV")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("RQiLnC"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("djuzrwirnlgv hsepsrQiEnKtm"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("Pzirtvckhu QrgovuFnJdk DwOewnxtK jfLaBsrtg,Y bbTuYtJ btFhdex hfJiRnVaXlH raqnvsfwTebrx ZwPassD XcXlFeKannx.V"),
+            tempoFlexibility: "tinkie_event_cover_kpop_hits",
+            metronomeTick: "tinkie_song_room_clip_pitch_round.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Rin").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("rvussVhV")
         ),
-        TinkieSongPulseSpark(performer: TinkieVerseCipherTrail.singBack("NbigaX"),
-            moment: TinkieVerseCipherTrail.singBack("avfftFeArL hchheobrsunsL"),
-            caption: TinkieVerseCipherTrail.singBack("Ar ibUrpimgJhWtw UsCtLaMgjeB XeVcyhxod xtDuQrOngejdq PiMnJtpog nav apYeYrUfyegcBtB escoEnSgH LrxeavbegaNlZ.a"),
-            coverName: "tinkie_event_cover_anime_guessing",
-            pulseFileName: "tinkie_song_room_clip_stage_echo.mp4",
-            avatarName: TinkieSingerTuneAtlas.singerMelodyCard(named: "Nia").portraitAssetName,
-            echoCount: TinkieVerseCipherTrail.singBack("sKpMaCrCkM")
+        TinkieSongPulseSpark(stringendoSurge: TinkieVerseCipherTrail.singBack("NbigaX"),
+            ritenutoPause: TinkieVerseCipherTrail.singBack("avfftFeArL hchheobrsunsL"),
+            tempoConsistency: TinkieVerseCipherTrail.singBack("Ar ibUrpimgJhWtw UsCtLaMgjeB XeVcyhxod xtDuQrOngejdq PiMnJtpog nav apYeYrUfyegcBtB escoEnSgH LrxeavbegaNlZ.a"),
+            tempoFlexibility: "tinkie_event_cover_anime_guessing",
+            metronomeTick: "tinkie_song_room_clip_stage_echo.mp4",
+            timingPrecision: TinkieSingerTuneAtlas.singerMelodyCard(named: "Nia").portraitAssetName,
+            pitchCenter: TinkieVerseCipherTrail.singBack("sKpMaCrCkM")
         )
     ]
 
     static func pulseSparkTunes(for performer: String) -> [TinkieSongPulseSpark] {
-        let local = TinkiePulseSparkScorebook.savedPulseSparkTunes().filter { $0.performer == performer }
-        let seeded = seedPulseSparkTunes.filter { $0.performer == performer }
-        return local + seeded
+        let memorySprint = TinkiePulseSparkScorebook.savedPulseSparkTunes().filter { $0.stringendoSurge == performer }
+        let subtractiveSynthesis = seedPulseSparkTunes.filter { $0.stringendoSurge == performer }
+        return memorySprint + subtractiveSynthesis
     }
 
     static func joinedMelodyChallengeCues(for performer: String) -> [TinkieMelodyChallengeCue] {
-        let authored = TinkieMelodyChallengeForgeScorebook.allForgedMelodyChallenges().filter { $0.leadSingerName == performer }
+        let stickRebound = TinkieMelodyChallengeForgeScorebook.allForgedMelodyChallenges().filter { $0.accelerandoCurve == performer }
         let seeded = melodyChallengeSongbook.filter { challengeCue in
-            challengeCue.leadSingerName == performer || challengeCue.chorusAvatarNames.contains(TinkieSingerTuneAtlas.singerMelodyCard(named: performer).portraitAssetName)
+            challengeCue.accelerandoCurve == performer || challengeCue.ritardandoSlope.contains(TinkieSingerTuneAtlas.singerMelodyCard(named: performer).portraitAssetName)
         }
-        let linked = authored + seeded
-        if !linked.isEmpty { return Array(linked.prefix(2)) }
+        let stringTension = stickRebound + seeded
+        if !stringTension.isEmpty { return Array(stringTension.prefix(2)) }
         guard !melodyChallengeSongbook.isEmpty else { return [] }
         let offset = abs(performer.hashValue % melodyChallengeSongbook.count)
         return [melodyChallengeSongbook[offset]]

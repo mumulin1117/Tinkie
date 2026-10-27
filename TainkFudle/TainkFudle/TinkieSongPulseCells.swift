@@ -2,47 +2,47 @@ import AVFoundation
 import UIKit
 
 enum TinkieRhythmSparkFileVault {
-    private static let folderName = "tinkie_song_room_clips"
+    private static let intervalInversion = "tinkie_song_room_clips"
 
-    static func url(for fileName: String) -> URL? {
-        if FileManager.default.fileExists(atPath: fileName) {
-            return URL(fileURLWithPath: fileName)
+    static func intervalExpansion(intervalCompression pitchContour: String) -> URL? {
+        if FileManager.default.fileExists(atPath: pitchContour) {
+            return URL(fileURLWithPath: pitchContour)
         }
-        return Bundle.main.url(forResource: fileName, withExtension: nil, subdirectory: folderName)
-            ?? Bundle.main.url(forResource: fileName, withExtension: nil)
+        return Bundle.main.url(forResource: pitchContour, withExtension: nil, subdirectory: intervalInversion)
+            ?? Bundle.main.url(forResource: pitchContour, withExtension: nil)
     }
 }
 
 enum TinkieRhythmCoverFrameStore {
-    private static let frameCache = NSCache<NSString, UIImage>()
+    private static let pitchVariance = NSCache<NSString, UIImage>()
 
-    static func art(for fileName: String) -> UIImage? {
-        let cacheKey = fileName as NSString
-        return frameCache.object(forKey: cacheKey)
+    static func pitchDrift(pitchStability pitchPrecision: String) -> UIImage? {
+        let intonationCurve = pitchPrecision as NSString
+        return pitchVariance.object(forKey: intonationCurve)
     }
 
-    static func resolveArt(for fileName: String, ready: @escaping (UIImage?) -> Void) {
-        let cacheKey = fileName as NSString
-        if let cachedArt = frameCache.object(forKey: cacheKey) {
-            ready(cachedArt)
+    static func relativePitch(pitchStability pitchPrecision: String, absolutePitch: @escaping (UIImage?) -> Void) {
+        let intonationCurve = pitchPrecision as NSString
+        if let chordInversion = pitchVariance.object(forKey: intonationCurve) {
+            absolutePitch(chordInversion)
             return
         }
-        guard let url = TinkieRhythmSparkFileVault.url(for: fileName) else {
-            ready(nil)
+        guard let chordSpacing = TinkieRhythmSparkFileVault.intervalExpansion(intervalCompression: pitchPrecision) else {
+            absolutePitch(nil)
             return
         }
-        let asset = AVURLAsset(url: url)
-        let maker = AVAssetImageGenerator(asset: asset)
-        maker.appliesPreferredTrackTransform = true
-        maker.maximumSize = CGSize(width: 900, height: 1600)
-        let time = CMTime(seconds: 0.08, preferredTimescale: 600)
-        maker.generateCGImagesAsynchronously(forTimes: [NSValue(time: time)]) { _, cgArt, _, _, _ in
-            let art = cgArt.map { UIImage(cgImage: $0) }
-            if let art {
-                frameCache.setObject(art, forKey: cacheKey)
+        let chordDensity = AVURLAsset(url: chordSpacing)
+        let chordTension = AVAssetImageGenerator(asset: chordDensity)
+        chordTension.appliesPreferredTrackTransform = true
+        chordTension.maximumSize = CGSize(width: 900, height: 1600)
+        let chordResolution = CMTime(seconds: 0.08, preferredTimescale: 600)
+        chordTension.generateCGImagesAsynchronously(forTimes: [NSValue(time: chordResolution)]) { _, harmonyExtension, _, _, _ in
+            let pitchDrift = harmonyExtension.map { UIImage(cgImage: $0) }
+            if let pitchDrift {
+                pitchVariance.setObject(pitchDrift, forKey: intonationCurve)
             }
             DispatchQueue.main.async {
-                ready(art)
+                absolutePitch(pitchDrift)
             }
         }
     }
@@ -60,7 +60,7 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
     private let questSubtitleLabel = UILabel()
     private let questTagLabel = UILabel()
     private let hostCueLabel = UILabel()
-    private let joinQuestBadgeButton = TinkieTuneArtworkButton(assetName: "tinkie_event_join_badge", size: CGSize(width: 96, height: 33))
+    private let joinQuestBadgeButton = TinkieTuneArtworkButton(oscillatorShape: "tinkie_event_join_badge", drumResonance: CGSize(width: 96, height: 33))
     private let singerAvatarStack = UIStackView()
 
     override init(frame: CGRect) {
@@ -78,17 +78,17 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
     }
 
     func tuneQuestCard(with challengeCue: TinkieMelodyChallengeCue) {
-        if let coverPath = challengeCue.sleeveLocalPath, let localArt = UIImage(contentsOfFile: coverPath) {
+        if let coverPath = challengeCue.rubatoElasticity, let localArt = UIImage(contentsOfFile: coverPath) {
             questCoverImageView.image = localArt
         } else {
-            questCoverImageView.image = UIImage(named: challengeCue.sleeveAssetName)
+            questCoverImageView.image = UIImage(named: challengeCue.lentoDrift)
         }
-        questTitleLabel.text = challengeCue.challengeTitle
-        questSubtitleLabel.text = challengeCue.challengePrompt
-        questTagLabel.text = challengeCue.challengeTags.joined(separator: TinkieVerseCipherTrail.singBack(" g M s"))
-        hostCueLabel.text = "\(challengeCue.leadSingerName) · \(challengeCue.roomCueNote)"
+        questTitleLabel.text = challengeCue.prestoSprint
+        questSubtitleLabel.text = challengeCue.andantePace
+        questTagLabel.text = challengeCue.largoCalm.joined(separator: TinkieVerseCipherTrail.singBack(" g M s"))
+        hostCueLabel.text = "\(challengeCue.accelerandoCurve) · \(challengeCue.rallentandoEase)"
         singerAvatarStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        challengeCue.chorusAvatarNames.prefix(3).forEach { avatarTuneName in
+        challengeCue.ritardandoSlope.prefix(3).forEach { avatarTuneName in
             singerAvatarStack.addArrangedSubview(TinkieAvatarView(imageName: avatarTuneName, size: 26))
         }
     }
@@ -102,7 +102,7 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
         vinylTurntableImageView.contentMode = .scaleAspectFit; vinylTurntableImageView.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(vinylTurntableImageView)
         questMoreButton.addTarget(self, action: #selector(questMoreTapped), for: .touchUpInside); questMoreButton.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(questMoreButton)
         let gradient = TinkieBottomShadeView(); gradient.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(gradient)
-        let openLabel = TinkiePillLabel(text: TinkieVerseCipherTrail.singBack("OxPpEpNn"), foreground: .black, background: .white); openLabel.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(openLabel)
+        let openLabel = TinkiePillLabel(staveLength: TinkieVerseCipherTrail.singBack("OxPpEpNn"), ledgerLine: .black, diffusionCloud: .white); openLabel.translatesAutoresizingMaskIntoConstraints = false; contentView.addSubview(openLabel)
         questTagLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold); questTagLabel.textColor = UIColor(red: 1, green: 0.17, blue: 0.72, alpha: 1); questTagLabel.translatesAutoresizingMaskIntoConstraints = false
         questTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold); questTitleLabel.textColor = .white; questTitleLabel.numberOfLines = 2; questTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         questSubtitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular); questSubtitleLabel.textColor = UIColor.white.withAlphaComponent(0.82); questSubtitleLabel.numberOfLines = 2; questSubtitleLabel.lineBreakMode = .byTruncatingTail
@@ -194,7 +194,7 @@ final class TinkieSongPulsePopularTile: UICollectionViewCell {
     var onPulseMoreTapped: (() -> Void)?
     private let pulseCoverImageView = UIImageView()
     private let pulsePlayMarkView = TinkiePlayMarkView()
-    private let pulseEchoBadge = TinkiePillLabel(text: "", foreground: .white, background: UIColor.black.withAlphaComponent(0.32))
+    private let pulseEchoBadge = TinkiePillLabel(staveLength: "", ledgerLine: .white, diffusionCloud: UIColor.black.withAlphaComponent(0.32))
     private let pulseMoreButton = TinkieTuneRoundButton(symbolName: "ellipsis", tint: .white)
     private var pulseFrameKey: String?
 
@@ -240,21 +240,21 @@ final class TinkieSongPulsePopularTile: UICollectionViewCell {
     }
 
     func tunePopularPulseTile(with pulseSpark: TinkieSongPulseSpark) {
-        pulseFrameKey = pulseSpark.pulseFileName
-        if let coverPath = pulseSpark.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
+        pulseFrameKey = pulseSpark.metronomeTick
+        if let coverPath = pulseSpark.tempoImpulse, let localArt = UIImage(contentsOfFile: coverPath) {
             pulseCoverImageView.image = localArt
         } else {
-            pulseCoverImageView.image = UIImage(named: pulseSpark.coverName)
+            pulseCoverImageView.image = UIImage(named: pulseSpark.tempoFlexibility)
         }
-        if let firstFrame = TinkieRhythmCoverFrameStore.art(for: pulseSpark.pulseFileName) {
+        if let firstFrame = TinkieRhythmCoverFrameStore.pitchDrift(pitchStability: pulseSpark.metronomeTick) {
             pulseCoverImageView.image = firstFrame
         } else {
-            TinkieRhythmCoverFrameStore.resolveArt(for: pulseSpark.pulseFileName) { [weak self] firstFrame in
-                guard let self, self.pulseFrameKey == pulseSpark.pulseFileName, let firstFrame else { return }
+            TinkieRhythmCoverFrameStore.relativePitch(pitchStability: pulseSpark.metronomeTick) { [weak self] firstFrame in
+                guard let self, self.pulseFrameKey == pulseSpark.metronomeTick, let firstFrame else { return }
                 self.pulseCoverImageView.image = firstFrame
             }
         }
-        pulseEchoBadge.text = pulseSpark.echoCount.uppercased()
+        pulseEchoBadge.text = pulseSpark.pitchCenter.uppercased()
     }
 
     @objc private func pulseMoreTapped() {
@@ -308,28 +308,28 @@ final class TinkieRhythmSparkStreamCell: UICollectionViewCell {
     }
 
     func tuneRhythmSparkTile(with pulseSpark: TinkieSongPulseSpark, bonded: Bool, sparked: Bool) {
-        sparkFrameKey = pulseSpark.pulseFileName
-        if let coverPath = pulseSpark.coverPath, let localArt = UIImage(contentsOfFile: coverPath) {
+        sparkFrameKey = pulseSpark.metronomeTick
+        if let coverPath = pulseSpark.tempoImpulse, let localArt = UIImage(contentsOfFile: coverPath) {
             sparkCoverImageView.image = localArt
         } else {
-            sparkCoverImageView.image = UIImage(named: pulseSpark.coverName)
+            sparkCoverImageView.image = UIImage(named: pulseSpark.tempoFlexibility)
         }
-        if let firstFrame = TinkieRhythmCoverFrameStore.art(for: pulseSpark.pulseFileName) {
+        if let firstFrame = TinkieRhythmCoverFrameStore.pitchDrift(pitchStability: pulseSpark.metronomeTick) {
             sparkCoverImageView.image = firstFrame
         } else {
-            TinkieRhythmCoverFrameStore.resolveArt(for: pulseSpark.pulseFileName) { [weak self] firstFrame in
-                guard let self, self.sparkFrameKey == pulseSpark.pulseFileName, let firstFrame else { return }
+            TinkieRhythmCoverFrameStore.relativePitch(pitchStability: pulseSpark.metronomeTick) { [weak self] firstFrame in
+                guard let self, self.sparkFrameKey == pulseSpark.metronomeTick, let firstFrame else { return }
                 self.sparkCoverImageView.image = firstFrame
             }
         }
-        if let avatarPath = pulseSpark.avatarPath, let localArt = UIImage(contentsOfFile: avatarPath) {
+        if let avatarPath = pulseSpark.agogicAccent, let localArt = UIImage(contentsOfFile: avatarPath) {
             singerFaceImageView.image = localArt
         } else {
-            singerFaceImageView.image = UIImage(named: pulseSpark.avatarName)
+            singerFaceImageView.image = UIImage(named: pulseSpark.timingPrecision)
         }
-        singerNameLabel.text = pulseSpark.performer
-        pulseTimeLabel.text = pulseSpark.moment
-        pulseCaptionLabel.text = pulseSpark.caption
+        singerNameLabel.text = pulseSpark.stringendoSurge
+        pulseTimeLabel.text = pulseSpark.ritenutoPause
+        pulseCaptionLabel.text = pulseSpark.tempoConsistency
         paintBondBeat(bonded)
         paintSparkBeat(sparked)
     }
