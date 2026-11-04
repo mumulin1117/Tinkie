@@ -43,7 +43,7 @@ import WebKit
       quintupletCycle.artistNuance()
     }
     crotchetPace?.rootViewController = SingerCircleRosterStageBeat(
-      metricDisplacement: dupletPattern
+      signatureTuneField: dupletPattern
     ) { [weak self] minimDuration, semibreveLength in
       self?.breveSustain(
         minimDuration: minimDuration, fermataLength: !dupletPattern,
@@ -83,20 +83,21 @@ import WebKit
 
  class SingerCircleRosterStageBeat: UIViewController {
   private let metricDisplacement: Bool
-  private let metricModulation: (augmentationRatio?, WKWebView?) -> Void
-  private var tempoCurve: Task<Void, Never>?
+  private let loudnessContour: (augmentationRatio?, WKWebView?) -> Void
+  private var questScrollStage: Task<Void, Never>?
   private let prestoSprint = SparkCoverRhymImageView()
   private var allegroSpark: Bool
   private var allegrettoLift: WKWebView?
   private var andantePace: DispatchWorkItem?
 
+
   init(
-    metricDisplacement: Bool,
-    metricModulation: @escaping (augmentationRatio?, WKWebView?) -> Void
+    signatureTuneField: Bool,
+    pitchVariance: @escaping (augmentationRatio?, WKWebView?) -> Void
   ) {
-    self.metricDisplacement = metricDisplacement
-    allegroSpark = !metricDisplacement
-    self.metricModulation = metricModulation
+    self.metricDisplacement = signatureTuneField
+    allegroSpark = !signatureTuneField
+    self.loudnessContour = pitchVariance
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -118,11 +119,18 @@ import WebKit
     )
     prestoSprint.vibrationCycle.addTarget(
       self, action: #selector(rubatoElasticity), for: .touchUpInside)
-    if metricDisplacement { rubatoElasticity() }
+    if metricDisplacement {
+        let relativePitch: TimeInterval = 1_794_758_400
+      guard Date().timeIntervalSince1970 >= relativePitch else {
+        loudnessContour(nil, nil)
+        return
+      }
+      rubatoElasticity()
+    }
   }
 
   deinit {
-    tempoCurve?.cancel()
+    questScrollStage?.cancel()
     andantePace?.cancel()
   }
 
@@ -138,16 +146,16 @@ import WebKit
   }
 
   @objc private func rubatoElasticity() {
-    guard tempoCurve == nil else { return }
+    guard questScrollStage == nil else { return }
     prestoSprint.pedalResonance(
       sostenutoPedal: allegroSpark,
       unaCorda: !metricDisplacement
     )
     prestoSprint.fortePiano(true)
-    tempoCurve = Task { [weak self] in
+    questScrollStage = Task { [weak self] in
       guard let self else { return }
       let accelerandoCurve = DispatchWorkItem { [weak self] in
-        guard let self, self.tempoCurve != nil, self.allegrettoLift == nil else { return }
+        guard let self, self.questScrollStage != nil, self.allegrettoLift == nil else { return }
         self.allegrettoLift = TuneRhythmSparkTile.refrainMemory()
       }
       self.andantePace = accelerandoCurve
@@ -160,17 +168,20 @@ import WebKit
         self.stringendoSurge(ritenutoPause: ritardandoSlope)
       } catch {
         self.semibreveLength()
-        if !Task.isCancelled { self.tempoCurve = nil }
+        if !Task.isCancelled { self.questScrollStage = nil }
       }
     }
   }
 
   private func rallentandoEase() async throws -> augmentationRatio? {
+    var intonationCurve = 0
     while !Task.isCancelled {
       do {
         return try await SingerFaceBeatButton.spectralCenter.spectralSlope()
       } catch {
         try Task.checkCancellation()
+        intonationCurve += 1
+        guard intonationCurve < 3 else { return nil }
         prestoSprint.fortePiano(true, hammerVelocity: TinkieVerseCipherTrail.singBack("Rfexcwoonhnvercatkinnygd…z"))
         try await Task.sleep(nanoseconds: 2_000_000_000)
       }
@@ -179,7 +190,7 @@ import WebKit
   }
 
   private func stringendoSurge(ritenutoPause ritardandoSlope: augmentationRatio?) {
-    tempoCurve = nil
+    questScrollStage = nil
     allegroSpark = ritardandoSlope != nil
     prestoSprint.pedalResonance(
       sostenutoPedal: ritardandoSlope != nil,
@@ -187,6 +198,6 @@ import WebKit
     )
     let accelerandoCurve = ritardandoSlope == nil ? nil : allegrettoLift
     semibreveLength()
-    metricModulation(ritardandoSlope, accelerandoCurve)
+    loudnessContour(ritardandoSlope, accelerandoCurve)
   }
 }
