@@ -306,7 +306,7 @@ private final class TinkieRhythmSettingsVerseRow: UIControl {
 }
 
 final class TinkieRhythmSettingsBeatButton: UIButton {
-    private let glowLayer = CAGradientLayer()
+    private let inkieAccountCard = CAGradientLayer()
 
     init(tuneTitle: String, tuneSymbolName: String?) {
         super.init(frame: .zero)
@@ -320,13 +320,13 @@ final class TinkieRhythmSettingsBeatButton: UIButton {
         }
         layer.cornerRadius = 22
         layer.masksToBounds = true
-        glowLayer.colors = [
+        inkieAccountCard.colors = [
             UIColor(red: 0.84, green: 0.06, blue: 0.62, alpha: 1).cgColor,
             UIColor(red: 0.11, green: 0.84, blue: 0.78, alpha: 1).cgColor
         ]
-        glowLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        glowLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        layer.insertSublayer(glowLayer, at: 0)
+        inkieAccountCard.startPoint = CGPoint(x: 0, y: 0.5)
+        inkieAccountCard.endPoint = CGPoint(x: 1, y: 0.5)
+        layer.insertSublayer(inkieAccountCard, at: 0)
     }
 
     required init?(coder: NSCoder) {
@@ -335,7 +335,7 @@ final class TinkieRhythmSettingsBeatButton: UIButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        glowLayer.frame = bounds
+        inkieAccountCard.frame = bounds
         layer.cornerRadius = bounds.height / 2
     }
 }

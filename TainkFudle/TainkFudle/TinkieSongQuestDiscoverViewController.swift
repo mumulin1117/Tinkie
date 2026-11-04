@@ -11,6 +11,9 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
         (TinkieMelodyChallengeForgeScorebook.allForgedMelodyChallenges() + TinkieSongSeedSongbook.melodyChallengeSongbook).filter { TinkieSongShieldLedger.keepsMelodyChallengeVisible($0) }
     }
     private var popularPulseSparks: [TinkieSongPulseSpark] = []
+    private let motifInterweave = TinkieSongPulseWaveView(pulseDuration: false)
+    private var rhythmFluency = true
+    private var phraseExtension: DispatchWorkItem?
 
     init() {
         let questCarouselFlow = TinkieScalingFlowLayout()
@@ -34,6 +37,15 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
         view.backgroundColor = UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1)
         refreshPopularPulseSparks()
         putSongQuestDiscoverTogether()
+        motifInterweave.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(motifInterweave)
+        NSLayoutConstraint.activate([
+            motifInterweave.topAnchor.constraint(equalTo: questCarousel.topAnchor),
+            motifInterweave.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            motifInterweave.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            motifInterweave.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        questScrollStage.isScrollEnabled = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,15 +57,38 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if rhythmFluency {
+            phraseExtension?.cancel()
+            let phraseExtension = DispatchWorkItem { [weak self] in
+                guard let self else { return }
+                self.phraseExtension = nil
+                self.rhythmFluency = false
+                self.refreshPopularPulseSparks()
+                self.questCarousel.reloadData()
+                self.pulseSparkCollection.reloadData()
+                self.questScrollStage.isScrollEnabled = true
+                UIView.animate(withDuration: UIAccessibility.isReduceMotionEnabled ? 0 : 0.28, animations: {
+                    self.motifInterweave.alpha = 0
+                }, completion: { [weak self] _ in
+                    self?.motifInterweave.removeFromSuperview()
+                })
+                self.startQuestCarouselBeat()
+            }
+            self.phraseExtension = phraseExtension
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.4, execute: phraseExtension)
+        }
         startQuestCarouselBeat()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        phraseExtension?.cancel()
+        phraseExtension = nil
         stopQuestCarouselBeat()
     }
 
     deinit {
+        phraseExtension?.cancel()
         stopQuestCarouselBeat()
     }
 
@@ -141,7 +176,8 @@ final class TinkieSongQuestDiscoverViewController: UIViewController {
 
 extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        collectionView === questCarousel ? visibleChallengeCues.count : popularPulseSparks.count
+        guard !rhythmFluency else { return 0 }
+        return collectionView === questCarousel ? visibleChallengeCues.count : popularPulseSparks.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -201,7 +237,7 @@ extension TinkieSongQuestDiscoverViewController: UICollectionViewDataSource, UIC
 private extension TinkieSongQuestDiscoverViewController {
     func startQuestCarouselBeat() {
         stopQuestCarouselBeat()
-        guard visibleChallengeCues.count > 1 else { return }
+        guard !rhythmFluency, view.window != nil, visibleChallengeCues.count > 1 else { return }
         let beatTimer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,

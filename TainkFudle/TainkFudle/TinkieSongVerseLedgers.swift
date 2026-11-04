@@ -446,9 +446,12 @@ enum TinkieMelodyChallengeEntryScorebook {
     private static let percussionAccent = "tinkie_event_joined_groups"
 
     static func rudimentPattern(ratamacueRoll dragRudiment: TinkieMelodyChallengeCue) -> TinkieMelodyChallengeEntryState {
-        let buzzRoll: Set<String> = [TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF")]
+        let buzzRoll: Set<String> = [
+            TinkieVerseCipherTrail.singBack("Oxcxtx x2x9x,x x2x0x2x6x"),
+            TinkieVerseCipherTrail.singBack("Oxcxtx x3x1x,x x2x0x2x6x")
+        ]
         return TinkieMelodyChallengeEntryState(
-            wholeToneSpan: buzzRoll.contains(dragRudiment.prestoSprint) ? .semitoneStep : .unisonPurity,
+            wholeToneSpan: buzzRoll.contains(dragRudiment.allegroSpark) ? .semitoneStep : .unisonPurity,
             intervalQuality: piccoloBrilliance()[dragRudiment.prestoSprint]
         )
     }
@@ -843,7 +846,7 @@ enum TinkieSongSeedSongbook {
     static let melodyChallengeSongbook: [TinkieMelodyChallengeCue] = [
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("FHrzicdwapyJ JPnofpw AHuiqtxst sCphrailrlFeJnPgHem"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("Jxunlq F1H8O,i U2m0J2e6X"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Nxoxvx x2x1x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
             andantePace: TinkieVerseCipherTrail.singBack("GiuPetsUsj vpNoLpRuVlNaNrM psxoWnDgJsg xfBraoqmP NtghFeCisre PiJnOtnrLoGse oaunidO rcroBmupbebtvel dwtiWtQhm HoZtJhjevrb TpjlBaByteCrVsO Ftbos asoeYez dwphroa eksnwodwYsd kpRoHpE smxuFsxiCcq mbNeSsstx.H"),
             largoCalm: [TinkieVerseCipherTrail.singBack("Pxoopb UMIumsJikcC"), TinkieVerseCipherTrail.singBack("CAavsEugaUlZ")],
@@ -854,7 +857,7 @@ enum TinkieSongSeedSongbook {
         ),
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("CPlCaCsvsIiocH SHoirtvsu fTBhyrMoLwnbjancDki xNQiKgahttT"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("Jqublp L1V9g,d S2h0C2o6Q"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Nxoxvx x2x3x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("7Y:L3C0R nPLMG"),
             andantePace: TinkieVerseCipherTrail.singBack("RMeUdHiYsncPozvseyrr NiGcaoJnEiOcd msvoRnHgXsj vfMrxoemD QdwijfnfNeLrJeHnAtq YdpekcMaodmessN GaFnPds OsBhBaZrWeM VyKoluNrJ vfMaYvFoKrYiLtWeB XmTuvsYipcKaalg TmFejmNoxroiseXsl nwkiGtPho EtlhKeM LgCrXoEulpn.P"),
             largoCalm: [TinkieVerseCipherTrail.singBack("ChlgagsJsqiWcu yHWiCtJsM"), TinkieVerseCipherTrail.singBack("TlhCrzowwZbAaZcpkB")],
@@ -865,7 +868,7 @@ enum TinkieSongSeedSongbook {
         ),
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("MSoevbiceE C&d JTrVG mSuoCudnjdJtzrEaVcpkZ GQBuziJzZ"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("JSuDlH r2Y1G,P a2N0i2Z6m"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Nxoxvx x2x5x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("9q:d0F0v LPqMm"),
             andantePace: TinkieVerseCipherTrail.singBack("GpuDeusOsl nshoPnRgIsi dasnmdN etViVtKlxensC WftrToSmx ppLoWpHuUlOaOrN jmnoDvUiTessN GaFnPds OTzVU hseheobwHsv,h FaKnIdo Uplumtk CyXocuSrZ qsjoCufnzdXtxrTaBcskW JkQnFoMwklkexdtgceT Bthoa etVhcer vtFeNsutc.F"),
             largoCalm: [TinkieVerseCipherTrail.singBack("SRoluNnFdhtHrmazcUkn"), TinkieVerseCipherTrail.singBack("QquViczv")],
@@ -876,7 +879,7 @@ enum TinkieSongSeedSongbook {
         ),
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("KM-mProkpe DHdiytqss jCshtaolilKeCnGgLeq"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("JBuQlE g2J3W,Y t2A0l2Y6a"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Nxoxvx x2x7x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("8L:a3v0t MPmMj"),
             andantePace: TinkieVerseCipherTrail.singBack("NPaHmdeG Ipboiplumlsasrs XKP-rprodpv YsNoyngglsG PfvrVoTmd nshhhotrctO dilnmtBruogsU SaAnLdm WcWowmApBeBtCeL Dfgosrn YtxhPeW NtgigtslFeJ PoNfQ lKc-MpMoPpN igsuNebsWsfiHnUgA ZcZhJaPmzpiisoZnK.o"),
             largoCalm: [TinkieVerseCipherTrail.singBack("KQ-tPqogpr"), TinkieVerseCipherTrail.singBack("HHiLtWsD")],
@@ -887,7 +890,7 @@ enum TinkieSongSeedSongbook {
         ),
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("AUnIiHmyeO ZSSovnugs yGquLersMssiDnTgO MPiamrotNyF"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("JNuSlF q2W5J,X z2C0b2J6t"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Oxcxtx x2x9x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("6x:N0s0P jPBMY"),
             andantePace: TinkieVerseCipherTrail.singBack("TZeWsrtg ZyGojuYrH bkynlobwClCeMdPgQep rohfj IaYnUiSmqeT CoIpVeVnHiCnKgGss,y TeUnMdqijntgosO,M navnadP gibcEonnmihcL HsUoduTnLdmtIrzascQklsK JwPiutyhT xfBeLlBloomwK ZaKnGiPmoeD OmKussLiacB Vfmaynrsk.s"),
             largoCalm: [TinkieVerseCipherTrail.singBack("AJnCiZmjeL"), TinkieVerseCipherTrail.singBack("OxpgegnmihnegusU")],
@@ -898,7 +901,7 @@ enum TinkieSongSeedSongbook {
         ),
         TinkieMelodyChallengeCue(
             prestoSprint: TinkieVerseCipherTrail.singBack("MTyisStBeZrJyI IMFudsCivcZ CMZifxg HNcipgGhMtm"),
-            allegroSpark: TinkieVerseCipherTrail.singBack("JPuBlM d2H7U,U y2L0j2W6z"),
+            allegroSpark: TinkieVerseCipherTrail.singBack("Oxcxtx x3x1x,x x2x0x2x6x"),
             allegrettoLift: TinkieVerseCipherTrail.singBack("8n:K0d0C kPMML"),
             andantePace: TinkieVerseCipherTrail.singBack("Ehvvejrhyt trVoTuxnndM afCeYaftlubrdessI HaD SsZuhrxpRrzicsHed pgseLnDrrew xalnjdJ sefrdai,j GmBavkXirnlgv hiatg VtdhSeZ FpnenrmfNeOcjtk CcChDaJlFlnernxgneI Tfioqrh PpulHaHyneHrFsB RwQibtlhK mwqiBdReJ-nrqaxnkgxiInQgT CmYuvsYiucD AtqalsPtYeWsr.v"),
             largoCalm: [TinkieVerseCipherTrail.singBack("MUyusDtQeVrZyK KMHiqxr"), TinkieVerseCipherTrail.singBack("GZegnsrMeB JRqucsThT")],

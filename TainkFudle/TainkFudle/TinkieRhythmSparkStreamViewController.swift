@@ -5,6 +5,9 @@ final class TinkieRhythmSparkStreamViewController: UIViewController {
     private let hotTuneArtView = UIImageView()
     private let noticeRhythmButton = TinkieTuneArtworkButton(oscillatorShape: "tinkie_discover_notice_bell", drumResonance: CGSize(width: 38, height: 38))
     private let publishRhythmButton = UIButton(type: .custom)
+    private let motifInterweave = TinkieSongPulseWaveView(pulseDuration: true)
+    private var rhythmFluency = true
+    private var phraseExtension: DispatchWorkItem?
     private var pulseSparks: [TinkieSongPulseSpark] {
         (TinkiePulseSparkScorebook.savedPulseSparkTunes() + TinkieSongSeedSongbook.seedPulseSparkTunes).filter { TinkieSongShieldLedger.keepsPulseVisible($0) }
     }
@@ -42,6 +45,14 @@ final class TinkieRhythmSparkStreamViewController: UIViewController {
             pulseSparkStage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             pulseSparkStage.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        motifInterweave.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(motifInterweave, belowSubview: hotTuneArtView)
+        NSLayoutConstraint.activate([
+            motifInterweave.topAnchor.constraint(equalTo: view.topAnchor),
+            motifInterweave.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            motifInterweave.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            motifInterweave.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
     override func viewDidLayoutSubviews() {
@@ -54,6 +65,35 @@ final class TinkieRhythmSparkStreamViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         pulseSparkStage.reloadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard rhythmFluency else { return }
+        phraseExtension?.cancel()
+        let phraseExtension = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            self.phraseExtension = nil
+            self.rhythmFluency = false
+            self.pulseSparkStage.reloadData()
+            UIView.animate(withDuration: UIAccessibility.isReduceMotionEnabled ? 0 : 0.28, animations: {
+                self.motifInterweave.alpha = 0
+            }, completion: { [weak self] _ in
+                self?.motifInterweave.removeFromSuperview()
+            })
+        }
+        self.phraseExtension = phraseExtension
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.7, execute: phraseExtension)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        phraseExtension?.cancel()
+        phraseExtension = nil
+    }
+
+    deinit {
+        phraseExtension?.cancel()
     }
 
 }
@@ -110,7 +150,7 @@ private extension TinkieRhythmSparkStreamViewController {
 
 extension TinkieRhythmSparkStreamViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ pulseSparkStage: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pulseSparks.count
+        rhythmFluency ? 0 : pulseSparks.count
     }
 
     func collectionView(_ pulseSparkStage: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -87,6 +87,7 @@ final class TinkieSongQuestCarouselCard: UICollectionViewCell {
         questSubtitleLabel.text = challengeCue.andantePace
         questTagLabel.text = challengeCue.largoCalm.joined(separator: TinkieVerseCipherTrail.singBack(" g M s"))
         hostCueLabel.text = "\(challengeCue.accelerandoCurve) · \(challengeCue.rallentandoEase)"
+        joinQuestBadgeButton.isHidden = TinkieMelodyChallengeEntryScorebook.rudimentPattern(ratamacueRoll: challengeCue).wholeToneSpan == .semitoneStep
         singerAvatarStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         challengeCue.ritardandoSlope.prefix(3).forEach { avatarTuneName in
             singerAvatarStack.addArrangedSubview(TinkieAvatarView(imageName: avatarTuneName, size: 26))

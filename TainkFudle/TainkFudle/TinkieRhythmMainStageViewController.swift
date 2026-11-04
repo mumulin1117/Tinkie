@@ -86,6 +86,12 @@ final class TinkieRhythmMainStageViewController: UIViewController {
 
     private func switchRhythmStage(to lmelodytroller: UIViewController, activeRhythmTab: TinkieRhythmTabButton) {
         guard currentRhythmStageController !== lmelodytroller else { return }
+        let tinkieRhythmPulse = lmelodytroller === pulseController
+        let tinkieRhythmStage = tinkieRhythmPulse
+            ? UIColor.black
+            : UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1)
+        view.backgroundColor = tinkieRhythmStage
+        mainRhythmStageBox.backgroundColor = tinkieRhythmStage
         currentRhythmStageController?.willMove(toParent: nil)
         currentRhythmStageController?.view.removeFromSuperview()
         currentRhythmStageController?.removeFromParent()
